@@ -5,7 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Design Systems for AI Coding — A Field Manual</title>
 <meta name="description" content="A practical, step-by-step field manual for preparing a design system to be consumed by AI coding agents. Synthesised from essays by zeroheight, Southleft, and notes on the Figma+MCP workflow." />
-<meta name="theme-color" content="#0a0a0a" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#fafaf7" media="(prefers-color-scheme: light)" />
+<script>
+  // No-flash theme init — runs before any paint
+  (function () {
+    try {
+      var saved = localStorage.getItem('theme');
+      var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+      var theme = saved || (prefersLight ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-theme', theme);
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -54,6 +68,100 @@
     --font-sans: "Geist", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, "JetBrains Mono", monospace;
   }
+
+  /* ====== Light theme ======================================================= */
+  :root[data-theme="light"] {
+    --bg: #fafaf7;
+    --bg-1: #ffffff;
+    --bg-2: #f4f4f1;
+    --bg-3: #ecece9;
+    --bg-card: rgba(0, 0, 0, 0.028);
+    --bg-card-hover: rgba(0, 0, 0, 0.05);
+    /* --bg-code stays dark on purpose — code blocks remain dark in both modes */
+
+    --border: rgba(0, 0, 0, 0.08);
+    --border-mid: rgba(0, 0, 0, 0.14);
+    --border-strong: rgba(0, 0, 0, 0.22);
+
+    --fg: #1f1f1f;
+    --fg-bright: #000000;
+    --fg-muted: #4f4f4f;
+    --fg-subtle: #757575;
+    --fg-faint: #b0b0b0;
+
+    --accent: #000000;
+    --link: #0a66c2;
+    --link-hover: #084d92;
+    --highlight: #b58900;
+    --success: #00845a;
+    --danger: #c2185b;
+
+    --glow-blue: rgba(10, 102, 194, 0.18);
+    --ring: rgba(0, 0, 0, 0.06);
+  }
+  :root[data-theme="light"] body {
+    background:
+      radial-gradient(1200px 700px at 100% -10%, rgba(10, 102, 194, 0.05), transparent 60%),
+      radial-gradient(900px 600px at -10% 40%, rgba(194, 24, 91, 0.035), transparent 60%),
+      radial-gradient(600px 400px at 50% 110%, rgba(181, 137, 0, 0.04), transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
+  }
+  :root[data-theme="light"] .topbar {
+    background: rgba(250, 250, 247, 0.78);
+  }
+  :root[data-theme="light"] ::selection {
+    background: rgba(10, 102, 194, 0.2);
+    color: var(--fg-bright);
+  }
+  :root[data-theme="light"] ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.18); }
+  :root[data-theme="light"] ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.28); }
+  :root[data-theme="light"] h1.hero-title .accent {
+    background: linear-gradient(135deg, #1a1a1a 0%, #0a66c2 55%, #6b21a8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  :root[data-theme="light"] .brand-mark {
+    background: linear-gradient(135deg, #1f1f1f 0%, #6a6a6a 100%);
+    box-shadow: 0 0 0 1px var(--border-strong), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  :root[data-theme="light"] code,
+  :root[data-theme="light"] .content code {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
+    color: var(--fg-bright);
+  }
+  :root[data-theme="light"] .maxim {
+    background: linear-gradient(90deg, rgba(181, 137, 0, 0.08), transparent 65%);
+  }
+  :root[data-theme="light"] .role-card.accent {
+    background: linear-gradient(140deg, rgba(10, 102, 194, 0.06), rgba(107, 33, 168, 0.045));
+    border-color: rgba(10, 102, 194, 0.25);
+  }
+  :root[data-theme="light"] .topbar-meta .dot {
+    box-shadow: 0 0 8px rgba(0, 132, 90, 0.4);
+  }
+  :root[data-theme="light"] .step-card-num {
+    background: rgba(10, 102, 194, 0.08);
+    border-color: rgba(10, 102, 194, 0.22);
+  }
+  :root[data-theme="light"] .risk-rune {
+    background: rgba(194, 24, 91, 0.08);
+    border-color: rgba(194, 24, 91, 0.25);
+  }
+  :root[data-theme="light"] .eyebrow .badge {
+    background: rgba(10, 102, 194, 0.06);
+  }
+  :root[data-theme="light"] .checklist label:hover .box {
+    background: rgba(10, 102, 194, 0.06);
+  }
+  :root[data-theme="light"] .checklist .cb:checked + .box {
+    background: rgba(10, 102, 194, 0.16);
+  }
+  :root[data-theme="light"] .callout-label::before { box-shadow: 0 0 6px var(--glow-blue); }
+  :root[data-theme="light"] .audit-row.head { background: rgba(0,0,0,0.025); }
+  :root[data-theme="light"] .schema-preview-head { background: rgba(255,255,255,0.04); }
 
   * { box-sizing: border-box; }
   html, body {
@@ -148,6 +256,45 @@
     background: var(--success);
     box-shadow: 0 0 8px rgba(80, 227, 194, 0.6);
   }
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .theme-toggle {
+    width: 32px;
+    height: 32px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--fg-muted);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease, transform 0.12s ease;
+  }
+  .theme-toggle:hover {
+    color: var(--fg-bright);
+    border-color: var(--border-strong);
+    background: var(--bg-card);
+  }
+  .theme-toggle:active { transform: scale(0.94); }
+  .theme-toggle:focus-visible {
+    outline: 2px solid var(--link);
+    outline-offset: 2px;
+  }
+  .theme-toggle svg {
+    display: block;
+    width: 14px;
+    height: 14px;
+  }
+  /* By default (dark mode) show moon. In light mode show sun. */
+  .theme-toggle .icon-sun { display: none; }
+  :root[data-theme="light"] .theme-toggle .icon-sun { display: block; }
+  :root[data-theme="light"] .theme-toggle .icon-moon { display: none; }
+
   @media (max-width: 700px) {
     .topbar-meta { display: none; }
   }
@@ -1281,9 +1428,20 @@
       <span class="brand-mark"></span>
       <span>field-manual / design-systems-for-ai</span>
     </a>
-    <div class="topbar-meta">
-      <span class="dot"></span>
-      <span>v1.1 · synthesised may 2026</span>
+    <div class="topbar-right">
+      <div class="topbar-meta">
+        <span class="dot"></span>
+        <span>v1.1 · synthesised may 2026</span>
+      </div>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle colour scheme">
+        <svg class="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <svg class="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
     </div>
   </div>
 </header>
@@ -2305,6 +2463,18 @@ with the variables and styles used in the code implementation in
 </footer>
 
 <script>
+  // Theme toggle
+  (function () {
+    var btn = document.querySelector('[data-theme-toggle]');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var current = document.documentElement.getAttribute('data-theme') || 'dark';
+      var next = current === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+    });
+  })();
+
   // Persistent checklist with progress counter
   (function () {
     var cbs = document.querySelectorAll('.checklist .cb');
