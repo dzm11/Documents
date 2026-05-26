@@ -271,7 +271,7 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    counter-reset: toc;
+    counter-reset: toc -1;
   }
   .toc > ol > li {
     counter-increment: toc;
@@ -926,6 +926,194 @@
     .resources-grid { grid-template-columns: 1fr; }
   }
 
+  /* ====== Primer ============================================================ */
+  .primer {
+    padding-bottom: 56px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  .primer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 48px;
+    margin-top: 8px;
+  }
+  .primer-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px 24px;
+  }
+  .primer-h3 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--fg-subtle);
+    margin: 0 0 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .primer-h3-aside {
+    font-size: 10px;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--fg-faint);
+    font-weight: 400;
+  }
+  .primer-list {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .primer-list li {
+    padding: 10px 0 !important;
+    border-bottom: 1px solid var(--border) !important;
+    font-size: 14px !important;
+    line-height: 1.55 !important;
+    color: var(--fg-muted) !important;
+  }
+  .primer-list li::before { display: none !important; }
+  .primer-list li:last-child { border-bottom: none !important; }
+  .primer-list li strong { color: var(--fg-bright); font-weight: 600; display: block; margin-bottom: 2px; }
+
+  .glossary {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 24px;
+  }
+  .gloss {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .gloss:nth-last-child(-n+2) { border-bottom: none; }
+  .glossary dt {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--link);
+    font-weight: 500;
+    margin-bottom: 4px;
+    letter-spacing: 0;
+  }
+  .glossary dd {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--fg-muted);
+  }
+
+  @media (max-width: 980px) {
+    .primer-grid { grid-template-columns: 1fr; gap: 20px; }
+    .glossary { grid-template-columns: 1fr; }
+    .gloss:nth-last-child(-n+2) { border-bottom: 1px solid var(--border); }
+    .gloss:last-child { border-bottom: none; }
+  }
+
+  /* ====== Audit table (pattern break for step 2) ============================ */
+  .audit {
+    margin: 22px 0 24px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--bg-card);
+    max-width: 64ch;
+  }
+  .audit-row {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+  .audit-row:last-child { border-bottom: none; }
+  .audit-row.head {
+    background: rgba(255,255,255,0.02);
+  }
+  .audit-cell {
+    padding: 12px 18px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--fg-muted);
+    border-right: 1px solid var(--border);
+  }
+  .audit-cell:last-child { border-right: none; }
+  .audit-row.head .audit-cell {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--fg-subtle);
+    padding: 9px 18px;
+  }
+  .audit-cell strong { color: var(--fg-bright); }
+
+  /* ====== Maxim block (pattern break for step 8) ============================ */
+  .maxim {
+    margin: 0 0 22px;
+    padding: 20px 22px;
+    border-left: 2px solid var(--highlight);
+    background: linear-gradient(90deg, rgba(250, 250, 110, 0.05), transparent 60%);
+    border-radius: 0 8px 8px 0;
+    max-width: 64ch;
+  }
+  .maxim-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--highlight);
+    margin-bottom: 8px;
+    opacity: 0.85;
+  }
+  .maxim-line {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: var(--fg-bright);
+    font-weight: 500;
+    margin: 0;
+  }
+  .maxim-line + .maxim-line { margin-top: 6px; }
+
+  /* ====== Schema preview block (pattern break for step 5) =================== */
+  .schema-preview {
+    margin: 0 0 22px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: 64ch;
+    background: var(--bg-code);
+  }
+  .schema-preview-head {
+    padding: 10px 18px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--fg-subtle);
+  }
+  .schema-preview pre {
+    margin: 0;
+    padding: 16px 18px;
+    background: transparent;
+    border: none;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--fg);
+    overflow-x: auto;
+  }
+  .schema-preview pre .k { color: #ff7eb6; }
+  .schema-preview pre .s { color: #fafa6e; }
+  .schema-preview pre .c { color: var(--fg-subtle); font-style: italic; }
+
   /* ====== Quote pull ======================================================== */
   .pull {
     margin: 32px 0;
@@ -1068,6 +1256,12 @@
       <div class="toc-title">Table of contents</div>
       <ol>
         <li>
+          <a href="#primer">Primer</a>
+          <ol class="toc-sub">
+            <li><a href="#primer">Who this is for · glossary</a></li>
+          </ol>
+        </li>
+        <li>
           <a href="#intro">Why this exists</a>
           <ol class="toc-sub">
             <li><a href="#intro-shift">The shift in what a DS is for</a></li>
@@ -1138,36 +1332,91 @@
     <!-- ============================ CONTENT ================================ -->
     <main class="content">
 
+      <!-- ===== 00 PRIMER ================================================= -->
+      <section class="section primer" id="primer">
+        <div class="section-num">00 — Primer</div>
+        <h2 class="section-title">Before you start.</h2>
+        <p class="section-lede">If you've already shipped a design system and you've at least heard of MCP, you can skip this and jump to <a href="#intro">section 01</a>. Otherwise — read this first; everything later assumes it.</p>
+
+        <div class="primer-grid">
+          <div class="primer-block">
+            <h3 class="primer-h3">Who this is for</h3>
+            <ul class="primer-list">
+              <li><strong>DS practitioners</strong> — you own the system. You will implement most of this directly.</li>
+              <li><strong>Designers using Figma daily</strong> — sections 03 and 05 are the core for you.</li>
+              <li><strong>Engineers shipping with AI assistants</strong> — sections 02 and 04 describe the contracts your agents read from.</li>
+              <li><strong>Curious newcomers</strong> — keep this primer open; come back to it when a term stops meaning anything.</li>
+            </ul>
+          </div>
+          <div class="primer-block">
+            <h3 class="primer-h3">Quick glossary <span class="primer-h3-aside">— 8 terms used throughout</span></h3>
+            <dl class="glossary">
+              <div class="gloss">
+                <dt>MCP</dt>
+                <dd>Model Context Protocol. A small server that hands an AI agent structured data about your system — so it can query the source of truth instead of scraping screenshots.</dd>
+              </div>
+              <div class="gloss">
+                <dt>AGENTS.md</dt>
+                <dd>A manifest file at the root of a codebase. Tells an AI assistant which components to use, which to avoid, where the tokens live.</dd>
+              </div>
+              <div class="gloss">
+                <dt>Skill</dt>
+                <dd>A small instruction file that encodes one decision rule for an agent. Example: "use the Switch component when only one option is selectable".</dd>
+              </div>
+              <div class="gloss">
+                <dt>Declared docs</dt>
+                <dd>Component documentation written in description fields as markdown, so an agent can parse it without inferring meaning from a picture.</dd>
+              </div>
+              <div class="gloss">
+                <dt>Drift</dt>
+                <dd>The gap between what was designed and what actually shipped. Usually invisible until production.</dd>
+              </div>
+              <div class="gloss">
+                <dt>Diagnostic layer</dt>
+                <dd>Automated checks that detect and report drift between Figma source and production code.</dd>
+              </div>
+              <div class="gloss">
+                <dt>Slot</dt>
+                <dd>A Figma feature. Creates a flexible content region inside a component, so the same component can hold different children without exploding into variants.</dd>
+              </div>
+              <div class="gloss">
+                <dt>Code Connect</dt>
+                <dd>A Figma feature that explicitly links a design component to its production code counterpart — declaring how variants and props map.</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
       <!-- ===== 01 INTRO ================================================== -->
       <section class="section" id="intro">
         <div class="section-num">01 — Introduction</div>
         <h2 class="section-title">Why this exists.</h2>
         <p class="lead">
           Design systems were always a means to an end. They existed to ship
-          products faster, more consistently, at greater scale. The end has
-          just changed shape: the next products your system needs to support
-          are assembled by coding agents, in the moment, from your component
-          inventory — and the margin for error in that output is functionally
+          products faster and more consistently. The end has just changed
+          shape: agents now assemble your product in the moment, from your
+          component library — and the margin for error in that output is
           zero.<a class="cite" href="#s1">01</a>
         </p>
         <p>
-          A messy system used to be a productivity problem. Today it is a
-          strategic liability: a human developer can compensate for inconsistent
-          tokens or stale docs; an agent cannot.<a class="cite" href="#s4">04</a>
-          This manual collects what to fix, in the order that matters, so that
-          an agent can compose your product without guessing.
+          A messy system used to be a productivity problem. Today it's a
+          strategic liability. A human developer can route around inconsistent
+          tokens or stale docs; an agent can't.<a class="cite" href="#s4">04</a>
+          This manual collects what to fix, in the order that matters, so an
+          agent can compose your product without guessing.
         </p>
 
         <div class="subsection" id="intro-shift">
           <div class="subsection-num">1.1 — The shift</div>
           <h3 class="subsection-title">From human-readable to agent-readable.</h3>
           <p>
-            The good news, repeated across every essay synthesised here, is
-            that the fix is unglamorous and well-known: tokens, contracts,
-            schemas, machine-readable documentation, a diagnostic layer that
-            keeps design and code in sync.<a class="cite" href="#s1">01</a>
-            Do that work in the right order and you do not just survive the
-            shift — you become the team that gets to use it.
+            The good news, repeated across every essay: the fix is
+            unglamorous and well-known. Tokens. Contracts. Schemas.
+            Machine-readable documentation. A diagnostic layer that keeps
+            design and code in sync.<a class="cite" href="#s1">01</a> Do that
+            work in the right order and you don't just survive the shift —
+            you get to use it.
           </p>
         </div>
 
@@ -1175,20 +1424,19 @@
           <div class="subsection-num">1.2 — How models "see" Figma</div>
           <h3 class="subsection-title">Why Figma is harder for an AI than Paper.</h3>
           <p>
-            Every interface drawn in Figma today is being read by two
-            audiences: the designer next to you and the model two doors down.
-            When designs are prepared for both, agents generate faster,
-            consume fewer tokens, and produce results that resemble your
-            intent on the first pass.
+            Every Figma file is read by two audiences now. The designer next
+            to you, and the AI model your team plugged in last month. When
+            the file is prepared for both, agents generate faster, use fewer
+            tokens, and hit your intent on the first try.
           </p>
           <p>
-            It is not an accident that tools like <a href="https://paper.design" target="_blank" rel="noopener">paper.design</a>
+            It's no accident that tools like
+            <a href="https://paper.design" target="_blank" rel="noopener">paper.design</a>
             and pencil.dev exist — and that paper's founders came out of
-            Figma. Paper generates real HTML beneath its layers; Figma draws
-            vectors. Wherever Figma is the source of truth, the burden of
-            interpretation falls on the LLM — which means you pay for it in
-            tokens, latency, and accuracy. The remedy is to give the model
-            the structure it actually needs.
+            Figma. Paper renders real HTML; Figma draws vectors. When Figma
+            is your source of truth, the model has to interpret those
+            vectors — and you pay for it in tokens, latency, and accuracy.
+            The fix is to give the model the structure it actually needs.
           </p>
           <div class="callout">
             <div class="callout-label">Premise</div>
@@ -1232,13 +1480,15 @@
             <h3>Treat the system as an API, not a gallery.</h3>
             <p class="why">An API doesn't hand you a picture and ask you to figure out what it meant. It returns structured data with a contract.<a class="cite" href="#s6">06</a></p>
             <p>
-              The single most important shift is documenting your system as
-              <em>declared</em> data rather than <em>designed</em> artefact.
+              The single most important shift: document your system as
+              <em>declared</em> data, not as a <em>designed</em> artefact.
+            </p>
+            <p>
               Designed frames — visual layouts, do/don't pairs, callout boxes
-              pinned around a component — are optimised for human browsing
-              but force an agent to infer meaning from a node tree.<a class="cite" href="#s6">06</a>
-              Declared documentation lives in description fields, in markdown,
-              and an agent can parse it without guessing.
+              pinned around a component — are optimised for human browsing.
+              But they force an agent to infer meaning from a node tree.<a class="cite" href="#s6">06</a>
+              Declared documentation lives in description fields, in
+              markdown. An agent can parse it without guessing.
             </p>
             <ul>
               <li>Populate component <code>description</code> fields with clear markdown: purpose, usage, constraints, do/don't expressed as text.</li>
@@ -1255,17 +1505,39 @@
               <span class="step-card-label">Tokens · Contracts</span>
             </div>
             <h3>Fix the foundation before you generate anything.</h3>
-            <p class="why">For AI to generate a correct, branded, accessible interface, it needs absolute clarity about what your components are, how they behave, and what constraints they must respect.<a class="cite" href="#s1">01</a></p>
             <p>
-              A system that is "mostly documented" or "good enough for the
-              team that built it" is not enough. <strong>Complete is the
-              bar.</strong><a class="cite" href="#s1">01</a>
+              "Mostly documented" or "good enough for the team that built it"
+              is not enough. <strong>Complete is the bar.</strong><a class="cite" href="#s1">01</a>
+              For AI to generate a correct, branded, accessible interface,
+              it needs absolute clarity about what your components are, how
+              they behave, and the constraints they must respect.<a class="cite" href="#s1">01</a>
             </p>
+            <div class="audit">
+              <div class="audit-row head">
+                <div class="audit-cell">Failure</div>
+                <div class="audit-cell">Where you pay</div>
+              </div>
+              <div class="audit-row">
+                <div class="audit-cell"><strong>Hardcoded hex values</strong> in production code</div>
+                <div class="audit-cell">Every brand tweak becomes a find-replace sweep.</div>
+              </div>
+              <div class="audit-row">
+                <div class="audit-cell"><strong>Inconsistent token names</strong> across files</div>
+                <div class="audit-cell">Agent picks the wrong one. Silently.</div>
+              </div>
+              <div class="audit-row">
+                <div class="audit-cell"><strong>Missing component metadata</strong></div>
+                <div class="audit-cell">Agent infers behaviour from the name alone.</div>
+              </div>
+              <div class="audit-row">
+                <div class="audit-cell"><strong>Component locked to one platform</strong></div>
+                <div class="audit-cell">Half a contract. Second platform reinvents it.<a class="cite" href="#s1">01</a></div>
+              </div>
+            </div>
             <ul>
-              <li>Audit tokens: are they consistent, semantic, free of one-off hex values in production code?<a class="cite" href="#s4">04</a></li>
+              <li>Audit tokens: are they consistent, semantic, free of one-off hex values?<a class="cite" href="#s4">04</a></li>
               <li>Write component contracts that specify every prop, state, interaction pattern, and accessibility requirement.<a class="cite" href="#s1">01</a></li>
               <li>Add metadata that a machine can parse — not just human-readable Figma annotations.</li>
-              <li>Check platform parity: a component locked to one platform is half a contract.<a class="cite" href="#s1">01</a></li>
             </ul>
             <div class="callout">
               <div class="callout-label">Field note</div>
@@ -1326,14 +1598,26 @@
               <span class="step-card-label">Patterns · Schemas</span>
             </div>
             <h3>Ship components as data — not just code.</h3>
-            <p class="why">What if a payment element is not a single component, but a set of structured relationships that describe how to use the individual atomic components?<a class="cite" href="#s2">02</a></p>
             <p>
-              Encoding patterns as rigid code components creates maintenance
-              burden and pushes teams toward workarounds. Schemas —
-              "components as data" — describe the relationship instead:
-              which components compose into which patterns, what context a
-              component requires, which siblings are valid.
+              Patterns have always been the design-system bogeyman: built for
+              one product purpose, made of many sub-components, exploding in
+              variations. Encoding them as rigid code components creates
+              maintenance burden and pushes teams toward workarounds.<a class="cite" href="#s2">02</a>
+              Schemas describe the relationship instead — which components
+              compose into which patterns, what context they require, which
+              siblings are valid. Less code; more contract.
             </p>
+            <div class="schema-preview">
+              <div class="schema-preview-head">Example · components-as-data</div>
+<pre><span class="c">// A button described by its relationship, not its code.</span>
+{
+  <span class="k">"name"</span>: <span class="s">"CancelButton"</span>,
+  <span class="k">"extends"</span>: <span class="s">"Button"</span>,
+  <span class="k">"context"</span>: <span class="s">"modal"</span>,
+  <span class="k">"siblings"</span>: [<span class="s">"ConfirmButton"</span>],
+  <span class="k">"intent"</span>: <span class="s">"dismiss without action"</span>
+}</pre>
+            </div>
             <ul>
               <li>For each pattern, ship a schema describing its sub-components, contexts, and allowed siblings — not a monolithic code component.</li>
               <li>Use semantic naming so an agent can compose meaningfully (a <code>CancelButton</code> in <code>modalContext</code> is far clearer than a generic <code>Button</code>).<a class="cite" href="#s2">02</a></li>
@@ -1387,7 +1671,12 @@
               <span class="step-card-label">Posture · Ecosystem</span>
             </div>
             <h3>Build in the open. Extend, don't restart.</h3>
-            <p class="why">We need to stop creating new systems for every project. Build within existing ecosystems. Avoid starting fresh unless absolutely necessary.<a class="cite" href="#s5">05</a></p>
+            <div class="maxim">
+              <div class="maxim-eyebrow">Rule of thumb</div>
+              <p class="maxim-line">Extend what already exists.</p>
+              <p class="maxim-line">Contribute back when you patch it.</p>
+              <p class="maxim-line">Start from scratch only when nothing else fits.</p>
+            </div>
             <p>
               AI thrives in open environments because it has been trained on
               them. The corresponding warning is sameness — when every team
@@ -1737,15 +2026,16 @@ with the variables and styles used in the code implementation in
 
           <p class="pull">
             There's a lot of work behind the pretty pixels.
-            <span class="by">— the working definition</span>
+            <span class="by">— operating principle</span>
           </p>
 
           <p>
-            Design Engineers go beyond visual appeal and own the other
-            pieces that make exceptional experiences possible. In an
-            agent-driven workflow they are the practical centre of gravity:
-            they author the contracts, write the skills, maintain the
-            stories, and review what the system produces.
+            Design Engineers go beyond visual appeal. They own the pieces
+            that make an interface feel considered — motion, performance,
+            accessibility, micro-detail. In an agent-driven workflow they end
+            up running the system itself: authoring the contracts, writing
+            the skills, maintaining the stories, reviewing what the agent
+            produced.
           </p>
 
           <h4>How Vercel describes the role</h4>
