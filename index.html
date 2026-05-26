@@ -795,16 +795,31 @@
     gap: 10px 24px !important;
   }
   .checklist li {
-    display: grid !important;
-    grid-template-columns: 22px 1fr !important;
-    gap: 12px !important;
-    align-items: start !important;
-    padding: 14px 0 !important;
+    padding: 0 !important;
     border-bottom: 1px solid var(--border) !important;
     font-size: 14px !important;
     color: var(--fg) !important;
+    list-style: none !important;
   }
   .checklist li::before { display: none !important; }
+  .checklist label {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 12px;
+    align-items: start;
+    padding: 14px 0;
+    cursor: pointer;
+    width: 100%;
+    transition: color 0.15s ease;
+  }
+  .checklist label:hover { color: var(--fg-bright); }
+  .checklist .cb {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+  }
   .checklist .box {
     width: 16px;
     height: 16px;
@@ -816,22 +831,80 @@
     flex-shrink: 0;
     transition: all 0.15s ease;
   }
-  .checklist li:hover .box {
+  .checklist label:hover .box {
     border-color: var(--link);
-    background: rgba(108, 184, 255, 0.08);
+    background: rgba(108, 184, 255, 0.06);
   }
-  .checklist li:hover .box::after {
-    content: "✓";
+  .checklist .cb:focus-visible + .box {
+    outline: 2px solid var(--link);
+    outline-offset: 2px;
+  }
+  .checklist .cb:checked + .box {
+    border-color: var(--link);
+    background: rgba(108, 184, 255, 0.18);
+  }
+  .checklist .cb:checked + .box::after {
+    content: "";
     position: absolute;
-    inset: -3px 0 0 2px;
-    color: var(--link);
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1;
+    left: 4px;
+    top: 1px;
+    width: 5px;
+    height: 9px;
+    border: solid var(--link);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .checklist .cb:checked ~ span {
+    color: var(--fg-subtle);
+    text-decoration: line-through;
+    text-decoration-color: var(--fg-faint);
+    text-decoration-thickness: 1px;
   }
   @media (max-width: 700px) {
     .checklist { grid-template-columns: 1fr; }
   }
+
+  /* ====== Checklist toolbar ================================================= */
+  .checklist-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 20px 0 8px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-card);
+  }
+  .cl-progress {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--fg-muted);
+    letter-spacing: 0.04em;
+  }
+  .cl-progress strong {
+    color: var(--link);
+    font-weight: 600;
+  }
+  .cl-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: transparent;
+    color: var(--fg-muted);
+    border: 1px solid var(--border-mid);
+    border-radius: 6px;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .cl-btn:hover {
+    color: var(--fg-bright);
+    border-color: var(--border-strong);
+    background: rgba(255,255,255,0.03);
+  }
+  .cl-btn:active { transform: scale(0.96); }
 
   /* ====== Sources =========================================================== */
   .sources-list {
@@ -2119,23 +2192,27 @@ with the variables and styles used in the code implementation in
         <h2 class="section-title">The readiness checklist.</h2>
         <p class="section-lede">Tick what you can defend. Anything unchecked is where an agent will guess.</p>
 
+        <div class="checklist-toolbar">
+          <button type="button" class="cl-btn" data-action="reset" aria-label="Reset checklist">Reset</button>
+          <span class="cl-progress" id="cl-progress">0 / 16</span>
+        </div>
         <ul class="checklist">
-          <li><span class="box" aria-hidden="true"></span><span>Every token is semantically named and used consistently in shipped code.</span></li>
-          <li><span class="box" aria-hidden="true"></span><span>Every component has a structured contract — props, states, interactions, a11y — that a machine can parse.</span></li>
-          <li><span class="box" aria-hidden="true"></span><span>Documentation lives in <code>description</code> fields as markdown, not as orphaned visual frames.</span></li>
-          <li><span class="box" aria-hidden="true"></span><span>An <code>AGENTS.md</code> manifest sits at the root of the codebase.</span></li>
-          <li><span class="box" aria-hidden="true"></span><span>An MCP (or equivalent) exposes the design system to agents as queryable structure.</span></li>
-          <li><span class="box" aria-hidden="true"></span><span>Decision-rule skills capture the <em>why</em>: when to use which component, what to never do.</span></li>
-          <li><span class="box" aria-hidden="true"></span><span>Patterns ship as schemas of relationships, not as monolithic code components.</span></li>
-          <li><span class="box" aria-hidden="true"></span><span>A diagnostic layer reports drift between Figma source and production code.</span></li>
-          <li><span class="box" aria-hidden="true"></span><span>Storybook stories (with Jest/Playwright tests) cover every component's states.</span></li>
-          <li><span class="box" aria-hidden="true"></span><span>Figma variables map to code via variable code syntax — single source of truth.</span></li>
-          <li><span class="box" aria-hidden="true"></span><span>Code Connect (or equivalent) declares Figma ↔ code mapping per component.</span></li>
-          <li><span class="box" aria-hidden="true"></span><span>Annotations capture interactive intent — states, transitions, edge cases.</span></li>
-          <li><span class="box" aria-hidden="true"></span><span>Frame names are semantic (<code>Hero</code>, <code>CTA</code>) — never <code>Frame 2137</code>.</span></li>
-          <li><span class="box" aria-hidden="true"></span><span>Internal Figma plugins handle the tedious normalisation tasks for designers.</span></li>
-          <li><span class="box" aria-hidden="true"></span><span>The system extends an existing ecosystem where possible, and contributes back when it patches one.</span></li>
-          <li><span class="box" aria-hidden="true"></span><span>A Design Engineer (or equivalent owner) is accountable for cross-stack quality.</span></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-1"><span class="box" aria-hidden="true"></span><span>Every token is semantically named and used consistently in shipped code.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-2"><span class="box" aria-hidden="true"></span><span>Every component has a structured contract — props, states, interactions, a11y — that a machine can parse.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-3"><span class="box" aria-hidden="true"></span><span>Documentation lives in <code>description</code> fields as markdown, not as orphaned visual frames.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-4"><span class="box" aria-hidden="true"></span><span>An <code>AGENTS.md</code> manifest sits at the root of the codebase.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-5"><span class="box" aria-hidden="true"></span><span>An MCP (or equivalent) exposes the design system to agents as queryable structure.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-6"><span class="box" aria-hidden="true"></span><span>Decision-rule skills capture the <em>why</em>: when to use which component, what to never do.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-7"><span class="box" aria-hidden="true"></span><span>Patterns ship as schemas of relationships, not as monolithic code components.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-8"><span class="box" aria-hidden="true"></span><span>A diagnostic layer reports drift between Figma source and production code.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-9"><span class="box" aria-hidden="true"></span><span>Storybook stories (with Jest/Playwright tests) cover every component's states.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-10"><span class="box" aria-hidden="true"></span><span>Figma variables map to code via variable code syntax — single source of truth.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-11"><span class="box" aria-hidden="true"></span><span>Code Connect (or equivalent) declares Figma ↔ code mapping per component.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-12"><span class="box" aria-hidden="true"></span><span>Annotations capture interactive intent — states, transitions, edge cases.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-13"><span class="box" aria-hidden="true"></span><span>Frame names are semantic (<code>Hero</code>, <code>CTA</code>) — never <code>Frame 2137</code>.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-14"><span class="box" aria-hidden="true"></span><span>Internal Figma plugins handle the tedious normalisation tasks for designers.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-15"><span class="box" aria-hidden="true"></span><span>The system extends an existing ecosystem where possible, and contributes back when it patches one.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-16"><span class="box" aria-hidden="true"></span><span>A Design Engineer (or equivalent owner) is accountable for cross-stack quality.</span></label></li>
         </ul>
       </section>
 
@@ -2228,6 +2305,49 @@ with the variables and styles used in the code implementation in
 </footer>
 
 <script>
+  // Persistent checklist with progress counter
+  (function () {
+    var cbs = document.querySelectorAll('.checklist .cb');
+    var progress = document.getElementById('cl-progress');
+    var resetBtn = document.querySelector('[data-action="reset"]');
+    if (!cbs.length) return;
+    var total = cbs.length;
+
+    function updateProgress() {
+      var done = 0;
+      cbs.forEach(function (cb) { if (cb.checked) done++; });
+      if (progress) {
+        progress.innerHTML = '<strong>' + done + '</strong> / ' + total + ' ready';
+      }
+    }
+
+    // restore state
+    cbs.forEach(function (cb) {
+      var key = cb.getAttribute('data-key');
+      try {
+        if (localStorage.getItem(key) === '1') cb.checked = true;
+      } catch (e) {}
+      cb.addEventListener('change', function () {
+        try {
+          localStorage.setItem(key, cb.checked ? '1' : '0');
+        } catch (e) {}
+        updateProgress();
+      });
+    });
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function () {
+        cbs.forEach(function (cb) {
+          cb.checked = false;
+          try { localStorage.removeItem(cb.getAttribute('data-key')); } catch (e) {}
+        });
+        updateProgress();
+      });
+    }
+
+    updateProgress();
+  })();
+
   // Active-section highlighting in TOC
   (function () {
     var links = document.querySelectorAll('.toc a[href^="#"]');
