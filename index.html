@@ -1,0 +1,1220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>A Field Manual — Preparing Your Design System for AI Coding</title>
+<meta name="description" content="A concise, step-by-step field manual for preparing a design system to be consumed by AI coding agents. Synthesised from seven essays by zeroheight and Southleft." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #efeae0;
+    --paper-deep: #e7e0d0;
+    --ink: #161310;
+    --ink-soft: #3b342c;
+    --ink-mute: #6e6557;
+    --rule: #1c1815;
+    --accent: #d6431f;
+    --accent-deep: #a1311a;
+    --highlight: #f7e9b9;
+    --shadow: rgba(22, 19, 16, 0.18);
+    --max: 1240px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { background: var(--paper); color: var(--ink); }
+  body {
+    font-family: "Newsreader", Georgia, serif;
+    font-size: 19px;
+    line-height: 1.58;
+    font-weight: 380;
+    font-variation-settings: "opsz" 16;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    background:
+      radial-gradient(900px 600px at 110% -10%, rgba(214, 67, 31, 0.07), transparent 60%),
+      radial-gradient(800px 500px at -10% 30%, rgba(22, 19, 16, 0.05), transparent 60%),
+      var(--paper);
+    background-attachment: fixed;
+  }
+
+  /* paper grain */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      radial-gradient(rgba(22,19,16,0.10) 1px, transparent 1.4px),
+      radial-gradient(rgba(22,19,16,0.06) 1px, transparent 1.2px);
+    background-size: 3px 3px, 5px 5px;
+    background-position: 0 0, 1px 1px;
+    mix-blend-mode: multiply;
+    opacity: 0.35;
+  }
+
+  /* selection */
+  ::selection { background: var(--accent); color: var(--paper); }
+
+  /* layout */
+  .wrap { position: relative; z-index: 1; max-width: var(--max); margin: 0 auto; padding: 0 32px; }
+  main { position: relative; z-index: 1; }
+
+  /* ====== Masthead ======================================================== */
+  header.masthead {
+    border-bottom: 1.5px solid var(--rule);
+    padding: 20px 0 14px;
+    position: relative;
+    z-index: 2;
+    background: var(--paper);
+  }
+  .mast-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 24px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .mast-row .center {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 144, "wght" 500, "SOFT" 100;
+    font-style: italic;
+    font-size: 18px;
+    text-transform: none;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .mast-row .right { text-align: right; }
+
+  /* ====== Hero ============================================================ */
+  .hero { padding: 60px 0 40px; position: relative; }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 56px;
+    align-items: end;
+  }
+  .hero-meta {
+    border-top: 1.5px solid var(--rule);
+    padding-top: 14px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .hero-meta strong { color: var(--accent); font-weight: 600; }
+
+  h1.title {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 144, "wght" 460, "SOFT" 30, "WONK" 1;
+    font-size: clamp(54px, 9vw, 132px);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    margin: 0;
+    color: var(--ink);
+  }
+  h1.title em {
+    font-style: italic;
+    font-variation-settings: "opsz" 144, "wght" 420, "SOFT" 100, "WONK" 1;
+    color: var(--accent);
+  }
+  .hero-deck {
+    font-family: "Newsreader", serif;
+    font-variation-settings: "opsz" 32;
+    font-size: clamp(20px, 1.6vw, 26px);
+    line-height: 1.42;
+    color: var(--ink-soft);
+    margin: 28px 0 0;
+    max-width: 60ch;
+    font-weight: 360;
+  }
+
+  .hero-rule {
+    margin: 56px 0 0;
+    height: 1.5px;
+    background: var(--rule);
+  }
+  .hero-tags {
+    display: flex;
+    gap: 22px;
+    padding: 14px 0 0;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    flex-wrap: wrap;
+  }
+  .hero-tags span::before { content: "§ "; color: var(--accent); }
+
+  /* ====== Intro section =================================================== */
+  .lede {
+    padding: 80px 0 40px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 56px;
+  }
+  .lede-aside {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    line-height: 1.7;
+    border-top: 1.5px solid var(--rule);
+    padding-top: 14px;
+    align-self: start;
+    position: sticky;
+    top: 24px;
+  }
+  .lede-aside b {
+    display: block;
+    color: var(--accent);
+    margin-bottom: 8px;
+    letter-spacing: 0.14em;
+  }
+  .lede-body p {
+    margin: 0 0 22px;
+    font-size: 21px;
+    line-height: 1.55;
+    font-variation-settings: "opsz" 18;
+  }
+  .lede-body p:first-child::first-letter {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 144, "wght" 500;
+    font-size: 5.6em;
+    line-height: 0.82;
+    float: left;
+    margin: 4px 12px 0 0;
+    color: var(--accent);
+  }
+
+  /* ====== Section break =================================================== */
+  .break {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin: 64px 0;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .break::before, .break::after {
+    content: "";
+    flex: 1;
+    height: 1.5px;
+    background: var(--rule);
+  }
+  .break .dot {
+    width: 8px; height: 8px; background: var(--accent); border-radius: 50%;
+  }
+
+  /* ====== Step list ======================================================= */
+  .steps { margin: 0; padding: 0; list-style: none; }
+  .step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 64px;
+    padding: 56px 0 60px;
+    border-top: 1.5px solid var(--rule);
+  }
+  .step:last-child { border-bottom: 1.5px solid var(--rule); }
+  .step-num {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 144, "wght" 360, "SOFT" 100, "WONK" 1;
+    font-style: italic;
+    font-size: 168px;
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    position: relative;
+  }
+  .step-num::after {
+    content: attr(data-label);
+    display: block;
+    font-family: "IBM Plex Mono", monospace;
+    font-style: normal;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-top: 12px;
+  }
+  .step-body h2 {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 80, "wght" 480, "SOFT" 30;
+    font-size: clamp(34px, 3.4vw, 48px);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    margin: 8px 0 18px;
+    color: var(--ink);
+  }
+  .step-body .why {
+    font-family: "Newsreader", serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--ink-soft);
+    margin: 0 0 28px;
+    padding-left: 14px;
+    border-left: 2px solid var(--accent);
+    max-width: 60ch;
+  }
+  .step-body p { margin: 0 0 18px; max-width: 64ch; }
+  .step-body ul {
+    margin: 12px 0 22px;
+    padding-left: 0;
+    list-style: none;
+    max-width: 64ch;
+  }
+  .step-body ul li {
+    position: relative;
+    padding: 6px 0 6px 28px;
+    border-bottom: 1px dashed rgba(22,19,16,0.18);
+  }
+  .step-body ul li:last-child { border-bottom: none; }
+  .step-body ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    top: 6px;
+    color: var(--accent);
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 500;
+  }
+  .step-body code {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.85em;
+    background: var(--paper-deep);
+    border: 1px solid rgba(22,19,16,0.12);
+    padding: 1px 6px;
+    border-radius: 2px;
+  }
+
+  /* citation chip */
+  .cite {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+    vertical-align: super;
+    margin-left: 2px;
+  }
+  .cite:hover { color: var(--accent-deep); }
+
+  /* callout */
+  .callout {
+    margin: 28px 0;
+    padding: 22px 24px;
+    background: var(--paper-deep);
+    border: 1.5px solid var(--rule);
+    box-shadow: 6px 6px 0 var(--ink);
+    position: relative;
+    max-width: 64ch;
+  }
+  .callout::before {
+    content: attr(data-label);
+    position: absolute;
+    top: -12px;
+    left: 16px;
+    background: var(--accent);
+    color: var(--paper);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    font-weight: 600;
+  }
+  .callout p { margin: 0; font-size: 17px; line-height: 1.55; }
+  .callout p + p { margin-top: 10px; }
+
+  /* code block */
+  pre.codeish {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13.5px;
+    line-height: 1.6;
+    background: var(--ink);
+    color: #ecdfc7;
+    padding: 22px 24px;
+    border-radius: 0;
+    overflow-x: auto;
+    margin: 24px 0;
+    max-width: 64ch;
+    border-left: 4px solid var(--accent);
+  }
+  pre.codeish .k { color: #ffb685; }
+  pre.codeish .c { color: #8a8473; font-style: italic; }
+  pre.codeish .s { color: #f7e9b9; }
+
+  /* ====== Interlude: Roles ================================================ */
+  .roles {
+    padding: 80px 0 40px;
+    margin-top: 40px;
+    position: relative;
+  }
+  .roles-head { max-width: 70ch; margin-bottom: 48px; }
+  .roles-eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 18px;
+  }
+  .roles-title {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 144, "wght" 460, "SOFT" 60, "WONK" 1;
+    font-size: clamp(44px, 5.8vw, 76px);
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+    margin: 0 0 22px;
+  }
+  .roles-title em { font-style: italic; color: var(--accent); }
+  .roles-deck {
+    font-family: "Newsreader", serif;
+    font-variation-settings: "opsz" 28;
+    font-size: clamp(19px, 1.4vw, 22px);
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  .roles-grid {
+    display: grid;
+    grid-template-columns: 1fr 56px 1fr;
+    gap: 0;
+    align-items: stretch;
+    margin: 32px 0 56px;
+  }
+  .role-card {
+    border: 1.5px solid var(--rule);
+    padding: 28px 28px 32px;
+    background: var(--paper-deep);
+    position: relative;
+  }
+  .role-card--accent {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+    box-shadow: 8px 8px 0 var(--accent);
+  }
+  .role-tag {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .role-card--accent .role-tag { color: var(--highlight); }
+  .role-from, .role-to {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.5;
+    font-variation-settings: "opsz" 16;
+  }
+  .role-from { color: var(--ink-soft); }
+  .role-card--accent .role-to { color: var(--paper); }
+  .role-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 144, "wght" 360;
+    font-style: italic;
+    font-size: 44px;
+    color: var(--accent);
+  }
+
+  .roles-notes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 24px;
+  }
+  .role-note {
+    border-top: 1.5px solid var(--rule);
+    padding-top: 20px;
+  }
+  .role-note h3 {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 60, "wght" 500;
+    font-size: 22px;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    margin: 0 0 12px;
+  }
+  .role-note p {
+    margin: 0;
+    font-size: 16.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  /* ====== Interlude: Risks ================================================ */
+  .risks {
+    padding: 80px 0 40px;
+    border-top: 1.5px solid var(--rule);
+    margin-top: 56px;
+  }
+  .risks-head { max-width: 70ch; margin-bottom: 48px; }
+  .risks-eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 18px;
+  }
+  .risks-title {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 144, "wght" 460, "SOFT" 60, "WONK" 1;
+    font-size: clamp(44px, 5.8vw, 76px);
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+    margin: 0 0 22px;
+  }
+  .risks-title em { font-style: italic; color: var(--accent); }
+  .risks-deck {
+    font-family: "Newsreader", serif;
+    font-variation-settings: "opsz" 28;
+    font-size: clamp(19px, 1.4vw, 22px);
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  .risk-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .risk {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 18px;
+    padding: 28px 28px 28px 0;
+    border-top: 1.5px solid var(--rule);
+  }
+  .risk:nth-child(odd) { padding-right: 48px; border-right: 1.5px solid var(--rule); }
+  .risk:nth-child(even) { padding-left: 28px; }
+  .risk:nth-last-child(1), .risk:nth-last-child(2) {
+    border-bottom: 1.5px solid var(--rule);
+  }
+  .risk-num {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 144, "wght" 360, "WONK" 1;
+    font-style: italic;
+    font-size: 56px;
+    line-height: 0.9;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .risk-body h3 {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 60, "wght" 500;
+    font-size: 22px;
+    line-height: 1.18;
+    letter-spacing: -0.015em;
+    margin: 4px 0 10px;
+  }
+  .risk-body p {
+    margin: 0;
+    font-size: 16.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 50ch;
+  }
+
+  /* ====== Checklist ======================================================= */
+  .checklist-section {
+    padding: 80px 0;
+    border-top: 1.5px solid var(--rule);
+    margin-top: 80px;
+  }
+  .checklist-section h2 {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 144, "wght" 460, "SOFT" 60, "WONK" 1;
+    font-size: clamp(48px, 6.5vw, 84px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin: 0 0 14px;
+  }
+  .checklist-section h2 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .checklist-section .sub {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin: 0 0 36px;
+  }
+  .checklist {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px 40px;
+    margin: 28px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .checklist li {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    align-items: start;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px dashed rgba(22,19,16,0.22);
+    font-size: 17px;
+    line-height: 1.45;
+  }
+  .checklist .box {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--ink);
+    margin-top: 4px;
+    background: var(--paper);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .checklist li:hover .box::after {
+    content: "✕";
+    position: absolute;
+    inset: -4px 0 0 1px;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  /* ====== Sources ========================================================= */
+  .sources {
+    margin-top: 80px;
+    padding: 56px 0 80px;
+    border-top: 1.5px solid var(--rule);
+  }
+  .sources h2 {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 80, "wght" 460;
+    font-size: 40px;
+    margin: 0 0 28px;
+    letter-spacing: -0.02em;
+  }
+  .sources ol {
+    counter-reset: src;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .sources li {
+    counter-increment: src;
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    gap: 22px;
+    align-items: baseline;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(22,19,16,0.18);
+  }
+  .sources li::before {
+    content: counter(src, decimal-leading-zero);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+  .sources li a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(22,19,16,0.3);
+    font-size: 18px;
+    transition: all 0.18s ease;
+  }
+  .sources li a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .sources li .pub {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  /* ====== Footer ========================================================== */
+  footer.colophon {
+    border-top: 1.5px solid var(--rule);
+    padding: 30px 0 50px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+  }
+  footer.colophon .mark {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: 14px;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--ink);
+  }
+
+  /* ====== Responsive ====================================================== */
+  @media (max-width: 900px) {
+    body { font-size: 17px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 32px; }
+    .lede { grid-template-columns: 1fr; gap: 24px; padding: 40px 0; }
+    .lede-aside { position: static; }
+    .step { grid-template-columns: 1fr; gap: 0; padding: 40px 0; }
+    .step-num { font-size: 110px; margin-bottom: 8px; }
+    .checklist { grid-template-columns: 1fr; }
+    .mast-row { grid-template-columns: 1fr; text-align: center; }
+    .mast-row .right, .mast-row .left { display: none; }
+    .sources li { grid-template-columns: 36px 1fr; }
+    .sources li .pub { grid-column: 2; }
+    .roles-grid { grid-template-columns: 1fr; }
+    .role-arrow { transform: rotate(90deg); padding: 16px 0; }
+    .role-card--accent { box-shadow: 6px 6px 0 var(--accent); }
+    .roles-notes { grid-template-columns: 1fr; gap: 20px; }
+    .risk-list { grid-template-columns: 1fr; }
+    .risk:nth-child(odd) { padding-right: 0; border-right: none; }
+    .risk:nth-child(even) { padding-left: 0; }
+  }
+
+  /* gentle animation on first paint */
+  .hero-grid, .lede, .step, .checklist-section, .sources {
+    animation: rise 0.7s cubic-bezier(.2,.7,.2,1) both;
+  }
+  .step:nth-child(2) { animation-delay: .05s; }
+  .step:nth-child(3) { animation-delay: .10s; }
+  .step:nth-child(4) { animation-delay: .15s; }
+  .step:nth-child(5) { animation-delay: .20s; }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap mast-row">
+    <div class="left">Vol. I · No. 1 · 2026</div>
+    <div class="center">The Field Manual</div>
+    <div class="right">For systems people · in the age of agents</div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid">
+      <aside class="hero-meta">
+        <div><strong>Subject</strong></div>
+        <div>Preparing a Design System</div>
+        <div>for AI-Generated Code</div>
+        <div style="margin-top:14px"><strong>Length</strong></div>
+        <div>Eight steps · One checklist</div>
+        <div style="margin-top:14px"><strong>Sources</strong></div>
+        <div>Seven essays · zeroheight + Southleft</div>
+      </aside>
+      <div>
+        <h1 class="title">A design&nbsp;system <em>your&nbsp;agents</em> can actually&nbsp;read.</h1>
+        <p class="hero-deck">
+          A concise field manual, synthesised from seven essays by practitioners at
+          zeroheight and Southleft, for teams who want their design system to be
+          legible to coding agents — not just to humans.
+        </p>
+      </div>
+    </div>
+    <div class="hero-rule"></div>
+    <div class="hero-tags">
+      <span>Tokens</span>
+      <span>Contracts</span>
+      <span>MCPs &amp; Skills</span>
+      <span>Schemas</span>
+      <span>Diagnostic layer</span>
+      <span>Declared docs</span>
+    </div>
+  </section>
+
+  <!-- LEDE -->
+  <section class="lede">
+    <aside class="lede-aside">
+      <b>Why this exists</b>
+      Most design systems were written for humans who can ask a colleague when
+      something is unclear. Coding agents cannot. They take whatever you give
+      them and run with it. This manual collects what to fix, in the order it
+      matters, so that an agent can compose your product without guessing.
+    </aside>
+    <div class="lede-body">
+      <p>
+        Design systems were always a means to an end. We didn't build token
+        architectures for the joy of naming colours; we built them so that
+        products could be shipped faster, more consistently, and at greater
+        scale.<a class="cite" href="#s1">01</a> The end has just changed shape.
+        The next products your system needs to support are assembled by agents,
+        in the moment, from your component inventory — and the margin for error
+        in that output is functionally zero.<a class="cite" href="#s1">01</a>
+      </p>
+      <p>
+        That is why every "we have a design system, but…" story now matters
+        more than it used to.<a class="cite" href="#s4">04</a> A messy system
+        used to be a productivity problem. Today it is a strategic liability:
+        a human developer can compensate for inconsistent tokens or stale
+        docs; an agent cannot.<a class="cite" href="#s4">04</a>
+      </p>
+      <p>
+        The good news, repeated across all seven essays, is that the fix is
+        unglamorous and well-known. It is the boring stuff: tokens, contracts,
+        schemas, machine-readable documentation, and a diagnostic layer that
+        keeps design and code in sync.<a class="cite" href="#s1">01</a> Do that
+        work in the right order and you do not just survive the shift — you
+        become the team that gets to use it.
+      </p>
+    </div>
+  </section>
+
+  <div class="break"><span class="dot"></span> The eight steps <span class="dot"></span></div>
+
+  <!-- STEPS -->
+  <ol class="steps">
+
+    <li class="step">
+      <div class="step-num" data-label="Step / Foundation">01</div>
+      <div class="step-body">
+        <h2>Treat the system as an API, not a gallery.</h2>
+        <p class="why">An API doesn't hand you a picture and ask you to figure out what it meant. It returns structured data with a contract.<a class="cite" href="#s6">06</a></p>
+        <p>
+          The single most important shift is documenting your system as
+          <em>declared</em> data rather than <em>designed</em> artefact. Designed
+          frames — visual layouts, do/don't pairs, callouts pinned around a
+          component — are optimised for human browsing, but force an agent to
+          infer meaning from a node tree.<a class="cite" href="#s6">06</a>
+          Declared documentation lives in description fields, in markdown, in
+          structured data, and an agent can parse it without guessing.
+        </p>
+        <ul>
+          <li>Populate component <code>description</code> fields with clear markdown: purpose, usage, constraints, do/don't expressed as text.</li>
+          <li>Couple documentation to components — rename or delete the component and the docs travel with it.<a class="cite" href="#s6">06</a></li>
+          <li>Keep designed frames for human stakeholders, but stop treating them as machine-readable.</li>
+          <li>The readability test: can an agent understand this without visual inference? If not, declare it.</li>
+        </ul>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step-num" data-label="Step / Tokens &amp; Contracts">02</div>
+      <div class="step-body">
+        <h2>Fix the foundation before you generate anything.</h2>
+        <p class="why">For AI to generate a correct, branded, accessible interface, it needs absolute clarity about what your components are, how they behave, and what constraints they must respect.<a class="cite" href="#s1">01</a></p>
+        <p>
+          A design system that is "mostly documented" or "good enough for the
+          team that built it" is not enough. Complete is the bar.<a class="cite" href="#s1">01</a>
+          The chain is unforgiving: you cannot generate adaptive UI without a
+          system an agent can reliably consume; you cannot have a consumable
+          system without a diagnostic layer that keeps design and code in sync;
+          you cannot build that layer without first fixing the drift that
+          caused it.<a class="cite" href="#s1">01</a>
+        </p>
+        <ul>
+          <li>Audit tokens: are they consistent, semantic, and free of one-off hex values in production code?<a class="cite" href="#s4">04</a></li>
+          <li>Write component contracts that specify every prop, state, interaction pattern, and accessibility requirement.<a class="cite" href="#s1">01</a></li>
+          <li>Add metadata that a machine can parse — not just human-readable Figma annotations.</li>
+          <li>Check platform parity: a component locked to one platform is half a contract.<a class="cite" href="#s1">01</a></li>
+        </ul>
+        <div class="callout" data-label="Field note">
+          <p>Two real failure modes from enterprise teams: designers building careful Figma variants while engineers ship inline styles and hardcoded values; and a 50-engineer team colour-picking from screenshots because the design-to-code path didn't exist.<a class="cite" href="#s4">04</a></p>
+          <p>The root cause was the same in both: no structural communication encoded in the system itself.</p>
+        </div>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step-num" data-label="Step / Guidelines">03</div>
+      <div class="step-body">
+        <h2>Encode the <em>why</em>, not just the <em>how</em>.</h2>
+        <p class="why">LLMs are trained on generic code and design practices. The choices already represented in your system — and not encoded anywhere — are exactly what they get wrong.<a class="cite" href="#s2">02</a></p>
+        <p>
+          Most component docs describe mechanics: what props exist, the
+          difference between a checkbox and a radio. That is the
+          <em>how</em>. What an agent needs in addition is the <em>why</em>:
+          when to use a switch instead of a checkbox, when never to use a
+          semantic-red chip (e.g. to indicate medical risk status), when a
+          "select all / none" pattern is required.<a class="cite" href="#s2">02</a>
+          Those judgments already exist in your team — they just aren't
+          encoded.
+        </p>
+        <ul>
+          <li>Treat design guidelines as a new deliverable, shipped alongside components and reference docs.<a class="cite" href="#s2">02</a></li>
+          <li>Write them as agent <em>skills</em>: short, decision-oriented, product-specific.</li>
+          <li>Include negative examples — "do not generate X for Y context" — because the default training data will get this wrong by default.<a class="cite" href="#s2">02</a></li>
+        </ul>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step-num" data-label="Step / Guardrails">04</div>
+      <div class="step-body">
+        <h2>Put MCPs, AGENTS.md, and skills in the codebase.</h2>
+        <p class="why">When LLMs have access to your entire codebase, they'll use anything they find as a pattern to copy. The models aren't trained on your code; they're trained on public code, which is why Tailwind and ShadCN are so over-represented.<a class="cite" href="#s2">02</a></p>
+        <p>
+          Without explicit guardrails, agents will faithfully reproduce
+          whatever's most common in their training set — not what's in your
+          system. Three artefacts close the gap:
+        </p>
+        <ul>
+          <li><strong>MCP server</strong> — exposes the design system to agents as a structured resource they can query, not scrape.</li>
+          <li><strong>AGENTS.md</strong> — a manifest at the root of the repo telling agents which components to use, which patterns are forbidden, where the tokens live.</li>
+          <li><strong>Agent skills</strong> — small, focused instruction files that capture decision rules (the <em>why</em> from step three).<a class="cite" href="#s2">02</a></li>
+        </ul>
+        <pre class="codeish"><span class="c"># AGENTS.md (excerpt)</span>
+<span class="k">use_components_from:</span> <span class="s">"@acme/ds"</span>
+<span class="k">forbid:</span>
+  - <span class="s">"inline tailwind utility classes for colour"</span>
+  - <span class="s">"recreating components that already exist in @acme/ds"</span>
+<span class="k">tokens:</span> <span class="s">"./tokens/semantic.json"</span>
+<span class="k">skills:</span> <span class="s">"./.skills/"</span></pre>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step-num" data-label="Step / Patterns">05</div>
+      <div class="step-body">
+        <h2>Ship components as data — not just code.</h2>
+        <p class="why">What if a Payment element is not a single component, but a set of structured relationships that describe how to use all the individual atomic components?<a class="cite" href="#s2">02</a></p>
+        <p>
+          Patterns have always been the design-system bogeyman: built for one
+          product purpose, made of many sub-components, and exploding in
+          variation. Encoding them as rigid code components creates a
+          maintenance burden and pushes teams toward workarounds.
+          <a class="cite" href="#s2">02</a>
+          Schemas — "components as data" — describe the relationship instead:
+          which components compose into which patterns, what context a
+          component requires, which siblings are valid.
+        </p>
+        <ul>
+          <li>For each pattern, ship a schema describing its sub-components, contexts, and allowed siblings — not a monolithic code component.</li>
+          <li>Use semantic naming so an agent can compose meaningfully (a <code>CancelButton</code> in <code>modalContext</code> is far clearer than a generic <code>Button</code>).<a class="cite" href="#s2">02</a></li>
+          <li>This is what enables multi-turn, dynamically recomposing UI — the same primitive that lets products like Expedia render inside ChatGPT.<a class="cite" href="#s2">02</a></li>
+        </ul>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step-num" data-label="Step / Diagnostic">06</div>
+      <div class="step-body">
+        <h2>Build the diagnostic layer.</h2>
+        <p class="why">No feedback loop. No diagnostic layer. Just two teams working in parallel, producing divergent results.<a class="cite" href="#s4">04</a></p>
+        <p>
+          Drift is the check engine light of design systems. It rarely fails
+          catastrophically; it just quietly diverges, sprint by sprint,
+          demoralising the people who care most about getting it right.<a class="cite" href="#s4">04</a>
+          The fix is a layer that constantly compares what was designed against
+          what shipped — and surfaces the gap as a first-class signal, not a
+          slack thread.
+        </p>
+        <ul>
+          <li>Automated parity checks between Figma source-of-truth and production code (tokens, components, props).</li>
+          <li>Bidirectional sync — when a designer changes a variant, code knows; when an engineer ships a divergence, design sees it.</li>
+          <li>Treat drift as technical debt with a measurable cost, not a vibes problem.</li>
+        </ul>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step-num" data-label="Step / Day-to-day">07</div>
+      <div class="step-body">
+        <h2>Put LLMs to work on the unglamorous tasks first.</h2>
+        <p class="why">Right now, the best way to use LLMs in your design system is to focus on meaningfully filling gaps. Think less about generating new components and more about delivering on the promise of design systems.<a class="cite" href="#s3">03</a></p>
+        <p>
+          Don't ask the LLM to invent your input component. Use it for the work
+          that almost never gets prioritised against product roadmaps but
+          quietly erodes trust in the system.<a class="cite" href="#s3">03</a>
+        </p>
+        <ul>
+          <li><strong>Refactors and migrations</strong> — token renames, API changes, deprecations. Glorified find-and-replace at scale.<a class="cite" href="#s3">03</a></li>
+          <li><strong>Interaction prototyping</strong> — let designers exercise real flows in the browser via tools like v0, Lovable, or Dessn, surfacing edge cases before engineering starts.<a class="cite" href="#s3">03</a></li>
+          <li><strong>Keeping examples fresh</strong> — Storybook stories, doc snippets, sandbox states that go stale the moment a component changes.<a class="cite" href="#s3">03</a></li>
+        </ul>
+        <div class="callout" data-label="Anti-pattern">
+          <p>Don't let an LLM write your design-system documentation. The output reads like a third-rate style guide ("An input is an element users can type into") and lacks the context your team actually needs.<a class="cite" href="#s3">03</a></p>
+        </div>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step-num" data-label="Step / Posture">08</div>
+      <div class="step-body">
+        <h2>Build in the open. Extend, don't restart.</h2>
+        <p class="why">We need to stop creating new systems for every project. Build within existing ecosystems. Avoid starting fresh unless absolutely necessary.<a class="cite" href="#s5">05</a></p>
+        <p>
+          AI thrives in open environments because it has been trained on them.
+          Open code, open documentation, open patterns: the more your system
+          looks like an extension of widely-known primitives, the more
+          predictable agent output becomes.<a class="cite" href="#s5">05</a>
+          The corresponding warning is sameness — when every team uses the
+          same kits and the same prompts, diversity collapses and the design
+          system stops carrying any identity.<a class="cite" href="#s5">05</a>
+        </p>
+        <ul>
+          <li>Adopt or extend existing systems gradually, component by component.<a class="cite" href="#s5">05</a></li>
+          <li>Make transparency and machine-readability architectural principles from day one.</li>
+          <li>Contribute back when you patch or extend — it keeps the ecosystem (and the models trained on it) honest.</li>
+          <li>Curate against "vibe-coded sameness": where does your product actually need to look unlike the default?</li>
+        </ul>
+      </div>
+    </li>
+
+  </ol>
+
+  <!-- INTERLUDE: ROLES =================================================== -->
+  <section class="roles">
+    <div class="roles-head">
+      <div class="roles-eyebrow">Interlude · 01</div>
+      <h2 class="roles-title">The roles <em>move&nbsp;upstream</em>.</h2>
+      <p class="roles-deck">
+        If agents can compose interfaces, what happens to the people who used
+        to compose them? The honest answer from across the essays: the work
+        doesn't shrink, it relocates.<a class="cite" href="#s1">01</a><a class="cite" href="#s5">05</a>
+      </p>
+    </div>
+    <div class="roles-grid">
+      <div class="role-card">
+        <div class="role-tag">From</div>
+        <p class="role-from">
+          Building individual screens, individual components, individual
+          stories. Picking colours, drawing variants, shipping pixel mocks
+          across to engineering. Performing repetitive system maintenance by
+          hand.<a class="cite" href="#s5">05</a>
+        </p>
+      </div>
+      <div class="role-arrow" aria-hidden="true">→</div>
+      <div class="role-card role-card--accent">
+        <div class="role-tag">To</div>
+        <p class="role-to">
+          Authoring the tokens, contracts, and decision rules that the system
+          uses to assemble itself. Defining the vocabulary, not arranging the
+          sentences. Reviewing, refining, and governing what agents
+          produce.<a class="cite" href="#s1">01</a><a class="cite" href="#s5">05</a>
+        </p>
+      </div>
+    </div>
+    <div class="roles-notes">
+      <div class="role-note">
+        <h3>Designers become rule-authors.</h3>
+        <p>
+          Instead of designing individual screens, designers define the
+          vocabulary, the constraints, the rules that govern how screens get
+          generated. The creative judgment doesn't disappear — it moves
+          upstream, into the system itself.<a class="cite" href="#s1">01</a>
+        </p>
+      </div>
+      <div class="role-note">
+        <h3>Engineers build contracts.</h3>
+        <p>
+          Instead of building components from scratch, engineers build the
+          contracts and infrastructure that let components be assembled
+          correctly at scale: the props, the states, the diagnostic checks,
+          the schemas.<a class="cite" href="#s1">01</a>
+        </p>
+      </div>
+      <div class="role-note">
+        <h3>Handovers become stewardship.</h3>
+        <p>
+          The doer-to-manager shift means reviews can happen iteratively —
+          even on a phone between meetings — and "handover" gives way to
+          collective stewardship of the system itself.<a class="cite" href="#s5">05</a>
+          It is not less work. It is different work, and it requires more
+          intentionality, not less.<a class="cite" href="#s1">01</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERLUDE: RISKS =================================================== -->
+  <section class="risks">
+    <div class="risks-head">
+      <div class="risks-eyebrow">Interlude · 02</div>
+      <h2 class="risks-title">Risks <em>&amp;&nbsp;traps</em>.</h2>
+      <p class="risks-deck">
+        AI doesn't fix a design system; it amplifies whatever shape your
+        system is already in. Six pitfalls the essays keep returning to.
+      </p>
+    </div>
+
+    <ol class="risk-list">
+      <li class="risk">
+        <div class="risk-num">i</div>
+        <div class="risk-body">
+          <h3>Hallucinated files and ghost components.</h3>
+          <p>
+            Agents will confidently reference components, props, and paths
+            that do not exist. The fix is not "tell it to stop" — it is
+            structured ground-truth (MCP, AGENTS.md, schemas) and stable,
+            well-maintained sources to draw from.<a class="cite" href="#s5">05</a>
+          </p>
+        </div>
+      </li>
+      <li class="risk">
+        <div class="risk-num">ii</div>
+        <div class="risk-body">
+          <h3>Sameness creep.</h3>
+          <p>
+            Everyone is using the same kits and the same "vibe codes". Fast
+            remixing speeds delivery but stifles diversity — most teams still
+            reinvent rather than extend, and end up with the same default
+            aesthetic.<a class="cite" href="#s5">05</a> Ask: where does our product
+            actually need to look unlike the default, and have we documented
+            that opinion clearly enough for an agent to hold the line?
+          </p>
+        </div>
+      </li>
+      <li class="risk">
+        <div class="risk-num">iii</div>
+        <div class="risk-body">
+          <h3>Bias and accessibility blind spots.</h3>
+          <p>
+            Ethical checks for bias and inclusivity become more important
+            once an agent is composing UI at speed.<a class="cite" href="#s5">05</a>
+            Accessibility requirements belong inside component contracts and
+            decision-rule skills — not in a separate doc no agent reads.
+          </p>
+        </div>
+      </li>
+      <li class="risk">
+        <div class="risk-num">iv</div>
+        <div class="risk-body">
+          <h3>"It's multimodal — it can just look at the frame."</h3>
+          <p>
+            Tempting, but only a partial fix. A screenshot closes part of the
+            interpretation gap, but it is still inference from pixels, and it
+            does nothing for drift — the screenshot is stale the moment the
+            component changes. Vision patches reading; it does not patch
+            maintenance.<a class="cite" href="#s6">06</a>
+          </p>
+        </div>
+      </li>
+      <li class="risk">
+        <div class="risk-num">v</div>
+        <div class="risk-body">
+          <h3>Letting the LLM write your documentation.</h3>
+          <p>
+            The output reads like a third-rate style guide — "An input is an
+            element users can type into" — and lacks the context your team
+            actually needs about <em>when</em> and <em>why</em> to use a
+            component.<a class="cite" href="#s3">03</a> Use LLMs to migrate, to
+            keep examples in sync, to write codemods. Don't use them to
+            originate the system's voice.
+          </p>
+        </div>
+      </li>
+      <li class="risk">
+        <div class="risk-num">vi</div>
+        <div class="risk-body">
+          <h3>Treating "we have a design system" as a finish line.</h3>
+          <p>
+            Design systems are crossing the same threshold responsive design
+            crossed a decade ago. In two years, asking "do you have a design
+            system?" will sound as quaint as "is your site mobile-friendly?"
+            It is not a differentiator. It is the minimum cost of entry for
+            participating in AI-generated, adaptive
+            interfaces.<a class="cite" href="#s4">04</a>
+          </p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- CHECKLIST -->
+  <section class="checklist-section">
+    <h2>The <em>readiness</em> checklist.</h2>
+    <p class="sub">Tick what you can defend. Anything unchecked is where an agent will guess.</p>
+    <ul class="checklist">
+      <li><span class="box" aria-hidden="true"></span><span>Every token is semantically named and used consistently in shipped code.</span></li>
+      <li><span class="box" aria-hidden="true"></span><span>Every component has a structured contract — props, states, interactions, a11y — that a machine can parse.</span></li>
+      <li><span class="box" aria-hidden="true"></span><span>Documentation lives in <code>description</code> fields as markdown, not as orphaned visual frames.</span></li>
+      <li><span class="box" aria-hidden="true"></span><span>An <code>AGENTS.md</code> manifest sits at the root of the codebase.</span></li>
+      <li><span class="box" aria-hidden="true"></span><span>An MCP (or equivalent) exposes the design system to agents as queryable structure.</span></li>
+      <li><span class="box" aria-hidden="true"></span><span>Decision-rule skills capture the <em>why</em>: when to use which component, what to never do.</span></li>
+      <li><span class="box" aria-hidden="true"></span><span>Patterns ship as schemas of relationships, not as monolithic code components.</span></li>
+      <li><span class="box" aria-hidden="true"></span><span>A diagnostic layer reports drift between Figma source and production code.</span></li>
+      <li><span class="box" aria-hidden="true"></span><span>Storybook (or equivalent) examples are kept in sync — automatically, not by memory.</span></li>
+      <li><span class="box" aria-hidden="true"></span><span>The system extends an existing ecosystem where possible, and contributes back when it patches one.</span></li>
+    </ul>
+  </section>
+
+  <!-- SOURCES -->
+  <section class="sources" id="sources">
+    <h2>Sources.</h2>
+    <ol>
+      <li id="s1">
+        <a href="https://zeroheight.com/blog/the-future-of-design-systems-part-1-the-product-your-design-system-is-actually-building/" target="_blank" rel="noopener">The future of design systems — part 1: The product your design system is actually building</a>
+        <span class="pub">TJ Pitre · zeroheight</span>
+      </li>
+      <li id="s2">
+        <a href="https://zeroheight.com/blog/ai-in-design-systems-whats-changing-in-2026/" target="_blank" rel="noopener">AI in design systems: What's changing in 2026</a>
+        <span class="pub">Elyse · zeroheight</span>
+      </li>
+      <li id="s3">
+        <a href="https://zeroheight.com/blog/3-practical-ways-llms-can-support-design-systems-teams-today/" target="_blank" rel="noopener">3 practical ways LLMs can support design systems teams today</a>
+        <span class="pub">Elyse · zeroheight</span>
+      </li>
+      <li id="s4">
+        <a href="https://zeroheight.com/blog/the-future-of-design-systems-part-2-the-check-engine-light-is-on/" target="_blank" rel="noopener">The future of design systems — part 2: The check engine light is on</a>
+        <span class="pub">TJ Pitre · zeroheight</span>
+      </li>
+      <li id="s5">
+        <a href="https://zeroheight.com/blog/rethinking-design-systems-in-the-open/" target="_blank" rel="noopener">Rethinking design systems in the open</a>
+        <span class="pub">zeroheight</span>
+      </li>
+      <li id="s6">
+        <a href="https://southleft.substack.com/p/designed-vs-declared-how-to-document" target="_blank" rel="noopener">Designed vs Declared: How to document design systems for AI</a>
+        <span class="pub">Southleft</span>
+      </li>
+    </ol>
+  </section>
+
+</main>
+
+<footer class="colophon">
+  <div class="wrap" style="display:contents">
+    <div>Synthesised May 2026 · Set in Fraunces, Newsreader, &amp; IBM Plex Mono</div>
+    <div class="mark">A field manual for the systems people.</div>
+  </div>
+</footer>
+
+</body>
+</html>
