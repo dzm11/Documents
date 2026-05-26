@@ -3,1218 +3,1966 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>A Field Manual — Preparing Your Design System for AI Coding</title>
-<meta name="description" content="A concise, step-by-step field manual for preparing a design system to be consumed by AI coding agents. Synthesised from seven essays by zeroheight and Southleft." />
+<title>Design Systems for AI Coding — A Field Manual</title>
+<meta name="description" content="A practical, step-by-step field manual for preparing a design system to be consumed by AI coding agents. Synthesised from essays by zeroheight, Southleft, and notes on the Figma+MCP workflow." />
+<meta name="theme-color" content="#0a0a0a" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #efeae0;
-    --paper-deep: #e7e0d0;
-    --ink: #161310;
-    --ink-soft: #3b342c;
-    --ink-mute: #6e6557;
-    --rule: #1c1815;
-    --accent: #d6431f;
-    --accent-deep: #a1311a;
-    --highlight: #f7e9b9;
-    --shadow: rgba(22, 19, 16, 0.18);
-    --max: 1240px;
+    /* surfaces */
+    --bg: #0a0a0a;
+    --bg-1: #0f0f0f;
+    --bg-2: #131313;
+    --bg-3: #181818;
+    --bg-card: rgba(255, 255, 255, 0.018);
+    --bg-card-hover: rgba(255, 255, 255, 0.035);
+    --bg-code: #0c0c0c;
+
+    /* borders */
+    --border: rgba(255, 255, 255, 0.08);
+    --border-mid: rgba(255, 255, 255, 0.12);
+    --border-strong: rgba(255, 255, 255, 0.18);
+
+    /* text */
+    --fg: #ededed;
+    --fg-bright: #ffffff;
+    --fg-muted: #a1a1a1;
+    --fg-subtle: #6a6a6a;
+    --fg-faint: #4a4a4a;
+
+    /* accents (used sparingly) */
+    --accent: #ffffff;
+    --link: #6cb8ff;
+    --link-hover: #9fd0ff;
+    --highlight: #fafa6e;
+    --success: #50e3c2;
+    --danger: #ff5c8a;
+
+    /* shadows / glow */
+    --glow-blue: rgba(108, 184, 255, 0.18);
+    --ring: rgba(255, 255, 255, 0.06);
+
+    /* layout */
+    --container: 1320px;
+    --content: 760px;
+    --aside: 260px;
+    --gutter: 80px;
+
+    /* type */
+    --font-sans: "Geist", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, "JetBrains Mono", monospace;
   }
 
   * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  html { background: var(--paper); color: var(--ink); }
-  body {
-    font-family: "Newsreader", Georgia, serif;
-    font-size: 19px;
-    line-height: 1.58;
-    font-weight: 380;
-    font-variation-settings: "opsz" 16;
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    background:
-      radial-gradient(900px 600px at 110% -10%, rgba(214, 67, 31, 0.07), transparent 60%),
-      radial-gradient(800px 500px at -10% 30%, rgba(22, 19, 16, 0.05), transparent 60%),
-      var(--paper);
-    background-attachment: fixed;
   }
-
-  /* paper grain */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background-image:
-      radial-gradient(rgba(22,19,16,0.10) 1px, transparent 1.4px),
-      radial-gradient(rgba(22,19,16,0.06) 1px, transparent 1.2px);
-    background-size: 3px 3px, 5px 5px;
-    background-position: 0 0, 1px 1px;
-    mix-blend-mode: multiply;
-    opacity: 0.35;
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  body {
+    font-size: 15px;
+    line-height: 1.65;
+    font-weight: 400;
+    background:
+      radial-gradient(1200px 700px at 100% -10%, rgba(108, 184, 255, 0.05), transparent 60%),
+      radial-gradient(900px 600px at -10% 40%, rgba(255, 92, 138, 0.035), transparent 60%),
+      radial-gradient(600px 400px at 50% 110%, rgba(250, 250, 110, 0.025), transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
+    min-height: 100vh;
   }
 
   /* selection */
-  ::selection { background: var(--accent); color: var(--paper); }
+  ::selection { background: rgba(108, 184, 255, 0.3); color: var(--fg-bright); }
 
-  /* layout */
-  .wrap { position: relative; z-index: 1; max-width: var(--max); margin: 0 auto; padding: 0 32px; }
-  main { position: relative; z-index: 1; }
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 5px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
 
-  /* ====== Masthead ======================================================== */
-  header.masthead {
-    border-bottom: 1.5px solid var(--rule);
-    padding: 20px 0 14px;
-    position: relative;
-    z-index: 2;
-    background: var(--paper);
+  /* ====== Top nav =========================================================== */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 10, 10, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--border);
   }
-  .mast-row {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
+  .topbar-inner {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 14px 32px;
+    display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 24px;
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 12px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
   }
-  .mast-row .center {
-    font-family: "Fraunces", serif;
-    font-variation-settings: "opsz" 144, "wght" 500, "SOFT" 100;
-    font-style: italic;
-    font-size: 18px;
-    text-transform: none;
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--fg-bright);
     letter-spacing: -0.01em;
-    color: var(--ink);
+    text-decoration: none;
   }
-  .mast-row .right { text-align: right; }
+  .brand-mark {
+    width: 22px;
+    height: 22px;
+    border-radius: 5px;
+    background:
+      linear-gradient(135deg, #ffffff 0%, #888 100%);
+    box-shadow: 0 0 0 1px var(--border-strong), inset 0 1px 0 rgba(255,255,255,0.4);
+    position: relative;
+  }
+  .brand-mark::after {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border-radius: 2px;
+    background: var(--bg);
+  }
+  .topbar-meta {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--fg-subtle);
+    letter-spacing: 0;
+    display: flex;
+    gap: 22px;
+    align-items: center;
+  }
+  .topbar-meta .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 8px rgba(80, 227, 194, 0.6);
+  }
+  @media (max-width: 700px) {
+    .topbar-meta { display: none; }
+  }
 
-  /* ====== Hero ============================================================ */
-  .hero { padding: 60px 0 40px; position: relative; }
-  .hero-grid {
+  /* ====== Layout ============================================================ */
+  .container {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .layout {
     display: grid;
-    grid-template-columns: 1fr 1.4fr;
-    gap: 56px;
-    align-items: end;
+    grid-template-columns: var(--aside) 1fr;
+    gap: var(--gutter);
+    align-items: start;
+    padding-top: 72px;
+    padding-bottom: 120px;
   }
-  .hero-meta {
-    border-top: 1.5px solid var(--rule);
-    padding-top: 14px;
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    line-height: 1.7;
-  }
-  .hero-meta strong { color: var(--accent); font-weight: 600; }
 
-  h1.title {
-    font-family: "Fraunces", serif;
-    font-variation-settings: "opsz" 144, "wght" 460, "SOFT" 30, "WONK" 1;
-    font-size: clamp(54px, 9vw, 132px);
-    line-height: 0.92;
-    letter-spacing: -0.035em;
-    margin: 0;
-    color: var(--ink);
+  /* ====== Hero ============================================================== */
+  .hero {
+    grid-column: 1 / -1;
+    padding-bottom: 56px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 72px;
+    position: relative;
   }
-  h1.title em {
-    font-style: italic;
-    font-variation-settings: "opsz" 144, "wght" 420, "SOFT" 100, "WONK" 1;
-    color: var(--accent);
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--fg-subtle);
+    letter-spacing: 0;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .eyebrow .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 8px;
+    border: 1px solid var(--border-mid);
+    border-radius: 4px;
+    background: rgba(108, 184, 255, 0.06);
+    color: var(--link);
+    font-weight: 500;
+  }
+  .eyebrow .badge::before {
+    content: "";
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--link);
+    box-shadow: 0 0 6px var(--glow-blue);
+  }
+  h1.hero-title {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(40px, 6vw, 76px);
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    color: var(--fg-bright);
+    margin: 0 0 24px;
+    max-width: 18ch;
+  }
+  h1.hero-title .accent {
+    background: linear-gradient(135deg, #ffffff 0%, #6cb8ff 60%, #c8a2ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
   }
   .hero-deck {
-    font-family: "Newsreader", serif;
-    font-variation-settings: "opsz" 32;
-    font-size: clamp(20px, 1.6vw, 26px);
-    line-height: 1.42;
-    color: var(--ink-soft);
-    margin: 28px 0 0;
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--fg-muted);
     max-width: 60ch;
-    font-weight: 360;
+    margin: 0 0 36px;
+    font-weight: 400;
   }
-
-  .hero-rule {
-    margin: 56px 0 0;
-    height: 1.5px;
-    background: var(--rule);
-  }
-  .hero-tags {
+  .hero-meta-row {
     display: flex;
-    gap: 22px;
-    padding: 14px 0 0;
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--ink-mute);
+    gap: 36px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
     flex-wrap: wrap;
   }
-  .hero-tags span::before { content: "§ "; color: var(--accent); }
-
-  /* ====== Intro section =================================================== */
-  .lede {
-    padding: 80px 0 40px;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 56px;
-  }
-  .lede-aside {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 12px;
-    letter-spacing: 0.06em;
+  .hero-meta-item .k {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--fg-subtle);
     text-transform: uppercase;
-    color: var(--ink-mute);
-    line-height: 1.7;
-    border-top: 1.5px solid var(--rule);
-    padding-top: 14px;
-    align-self: start;
-    position: sticky;
-    top: 24px;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
   }
-  .lede-aside b {
-    display: block;
-    color: var(--accent);
-    margin-bottom: 8px;
-    letter-spacing: 0.14em;
-  }
-  .lede-body p {
-    margin: 0 0 22px;
-    font-size: 21px;
-    line-height: 1.55;
-    font-variation-settings: "opsz" 18;
-  }
-  .lede-body p:first-child::first-letter {
-    font-family: "Fraunces", serif;
-    font-variation-settings: "opsz" 144, "wght" 500;
-    font-size: 5.6em;
-    line-height: 0.82;
-    float: left;
-    margin: 4px 12px 0 0;
-    color: var(--accent);
+  .hero-meta-item .v {
+    font-size: 14px;
+    color: var(--fg);
+    font-weight: 500;
   }
 
-  /* ====== Section break =================================================== */
-  .break {
+  /* ====== TOC =============================================================== */
+  aside.toc {
+    position: sticky;
+    top: 92px;
+    align-self: start;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+    padding-right: 12px;
+  }
+  .toc-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--fg-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin: 0 0 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .toc ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: toc;
+  }
+  .toc > ol > li {
+    counter-increment: toc;
+    margin-bottom: 14px;
+  }
+  .toc > ol > li > a {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 4px 0;
+    color: var(--fg);
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 500;
+    transition: color 0.15s ease;
+    line-height: 1.4;
+  }
+  .toc > ol > li > a::before {
+    content: counter(toc, decimal-leading-zero);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--fg-subtle);
+    font-weight: 400;
+    flex-shrink: 0;
+  }
+  .toc > ol > li > a:hover { color: var(--fg-bright); }
+  .toc > ol > li > a.active { color: var(--link); }
+  .toc > ol > li > a.active::before { color: var(--link); }
+
+  .toc-sub {
+    list-style: none;
+    margin: 6px 0 0 22px;
+    padding: 0 0 0 12px;
+    border-left: 1px solid var(--border);
+    counter-reset: sub;
+  }
+  .toc-sub li {
+    counter-increment: sub;
+    margin: 0;
+  }
+  .toc-sub li a {
+    display: block;
+    padding: 4px 0;
+    font-family: var(--font-sans);
+    font-size: 12.5px;
+    color: var(--fg-subtle);
+    text-decoration: none;
+    line-height: 1.45;
+    transition: color 0.15s ease, padding-left 0.15s ease;
+  }
+  .toc-sub li a:hover {
+    color: var(--fg);
+    padding-left: 4px;
+  }
+  .toc-sub li a.active {
+    color: var(--link);
+  }
+
+  /* ====== Main content ====================================================== */
+  main.content {
+    min-width: 0;
+    max-width: var(--content);
+  }
+
+  /* Section */
+  section.section {
+    padding-top: 32px;
+    margin-top: 48px;
+    scroll-margin-top: 90px;
+  }
+  section.section:first-of-type {
+    padding-top: 0;
+    margin-top: 0;
+  }
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--fg-subtle);
+    letter-spacing: 0.04em;
+    margin-bottom: 14px;
     display: flex;
     align-items: center;
-    gap: 22px;
-    margin: 64px 0;
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 11px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--ink-mute);
+    gap: 12px;
   }
-  .break::before, .break::after {
+  .section-num::after {
     content: "";
     flex: 1;
-    height: 1.5px;
-    background: var(--rule);
+    height: 1px;
+    background: linear-gradient(to right, var(--border), transparent);
   }
-  .break .dot {
-    width: 8px; height: 8px; background: var(--accent); border-radius: 50%;
+  h2.section-title {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(30px, 3.6vw, 44px);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    color: var(--fg-bright);
+    margin: 0 0 16px;
+  }
+  .section-lede {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--fg-muted);
+    max-width: 62ch;
+    margin: 0 0 40px;
   }
 
-  /* ====== Step list ======================================================= */
-  .steps { margin: 0; padding: 0; list-style: none; }
-  .step {
-    position: relative;
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    gap: 64px;
-    padding: 56px 0 60px;
-    border-top: 1.5px solid var(--rule);
+  /* Subsection */
+  .subsection {
+    margin: 48px 0 0;
+    scroll-margin-top: 90px;
   }
-  .step:last-child { border-bottom: 1.5px solid var(--rule); }
-  .step-num {
-    font-family: "Fraunces", serif;
-    font-variation-settings: "opsz" 144, "wght" 360, "SOFT" 100, "WONK" 1;
-    font-style: italic;
-    font-size: 168px;
-    line-height: 0.85;
-    letter-spacing: -0.04em;
-    color: var(--ink);
-    position: relative;
-  }
-  .step-num::after {
-    content: attr(data-label);
-    display: block;
-    font-family: "IBM Plex Mono", monospace;
-    font-style: normal;
-    font-size: 10px;
-    letter-spacing: 0.22em;
+  .subsection-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--fg-subtle);
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
     text-transform: uppercase;
-    color: var(--accent);
-    margin-top: 12px;
   }
-  .step-body h2 {
-    font-family: "Fraunces", serif;
-    font-variation-settings: "opsz" 80, "wght" 480, "SOFT" 30;
-    font-size: clamp(34px, 3.4vw, 48px);
-    line-height: 1.04;
-    letter-spacing: -0.02em;
-    margin: 8px 0 18px;
-    color: var(--ink);
+  h3.subsection-title {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--fg-bright);
+    margin: 0 0 14px;
   }
-  .step-body .why {
-    font-family: "Newsreader", serif;
-    font-style: italic;
-    font-size: 18px;
-    color: var(--ink-soft);
-    margin: 0 0 28px;
-    padding-left: 14px;
-    border-left: 2px solid var(--accent);
-    max-width: 60ch;
+  h4 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--fg-bright);
+    margin: 24px 0 8px;
+    letter-spacing: -0.01em;
   }
-  .step-body p { margin: 0 0 18px; max-width: 64ch; }
-  .step-body ul {
-    margin: 12px 0 22px;
-    padding-left: 0;
+
+  /* Body text */
+  .content p {
+    color: var(--fg-muted);
+    font-size: 15px;
+    line-height: 1.68;
+    margin: 0 0 16px;
+    max-width: 64ch;
+  }
+  .content p.lead {
+    font-size: 17px;
+    color: var(--fg);
+    line-height: 1.6;
+  }
+  .content strong {
+    color: var(--fg-bright);
+    font-weight: 600;
+  }
+  .content em { color: var(--fg); font-style: italic; }
+  .content a:not(.cite) {
+    color: var(--link);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(108, 184, 255, 0.3);
+    transition: all 0.15s ease;
+  }
+  .content a:not(.cite):hover {
+    color: var(--link-hover);
+    border-bottom-color: var(--link-hover);
+  }
+
+  /* Lists */
+  .content ul, .content ol {
+    margin: 0 0 22px;
+    padding: 0;
     list-style: none;
     max-width: 64ch;
   }
-  .step-body ul li {
+  .content ul li {
     position: relative;
-    padding: 6px 0 6px 28px;
-    border-bottom: 1px dashed rgba(22,19,16,0.18);
+    padding: 8px 0 8px 24px;
+    color: var(--fg-muted);
+    font-size: 15px;
+    line-height: 1.6;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
   }
-  .step-body ul li:last-child { border-bottom: none; }
-  .step-body ul li::before {
-    content: "→";
+  .content ul li:last-child { border-bottom: none; }
+  .content ul li::before {
+    content: "";
     position: absolute;
     left: 0;
-    top: 6px;
-    color: var(--accent);
-    font-family: "IBM Plex Mono", monospace;
-    font-weight: 500;
-  }
-  .step-body code {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 0.85em;
-    background: var(--paper-deep);
-    border: 1px solid rgba(22,19,16,0.12);
-    padding: 1px 6px;
-    border-radius: 2px;
+    top: 17px;
+    width: 12px;
+    height: 1px;
+    background: var(--fg-subtle);
   }
 
-  /* citation chip */
+  /* Inline code */
+  code, .content code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--fg-bright);
+    padding: 1px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  /* Code block */
+  pre.code-block {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.7;
+    background: var(--bg-code);
+    color: var(--fg);
+    padding: 18px 22px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 22px 0;
+    border: 1px solid var(--border);
+    position: relative;
+    max-width: 64ch;
+  }
+  pre.code-block::before {
+    content: attr(data-lang);
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--fg-subtle);
+  }
+  pre.code-block .k { color: #ff7eb6; }
+  pre.code-block .s { color: #fafa6e; }
+  pre.code-block .c { color: var(--fg-subtle); font-style: italic; }
+  pre.code-block .v { color: #50e3c2; }
+
+  /* Citation */
   .cite {
     display: inline-flex;
     align-items: baseline;
-    gap: 6px;
-    font-family: "IBM Plex Mono", monospace;
+    gap: 4px;
+    font-family: var(--font-mono);
     font-size: 10px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--accent);
+    color: var(--link);
     text-decoration: none;
-    border-bottom: 1px solid currentColor;
-    padding-bottom: 1px;
+    border-bottom: 1px solid rgba(108, 184, 255, 0.4);
+    padding-bottom: 0;
     vertical-align: super;
     margin-left: 2px;
+    transition: all 0.15s ease;
   }
-  .cite:hover { color: var(--accent-deep); }
+  .cite:hover {
+    color: var(--link-hover);
+    border-bottom-color: var(--link-hover);
+  }
 
-  /* callout */
+  /* Callout */
   .callout {
     margin: 28px 0;
-    padding: 22px 24px;
-    background: var(--paper-deep);
-    border: 1.5px solid var(--rule);
-    box-shadow: 6px 6px 0 var(--ink);
+    padding: 20px 22px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--link);
+    border-radius: 8px;
     position: relative;
     max-width: 64ch;
   }
-  .callout::before {
-    content: attr(data-label);
-    position: absolute;
-    top: -12px;
-    left: 16px;
-    background: var(--accent);
-    color: var(--paper);
-    font-family: "IBM Plex Mono", monospace;
+  .callout-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
     font-size: 10px;
-    letter-spacing: 0.2em;
+    color: var(--link);
     text-transform: uppercase;
-    padding: 3px 10px;
+    letter-spacing: 0.1em;
     font-weight: 600;
+    margin-bottom: 10px;
   }
-  .callout p { margin: 0; font-size: 17px; line-height: 1.55; }
+  .callout-label::before {
+    content: "";
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--link);
+    box-shadow: 0 0 6px var(--glow-blue);
+  }
+  .callout p {
+    margin: 0;
+    color: var(--fg);
+    font-size: 14.5px;
+  }
   .callout p + p { margin-top: 10px; }
-
-  /* code block */
-  pre.codeish {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 13.5px;
-    line-height: 1.6;
-    background: var(--ink);
-    color: #ecdfc7;
-    padding: 22px 24px;
-    border-radius: 0;
-    overflow-x: auto;
-    margin: 24px 0;
-    max-width: 64ch;
-    border-left: 4px solid var(--accent);
+  .callout.warning { border-left-color: var(--danger); }
+  .callout.warning .callout-label { color: var(--danger); }
+  .callout.warning .callout-label::before {
+    background: var(--danger);
+    box-shadow: 0 0 6px rgba(255, 92, 138, 0.5);
   }
-  pre.codeish .k { color: #ffb685; }
-  pre.codeish .c { color: #8a8473; font-style: italic; }
-  pre.codeish .s { color: #f7e9b9; }
-
-  /* ====== Interlude: Roles ================================================ */
-  .roles {
-    padding: 80px 0 40px;
-    margin-top: 40px;
-    position: relative;
+  .callout.success { border-left-color: var(--success); }
+  .callout.success .callout-label { color: var(--success); }
+  .callout.success .callout-label::before {
+    background: var(--success);
+    box-shadow: 0 0 6px rgba(80, 227, 194, 0.5);
   }
-  .roles-head { max-width: 70ch; margin-bottom: 48px; }
-  .roles-eyebrow {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 11px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--accent);
+
+  /* ====== Step cards ======================================================== */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .step-card {
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 28px 32px 32px;
+    transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+    scroll-margin-top: 90px;
+  }
+  .step-card:hover {
+    border-color: var(--border-strong);
+    background: var(--bg-card-hover);
+  }
+  .step-card-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
     margin-bottom: 18px;
   }
-  .roles-title {
-    font-family: "Fraunces", serif;
-    font-variation-settings: "opsz" 144, "wght" 460, "SOFT" 60, "WONK" 1;
-    font-size: clamp(44px, 5.8vw, 76px);
-    line-height: 0.96;
-    letter-spacing: -0.03em;
-    margin: 0 0 22px;
+  .step-card-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--link);
+    background: rgba(108, 184, 255, 0.08);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(108, 184, 255, 0.2);
+    font-weight: 500;
+    letter-spacing: 0.04em;
   }
-  .roles-title em { font-style: italic; color: var(--accent); }
-  .roles-deck {
-    font-family: "Newsreader", serif;
-    font-variation-settings: "opsz" 28;
-    font-size: clamp(19px, 1.4vw, 22px);
-    line-height: 1.5;
-    color: var(--ink-soft);
-    margin: 0;
+  .step-card-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--fg-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .step-card h3 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    color: var(--fg-bright);
+    margin: 0 0 16px;
+  }
+  .step-card .why {
+    font-size: 14.5px;
+    color: var(--fg-muted);
+    font-style: italic;
+    margin: 0 0 20px;
+    padding-left: 14px;
+    border-left: 2px solid var(--border-mid);
     max-width: 60ch;
   }
+  .step-card p {
+    margin: 0 0 14px;
+    font-size: 15px;
+  }
+  .step-card p:last-child { margin-bottom: 0; }
 
+  /* ====== Role cards ======================================================== */
   .roles-grid {
     display: grid;
-    grid-template-columns: 1fr 56px 1fr;
-    gap: 0;
+    grid-template-columns: 1fr auto 1fr;
     align-items: stretch;
-    margin: 32px 0 56px;
+    gap: 16px;
+    margin: 32px 0;
   }
   .role-card {
-    border: 1.5px solid var(--rule);
-    padding: 28px 28px 32px;
-    background: var(--paper-deep);
-    position: relative;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    border-radius: 10px;
+    padding: 22px;
   }
-  .role-card--accent {
-    background: var(--ink);
-    color: var(--paper);
-    border-color: var(--ink);
-    box-shadow: 8px 8px 0 var(--accent);
+  .role-card.accent {
+    background: linear-gradient(140deg, rgba(108, 184, 255, 0.08), rgba(200, 162, 255, 0.05));
+    border-color: rgba(108, 184, 255, 0.25);
   }
   .role-tag {
-    font-family: "IBM Plex Mono", monospace;
+    font-family: var(--font-mono);
     font-size: 10px;
-    letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 14px;
+    letter-spacing: 0.14em;
+    color: var(--fg-subtle);
+    margin-bottom: 12px;
   }
-  .role-card--accent .role-tag { color: var(--highlight); }
-  .role-from, .role-to {
-    margin: 0;
-    font-size: 17px;
-    line-height: 1.5;
-    font-variation-settings: "opsz" 16;
-  }
-  .role-from { color: var(--ink-soft); }
-  .role-card--accent .role-to { color: var(--paper); }
+  .role-card.accent .role-tag { color: var(--link); }
+  .role-card p { margin: 0; font-size: 14.5px; line-height: 1.6; }
   .role-arrow {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: "Fraunces", serif;
-    font-variation-settings: "opsz" 144, "wght" 360;
-    font-style: italic;
-    font-size: 44px;
-    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 22px;
+    color: var(--link);
+    padding: 0 8px;
   }
-
   .roles-notes {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
-    margin-top: 24px;
+    gap: 16px;
+    margin-top: 20px;
   }
   .role-note {
-    border-top: 1.5px solid var(--rule);
-    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
   }
-  .role-note h3 {
-    font-family: "Fraunces", serif;
-    font-variation-settings: "opsz" 60, "wght" 500;
-    font-size: 22px;
-    line-height: 1.15;
-    letter-spacing: -0.015em;
-    margin: 0 0 12px;
+  .role-note h4 {
+    margin: 0 0 8px;
+    font-size: 14px;
+    color: var(--fg-bright);
+    font-weight: 600;
   }
   .role-note p {
     margin: 0;
-    font-size: 16.5px;
+    font-size: 13.5px;
     line-height: 1.55;
-    color: var(--ink-soft);
+    color: var(--fg-muted);
   }
 
-  /* ====== Interlude: Risks ================================================ */
-  .risks {
-    padding: 80px 0 40px;
-    border-top: 1.5px solid var(--rule);
-    margin-top: 56px;
+  /* ====== Risk cards ======================================================== */
+  .risks-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 28px;
   }
-  .risks-head { max-width: 70ch; margin-bottom: 48px; }
-  .risks-eyebrow {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 11px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 18px;
+  .risk-card {
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    border-radius: 10px;
+    padding: 20px 22px;
+    transition: border-color 0.18s ease;
   }
-  .risks-title {
-    font-family: "Fraunces", serif;
-    font-variation-settings: "opsz" 144, "wght" 460, "SOFT" 60, "WONK" 1;
-    font-size: clamp(44px, 5.8vw, 76px);
-    line-height: 0.96;
-    letter-spacing: -0.03em;
-    margin: 0 0 22px;
+  .risk-card:hover { border-color: var(--border-mid); }
+  .risk-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
   }
-  .risks-title em { font-style: italic; color: var(--accent); }
-  .risks-deck {
-    font-family: "Newsreader", serif;
-    font-variation-settings: "opsz" 28;
-    font-size: clamp(19px, 1.4vw, 22px);
-    line-height: 1.5;
-    color: var(--ink-soft);
+  .risk-rune {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--danger);
+    background: rgba(255, 92, 138, 0.08);
+    padding: 3px 7px;
+    border-radius: 3px;
+    border: 1px solid rgba(255, 92, 138, 0.25);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .risk-card h4 {
     margin: 0;
-    max-width: 60ch;
+    font-size: 15px;
+    color: var(--fg-bright);
+    font-weight: 600;
+  }
+  .risk-card p {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--fg-muted);
   }
 
-  .risk-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  /* ====== MCP what-it-sees list (specialised) =============================== */
+  .mcp-list {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 24px 0 !important;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--bg-card);
   }
-  .risk {
-    display: grid;
-    grid-template-columns: 64px 1fr;
-    gap: 18px;
-    padding: 28px 28px 28px 0;
-    border-top: 1.5px solid var(--rule);
+  .mcp-list li {
+    padding: 14px 18px !important;
+    border-bottom: 1px solid var(--border) !important;
+    border-right: 1px solid var(--border);
+    font-size: 14px !important;
   }
-  .risk:nth-child(odd) { padding-right: 48px; border-right: 1.5px solid var(--rule); }
-  .risk:nth-child(even) { padding-left: 28px; }
-  .risk:nth-last-child(1), .risk:nth-last-child(2) {
-    border-bottom: 1.5px solid var(--rule);
+  .mcp-list li::before { display: none !important; }
+  .mcp-list li:nth-child(2n) { border-right: none; }
+  .mcp-list li:nth-last-child(-n+2) { border-bottom: none !important; }
+  .mcp-list li strong {
+    display: block;
+    color: var(--fg-bright);
+    font-weight: 600;
+    font-size: 13.5px;
+    margin-bottom: 4px;
   }
-  .risk-num {
-    font-family: "Fraunces", serif;
-    font-variation-settings: "opsz" 144, "wght" 360, "WONK" 1;
-    font-style: italic;
-    font-size: 56px;
-    line-height: 0.9;
-    color: var(--accent);
-    letter-spacing: -0.02em;
+  .mcp-list li span {
+    color: var(--fg-muted);
+    font-size: 13px;
+    line-height: 1.5;
   }
-  .risk-body h3 {
-    font-family: "Fraunces", serif;
-    font-variation-settings: "opsz" 60, "wght" 500;
-    font-size: 22px;
-    line-height: 1.18;
-    letter-spacing: -0.015em;
-    margin: 4px 0 10px;
-  }
-  .risk-body p {
-    margin: 0;
-    font-size: 16.5px;
-    line-height: 1.55;
-    color: var(--ink-soft);
-    max-width: 50ch;
+  @media (max-width: 700px) {
+    .mcp-list { grid-template-columns: 1fr; }
+    .mcp-list li { border-right: none; }
   }
 
-  /* ====== Checklist ======================================================= */
-  .checklist-section {
-    padding: 80px 0;
-    border-top: 1.5px solid var(--rule);
-    margin-top: 80px;
-  }
-  .checklist-section h2 {
-    font-family: "Fraunces", serif;
-    font-variation-settings: "opsz" 144, "wght" 460, "SOFT" 60, "WONK" 1;
-    font-size: clamp(48px, 6.5vw, 84px);
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-    margin: 0 0 14px;
-  }
-  .checklist-section h2 em {
-    font-style: italic;
-    color: var(--accent);
-  }
-  .checklist-section .sub {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 12px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--ink-mute);
-    margin: 0 0 36px;
-  }
+  /* ====== Checklist ========================================================= */
   .checklist {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 28px 0 !important;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px 40px;
-    margin: 28px 0 0;
-    padding: 0;
-    list-style: none;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 24px !important;
   }
   .checklist li {
-    display: grid;
-    grid-template-columns: 28px 1fr;
-    align-items: start;
-    gap: 14px;
-    padding: 14px 0;
-    border-bottom: 1px dashed rgba(22,19,16,0.22);
-    font-size: 17px;
-    line-height: 1.45;
+    display: grid !important;
+    grid-template-columns: 22px 1fr !important;
+    gap: 12px !important;
+    align-items: start !important;
+    padding: 14px 0 !important;
+    border-bottom: 1px solid var(--border) !important;
+    font-size: 14px !important;
+    color: var(--fg) !important;
   }
+  .checklist li::before { display: none !important; }
   .checklist .box {
-    width: 18px;
-    height: 18px;
-    border: 1.5px solid var(--ink);
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1px solid var(--border-strong);
+    background: var(--bg-card);
     margin-top: 4px;
-    background: var(--paper);
     position: relative;
     flex-shrink: 0;
+    transition: all 0.15s ease;
+  }
+  .checklist li:hover .box {
+    border-color: var(--link);
+    background: rgba(108, 184, 255, 0.08);
   }
   .checklist li:hover .box::after {
-    content: "✕";
+    content: "✓";
     position: absolute;
-    inset: -4px 0 0 1px;
-    color: var(--accent);
-    font-weight: 600;
-    font-size: 18px;
+    inset: -3px 0 0 2px;
+    color: var(--link);
+    font-size: 13px;
+    font-weight: 700;
     line-height: 1;
   }
-
-  /* ====== Sources ========================================================= */
-  .sources {
-    margin-top: 80px;
-    padding: 56px 0 80px;
-    border-top: 1.5px solid var(--rule);
-  }
-  .sources h2 {
-    font-family: "Fraunces", serif;
-    font-variation-settings: "opsz" 80, "wght" 460;
-    font-size: 40px;
-    margin: 0 0 28px;
-    letter-spacing: -0.02em;
-  }
-  .sources ol {
-    counter-reset: src;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  .sources li {
-    counter-increment: src;
-    display: grid;
-    grid-template-columns: 56px 1fr auto;
-    gap: 22px;
-    align-items: baseline;
-    padding: 18px 0;
-    border-bottom: 1px solid rgba(22,19,16,0.18);
-  }
-  .sources li::before {
-    content: counter(src, decimal-leading-zero);
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 13px;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-  }
-  .sources li a {
-    color: var(--ink);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(22,19,16,0.3);
-    font-size: 18px;
-    transition: all 0.18s ease;
-  }
-  .sources li a:hover { color: var(--accent); border-bottom-color: var(--accent); }
-  .sources li .pub {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--ink-mute);
-  }
-
-  /* ====== Footer ========================================================== */
-  footer.colophon {
-    border-top: 1.5px solid var(--rule);
-    padding: 30px 0 50px;
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--ink-mute);
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 24px;
-  }
-  footer.colophon .mark {
-    font-family: "Fraunces", serif;
-    font-style: italic;
-    font-size: 14px;
-    text-transform: none;
-    letter-spacing: 0;
-    color: var(--ink);
-  }
-
-  /* ====== Responsive ====================================================== */
-  @media (max-width: 900px) {
-    body { font-size: 17px; }
-    .hero-grid { grid-template-columns: 1fr; gap: 32px; }
-    .lede { grid-template-columns: 1fr; gap: 24px; padding: 40px 0; }
-    .lede-aside { position: static; }
-    .step { grid-template-columns: 1fr; gap: 0; padding: 40px 0; }
-    .step-num { font-size: 110px; margin-bottom: 8px; }
+  @media (max-width: 700px) {
     .checklist { grid-template-columns: 1fr; }
-    .mast-row { grid-template-columns: 1fr; text-align: center; }
-    .mast-row .right, .mast-row .left { display: none; }
-    .sources li { grid-template-columns: 36px 1fr; }
-    .sources li .pub { grid-column: 2; }
-    .roles-grid { grid-template-columns: 1fr; }
-    .role-arrow { transform: rotate(90deg); padding: 16px 0; }
-    .role-card--accent { box-shadow: 6px 6px 0 var(--accent); }
-    .roles-notes { grid-template-columns: 1fr; gap: 20px; }
-    .risk-list { grid-template-columns: 1fr; }
-    .risk:nth-child(odd) { padding-right: 0; border-right: none; }
-    .risk:nth-child(even) { padding-left: 0; }
   }
 
-  /* gentle animation on first paint */
-  .hero-grid, .lede, .step, .checklist-section, .sources {
-    animation: rise 0.7s cubic-bezier(.2,.7,.2,1) both;
+  /* ====== Sources =========================================================== */
+  .sources-list {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 28px 0 !important;
+    counter-reset: src;
   }
-  .step:nth-child(2) { animation-delay: .05s; }
-  .step:nth-child(3) { animation-delay: .10s; }
-  .step:nth-child(4) { animation-delay: .15s; }
-  .step:nth-child(5) { animation-delay: .20s; }
-  @keyframes rise {
-    from { opacity: 0; transform: translateY(14px); }
-    to { opacity: 1; transform: none; }
+  .sources-list li {
+    counter-increment: src;
+    display: grid !important;
+    grid-template-columns: 48px 1fr auto !important;
+    gap: 16px !important;
+    align-items: baseline !important;
+    padding: 16px 0 !important;
+    border-bottom: 1px solid var(--border) !important;
   }
-  @media (prefers-reduced-motion: reduce) {
-    * { animation: none !important; transition: none !important; }
+  .sources-list li::before {
+    content: counter(src, decimal-leading-zero) !important;
+    position: static !important;
+    background: transparent !important;
+    width: auto !important;
+    height: auto !important;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--link);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .sources-list li a {
+    color: var(--fg-bright) !important;
+    text-decoration: none;
+    border-bottom: 1px solid var(--border-strong) !important;
+    font-size: 15px;
+    transition: all 0.15s ease;
+  }
+  .sources-list li a:hover {
+    color: var(--link) !important;
+    border-bottom-color: var(--link) !important;
+  }
+  .sources-list li .meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--fg-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* Resources two-col list */
+  .resources-grid {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 24px 0 !important;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 32px;
+  }
+  .resources-grid li {
+    padding: 10px 0 !important;
+    border-bottom: 1px solid var(--border) !important;
+    font-size: 13.5px !important;
+    color: var(--fg-muted) !important;
+    font-family: var(--font-sans);
+  }
+  .resources-grid li::before { display: none !important; }
+  .resources-grid li a {
+    color: var(--fg-muted) !important;
+    text-decoration: none !important;
+    border-bottom: none !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    transition: color 0.15s ease !important;
+  }
+  .resources-grid li a::after {
+    content: "↗";
+    color: var(--fg-faint);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    flex-shrink: 0;
+    transition: color 0.15s ease, transform 0.15s ease;
+  }
+  .resources-grid li a:hover {
+    color: var(--fg-bright) !important;
+  }
+  .resources-grid li a:hover::after {
+    color: var(--link);
+    transform: translate(2px, -2px);
+  }
+  @media (max-width: 700px) {
+    .resources-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ====== Quote pull ======================================================== */
+  .pull {
+    margin: 32px 0;
+    padding: 20px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-sans);
+    font-size: 22px;
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+    color: var(--fg-bright);
+    font-weight: 500;
+    max-width: 64ch;
+  }
+  .pull .by {
+    display: block;
+    margin-top: 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--fg-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+  }
+
+  /* ====== Footer ============================================================ */
+  footer.foot {
+    border-top: 1px solid var(--border);
+    padding: 32px 0 60px;
+    margin-top: 40px;
+  }
+  .foot-inner {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--fg-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    flex-wrap: wrap;
+  }
+
+  /* ====== Responsive ======================================================== */
+  @media (max-width: 980px) {
+    .layout {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    aside.toc {
+      position: static;
+      max-height: none;
+      margin-bottom: 56px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg-card);
+    }
+    .roles-grid { grid-template-columns: 1fr; }
+    .role-arrow { transform: rotate(90deg); padding: 10px 0; }
+    .roles-notes { grid-template-columns: 1fr; }
+    .risks-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 700px) {
+    .container, .topbar-inner, .foot-inner { padding-left: 20px; padding-right: 20px; }
+    .step-card { padding: 22px; }
+    h1.hero-title { font-size: 40px; max-width: none; }
+    .hero-meta-row { gap: 20px; }
+  }
+
+  /* ====== Animations ======================================================== */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero, .step-card, .subsection, .risk-card, .role-card {
+      animation: rise 0.5s cubic-bezier(0.2, 0.8, 0.3, 1) backwards;
+    }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: none; }
+    }
   }
 </style>
 </head>
 <body>
 
-<header class="masthead">
-  <div class="wrap mast-row">
-    <div class="left">Vol. I · No. 1 · 2026</div>
-    <div class="center">The Field Manual</div>
-    <div class="right">For systems people · in the age of agents</div>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#top">
+      <span class="brand-mark"></span>
+      <span>field-manual / design-systems-for-ai</span>
+    </a>
+    <div class="topbar-meta">
+      <span class="dot"></span>
+      <span>v1.1 · synthesised may 2026</span>
+    </div>
   </div>
 </header>
 
-<main class="wrap">
+<div class="container" id="top">
+  <div class="layout">
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-grid">
-      <aside class="hero-meta">
-        <div><strong>Subject</strong></div>
-        <div>Preparing a Design System</div>
-        <div>for AI-Generated Code</div>
-        <div style="margin-top:14px"><strong>Length</strong></div>
-        <div>Eight steps · One checklist</div>
-        <div style="margin-top:14px"><strong>Sources</strong></div>
-        <div>Seven essays · zeroheight + Southleft</div>
-      </aside>
-      <div>
-        <h1 class="title">A design&nbsp;system <em>your&nbsp;agents</em> can actually&nbsp;read.</h1>
-        <p class="hero-deck">
-          A concise field manual, synthesised from seven essays by practitioners at
-          zeroheight and Southleft, for teams who want their design system to be
-          legible to coding agents — not just to humans.
-        </p>
+    <!-- ============================ HERO =================================== -->
+    <section class="hero">
+      <div class="eyebrow">
+        <span class="badge">FIELD MANUAL</span>
+        <span>For systems people · working with coding agents</span>
       </div>
-    </div>
-    <div class="hero-rule"></div>
-    <div class="hero-tags">
-      <span>Tokens</span>
-      <span>Contracts</span>
-      <span>MCPs &amp; Skills</span>
-      <span>Schemas</span>
-      <span>Diagnostic layer</span>
-      <span>Declared docs</span>
-    </div>
-  </section>
-
-  <!-- LEDE -->
-  <section class="lede">
-    <aside class="lede-aside">
-      <b>Why this exists</b>
-      Most design systems were written for humans who can ask a colleague when
-      something is unclear. Coding agents cannot. They take whatever you give
-      them and run with it. This manual collects what to fix, in the order it
-      matters, so that an agent can compose your product without guessing.
-    </aside>
-    <div class="lede-body">
-      <p>
-        Design systems were always a means to an end. We didn't build token
-        architectures for the joy of naming colours; we built them so that
-        products could be shipped faster, more consistently, and at greater
-        scale.<a class="cite" href="#s1">01</a> The end has just changed shape.
-        The next products your system needs to support are assembled by agents,
-        in the moment, from your component inventory — and the margin for error
-        in that output is functionally zero.<a class="cite" href="#s1">01</a>
+      <h1 class="hero-title">A design system <span class="accent">your agents</span> can actually read.</h1>
+      <p class="hero-deck">
+        A practical, opinionated guide for preparing a design system to be
+        consumed by AI coding agents — synthesised from six essays by
+        practitioners at zeroheight and Southleft, plus working notes on the
+        Figma + MCP handoff stack.
       </p>
-      <p>
-        That is why every "we have a design system, but…" story now matters
-        more than it used to.<a class="cite" href="#s4">04</a> A messy system
-        used to be a productivity problem. Today it is a strategic liability:
-        a human developer can compensate for inconsistent tokens or stale
-        docs; an agent cannot.<a class="cite" href="#s4">04</a>
-      </p>
-      <p>
-        The good news, repeated across all seven essays, is that the fix is
-        unglamorous and well-known. It is the boring stuff: tokens, contracts,
-        schemas, machine-readable documentation, and a diagnostic layer that
-        keeps design and code in sync.<a class="cite" href="#s1">01</a> Do that
-        work in the right order and you do not just survive the shift — you
-        become the team that gets to use it.
-      </p>
-    </div>
-  </section>
-
-  <div class="break"><span class="dot"></span> The eight steps <span class="dot"></span></div>
-
-  <!-- STEPS -->
-  <ol class="steps">
-
-    <li class="step">
-      <div class="step-num" data-label="Step / Foundation">01</div>
-      <div class="step-body">
-        <h2>Treat the system as an API, not a gallery.</h2>
-        <p class="why">An API doesn't hand you a picture and ask you to figure out what it meant. It returns structured data with a contract.<a class="cite" href="#s6">06</a></p>
-        <p>
-          The single most important shift is documenting your system as
-          <em>declared</em> data rather than <em>designed</em> artefact. Designed
-          frames — visual layouts, do/don't pairs, callouts pinned around a
-          component — are optimised for human browsing, but force an agent to
-          infer meaning from a node tree.<a class="cite" href="#s6">06</a>
-          Declared documentation lives in description fields, in markdown, in
-          structured data, and an agent can parse it without guessing.
-        </p>
-        <ul>
-          <li>Populate component <code>description</code> fields with clear markdown: purpose, usage, constraints, do/don't expressed as text.</li>
-          <li>Couple documentation to components — rename or delete the component and the docs travel with it.<a class="cite" href="#s6">06</a></li>
-          <li>Keep designed frames for human stakeholders, but stop treating them as machine-readable.</li>
-          <li>The readability test: can an agent understand this without visual inference? If not, declare it.</li>
-        </ul>
-      </div>
-    </li>
-
-    <li class="step">
-      <div class="step-num" data-label="Step / Tokens &amp; Contracts">02</div>
-      <div class="step-body">
-        <h2>Fix the foundation before you generate anything.</h2>
-        <p class="why">For AI to generate a correct, branded, accessible interface, it needs absolute clarity about what your components are, how they behave, and what constraints they must respect.<a class="cite" href="#s1">01</a></p>
-        <p>
-          A design system that is "mostly documented" or "good enough for the
-          team that built it" is not enough. Complete is the bar.<a class="cite" href="#s1">01</a>
-          The chain is unforgiving: you cannot generate adaptive UI without a
-          system an agent can reliably consume; you cannot have a consumable
-          system without a diagnostic layer that keeps design and code in sync;
-          you cannot build that layer without first fixing the drift that
-          caused it.<a class="cite" href="#s1">01</a>
-        </p>
-        <ul>
-          <li>Audit tokens: are they consistent, semantic, and free of one-off hex values in production code?<a class="cite" href="#s4">04</a></li>
-          <li>Write component contracts that specify every prop, state, interaction pattern, and accessibility requirement.<a class="cite" href="#s1">01</a></li>
-          <li>Add metadata that a machine can parse — not just human-readable Figma annotations.</li>
-          <li>Check platform parity: a component locked to one platform is half a contract.<a class="cite" href="#s1">01</a></li>
-        </ul>
-        <div class="callout" data-label="Field note">
-          <p>Two real failure modes from enterprise teams: designers building careful Figma variants while engineers ship inline styles and hardcoded values; and a 50-engineer team colour-picking from screenshots because the design-to-code path didn't exist.<a class="cite" href="#s4">04</a></p>
-          <p>The root cause was the same in both: no structural communication encoded in the system itself.</p>
+      <div class="hero-meta-row">
+        <div class="hero-meta-item">
+          <div class="k">Scope</div>
+          <div class="v">8 steps · 6 sections · 30+ resources</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="k">Read time</div>
+          <div class="v">~ 22 minutes</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="k">Audience</div>
+          <div class="v">DS engineers · designers · design engineers</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="k">Stack</div>
+          <div class="v">Figma · MCP · Storybook · Code Connect</div>
         </div>
       </div>
-    </li>
+    </section>
 
-    <li class="step">
-      <div class="step-num" data-label="Step / Guidelines">03</div>
-      <div class="step-body">
-        <h2>Encode the <em>why</em>, not just the <em>how</em>.</h2>
-        <p class="why">LLMs are trained on generic code and design practices. The choices already represented in your system — and not encoded anywhere — are exactly what they get wrong.<a class="cite" href="#s2">02</a></p>
-        <p>
-          Most component docs describe mechanics: what props exist, the
-          difference between a checkbox and a radio. That is the
-          <em>how</em>. What an agent needs in addition is the <em>why</em>:
-          when to use a switch instead of a checkbox, when never to use a
-          semantic-red chip (e.g. to indicate medical risk status), when a
-          "select all / none" pattern is required.<a class="cite" href="#s2">02</a>
-          Those judgments already exist in your team — they just aren't
-          encoded.
-        </p>
-        <ul>
-          <li>Treat design guidelines as a new deliverable, shipped alongside components and reference docs.<a class="cite" href="#s2">02</a></li>
-          <li>Write them as agent <em>skills</em>: short, decision-oriented, product-specific.</li>
-          <li>Include negative examples — "do not generate X for Y context" — because the default training data will get this wrong by default.<a class="cite" href="#s2">02</a></li>
-        </ul>
-      </div>
-    </li>
+    <!-- ============================ TOC ==================================== -->
+    <aside class="toc">
+      <div class="toc-title">Table of contents</div>
+      <ol>
+        <li>
+          <a href="#intro">Why this exists</a>
+          <ol class="toc-sub">
+            <li><a href="#intro-shift">The shift in what a DS is for</a></li>
+            <li><a href="#intro-figma">How AI "sees" Figma vs Paper</a></li>
+          </ol>
+        </li>
+        <li>
+          <a href="#steps">The eight foundations</a>
+          <ol class="toc-sub">
+            <li><a href="#step-1">System as an API</a></li>
+            <li><a href="#step-2">Fix the foundation</a></li>
+            <li><a href="#step-3">Encode the why</a></li>
+            <li><a href="#step-4">MCPs, AGENTS.md, skills</a></li>
+            <li><a href="#step-5">Components as data</a></li>
+            <li><a href="#step-6">The diagnostic layer</a></li>
+            <li><a href="#step-7">LLMs on unglamorous work</a></li>
+            <li><a href="#step-8">Build in the open</a></li>
+          </ol>
+        </li>
+        <li>
+          <a href="#design-side">The design side</a>
+          <ol class="toc-sub">
+            <li><a href="#ds-mcp">What an LLM sees via MCP</a></li>
+            <li><a href="#ds-intent">Share interaction intent</a></li>
+            <li><a href="#ds-variables">Variable code syntax</a></li>
+            <li><a href="#ds-codeconnect">Code Connect &amp; slots</a></li>
+            <li><a href="#ds-plugins">Internal plugins</a></li>
+            <li><a href="#ds-audit">Audit alignment with MCP</a></li>
+          </ol>
+        </li>
+        <li>
+          <a href="#code-side">The code side</a>
+          <ol class="toc-sub">
+            <li><a href="#cs-storybook">Storybook as test runner</a></li>
+          </ol>
+        </li>
+        <li>
+          <a href="#roles">Roles &amp; the new craft</a>
+          <ol class="toc-sub">
+            <li><a href="#roles-upstream">The roles move upstream</a></li>
+            <li><a href="#roles-de">The Design Engineer</a></li>
+          </ol>
+        </li>
+        <li>
+          <a href="#risks">Risks &amp; traps</a>
+          <ol class="toc-sub">
+            <li><a href="#risk-hallucination">Hallucinated files</a></li>
+            <li><a href="#risk-sameness">Sameness creep</a></li>
+            <li><a href="#risk-bias">Bias &amp; a11y blind spots</a></li>
+            <li><a href="#risk-multimodal">Multimodal as shortcut</a></li>
+            <li><a href="#risk-docs">LLM-written docs</a></li>
+            <li><a href="#risk-finishline">DS as finish line</a></li>
+          </ol>
+        </li>
+        <li>
+          <a href="#checklist">Readiness checklist</a>
+        </li>
+        <li>
+          <a href="#sources">Sources &amp; further reading</a>
+          <ol class="toc-sub">
+            <li><a href="#sources-primary">Primary essays</a></li>
+            <li><a href="#sources-resources">Further reading</a></li>
+          </ol>
+        </li>
+      </ol>
+    </aside>
 
-    <li class="step">
-      <div class="step-num" data-label="Step / Guardrails">04</div>
-      <div class="step-body">
-        <h2>Put MCPs, AGENTS.md, and skills in the codebase.</h2>
-        <p class="why">When LLMs have access to your entire codebase, they'll use anything they find as a pattern to copy. The models aren't trained on your code; they're trained on public code, which is why Tailwind and ShadCN are so over-represented.<a class="cite" href="#s2">02</a></p>
-        <p>
-          Without explicit guardrails, agents will faithfully reproduce
-          whatever's most common in their training set — not what's in your
-          system. Three artefacts close the gap:
+    <!-- ============================ CONTENT ================================ -->
+    <main class="content">
+
+      <!-- ===== 01 INTRO ================================================== -->
+      <section class="section" id="intro">
+        <div class="section-num">01 — Introduction</div>
+        <h2 class="section-title">Why this exists.</h2>
+        <p class="lead">
+          Design systems were always a means to an end. They existed to ship
+          products faster, more consistently, at greater scale. The end has
+          just changed shape: the next products your system needs to support
+          are assembled by coding agents, in the moment, from your component
+          inventory — and the margin for error in that output is functionally
+          zero.<a class="cite" href="#s1">01</a>
         </p>
-        <ul>
-          <li><strong>MCP server</strong> — exposes the design system to agents as a structured resource they can query, not scrape.</li>
-          <li><strong>AGENTS.md</strong> — a manifest at the root of the repo telling agents which components to use, which patterns are forbidden, where the tokens live.</li>
-          <li><strong>Agent skills</strong> — small, focused instruction files that capture decision rules (the <em>why</em> from step three).<a class="cite" href="#s2">02</a></li>
-        </ul>
-        <pre class="codeish"><span class="c"># AGENTS.md (excerpt)</span>
+        <p>
+          A messy system used to be a productivity problem. Today it is a
+          strategic liability: a human developer can compensate for inconsistent
+          tokens or stale docs; an agent cannot.<a class="cite" href="#s4">04</a>
+          This manual collects what to fix, in the order that matters, so that
+          an agent can compose your product without guessing.
+        </p>
+
+        <div class="subsection" id="intro-shift">
+          <div class="subsection-num">1.1 — The shift</div>
+          <h3 class="subsection-title">From human-readable to agent-readable.</h3>
+          <p>
+            The good news, repeated across every essay synthesised here, is
+            that the fix is unglamorous and well-known: tokens, contracts,
+            schemas, machine-readable documentation, a diagnostic layer that
+            keeps design and code in sync.<a class="cite" href="#s1">01</a>
+            Do that work in the right order and you do not just survive the
+            shift — you become the team that gets to use it.
+          </p>
+        </div>
+
+        <div class="subsection" id="intro-figma">
+          <div class="subsection-num">1.2 — How models "see" Figma</div>
+          <h3 class="subsection-title">Why Figma is harder for an AI than Paper.</h3>
+          <p>
+            Every interface drawn in Figma today is being read by two
+            audiences: the designer next to you and the model two doors down.
+            When designs are prepared for both, agents generate faster,
+            consume fewer tokens, and produce results that resemble your
+            intent on the first pass.
+          </p>
+          <p>
+            It is not an accident that tools like <a href="https://paper.design" target="_blank" rel="noopener">paper.design</a>
+            and pencil.dev exist — and that paper's founders came out of
+            Figma. Paper generates real HTML beneath its layers; Figma draws
+            vectors. Wherever Figma is the source of truth, the burden of
+            interpretation falls on the LLM — which means you pay for it in
+            tokens, latency, and accuracy. The remedy is to give the model
+            the structure it actually needs.
+          </p>
+          <div class="callout">
+            <div class="callout-label">Premise</div>
+            <p>
+              Figma will remain the best tool for design work for the
+              foreseeable future. The question is not <em>whether</em> to keep
+              using it but <em>how</em> to make it cheap and accurate for an
+              LLM to read.
+            </p>
+            <p>
+              The mental model that helps: <em>when you connect Figma to your
+              AI-powered IDE through MCP, you are turning your design file
+              into a prompt.</em><a class="cite" href="#r1">r1</a> Everything
+              ambiguous about the file becomes ambiguous in the generated
+              code.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 02 STEPS ================================================== -->
+      <section class="section" id="steps">
+        <div class="section-num">02 — The foundations</div>
+        <h2 class="section-title">Eight steps, in order.</h2>
+        <p class="section-lede">
+          The chain is unforgiving. You cannot generate adaptive UI without a
+          system an agent can reliably consume; you cannot have such a system
+          without a diagnostic layer that keeps design and code in sync; you
+          cannot build that layer without first fixing the drift that caused
+          it. Skip a step and the chain breaks.<a class="cite" href="#s1">01</a>
+        </p>
+
+        <div class="steps-grid">
+
+          <!-- Step 1 -->
+          <article class="step-card" id="step-1">
+            <div class="step-card-head">
+              <span class="step-card-num">01</span>
+              <span class="step-card-label">Posture · Foundation</span>
+            </div>
+            <h3>Treat the system as an API, not a gallery.</h3>
+            <p class="why">An API doesn't hand you a picture and ask you to figure out what it meant. It returns structured data with a contract.<a class="cite" href="#s6">06</a></p>
+            <p>
+              The single most important shift is documenting your system as
+              <em>declared</em> data rather than <em>designed</em> artefact.
+              Designed frames — visual layouts, do/don't pairs, callout boxes
+              pinned around a component — are optimised for human browsing
+              but force an agent to infer meaning from a node tree.<a class="cite" href="#s6">06</a>
+              Declared documentation lives in description fields, in markdown,
+              and an agent can parse it without guessing.
+            </p>
+            <ul>
+              <li>Populate component <code>description</code> fields with clear markdown: purpose, usage, constraints, do/don't expressed as text.</li>
+              <li>Couple documentation to components — rename or delete the component and the docs travel with it.<a class="cite" href="#s6">06</a></li>
+              <li>Keep designed frames for human stakeholders, but stop treating them as machine-readable.</li>
+              <li>The readability test: can an agent understand this without visual inference? If not, declare it.</li>
+            </ul>
+          </article>
+
+          <!-- Step 2 -->
+          <article class="step-card" id="step-2">
+            <div class="step-card-head">
+              <span class="step-card-num">02</span>
+              <span class="step-card-label">Tokens · Contracts</span>
+            </div>
+            <h3>Fix the foundation before you generate anything.</h3>
+            <p class="why">For AI to generate a correct, branded, accessible interface, it needs absolute clarity about what your components are, how they behave, and what constraints they must respect.<a class="cite" href="#s1">01</a></p>
+            <p>
+              A system that is "mostly documented" or "good enough for the
+              team that built it" is not enough. <strong>Complete is the
+              bar.</strong><a class="cite" href="#s1">01</a>
+            </p>
+            <ul>
+              <li>Audit tokens: are they consistent, semantic, free of one-off hex values in production code?<a class="cite" href="#s4">04</a></li>
+              <li>Write component contracts that specify every prop, state, interaction pattern, and accessibility requirement.<a class="cite" href="#s1">01</a></li>
+              <li>Add metadata that a machine can parse — not just human-readable Figma annotations.</li>
+              <li>Check platform parity: a component locked to one platform is half a contract.<a class="cite" href="#s1">01</a></li>
+            </ul>
+            <div class="callout">
+              <div class="callout-label">Field note</div>
+              <p>Two real failure modes from enterprise teams: designers building careful Figma variants while engineers ship inline styles; and a 50-engineer team colour-picking from screenshots because the design-to-code path didn't exist.<a class="cite" href="#s4">04</a> Same root cause both times: no structural communication encoded in the system itself.</p>
+            </div>
+          </article>
+
+          <!-- Step 3 -->
+          <article class="step-card" id="step-3">
+            <div class="step-card-head">
+              <span class="step-card-num">03</span>
+              <span class="step-card-label">Guidelines · Decisions</span>
+            </div>
+            <h3>Encode the <em>why</em>, not just the <em>how</em>.</h3>
+            <p class="why">LLMs are trained on generic code and design practices. The choices already represented in your system — and not encoded anywhere — are exactly what they get wrong.<a class="cite" href="#s2">02</a></p>
+            <p>
+              Most component docs describe mechanics: what props exist, the
+              difference between a checkbox and a radio. That is the
+              <em>how</em>. What an agent needs in addition is the
+              <em>why</em>: when to use a switch instead of a checkbox, when
+              never to use a semantic-red chip (e.g. to indicate medical risk
+              status), when a "select all / none" pattern is
+              required.<a class="cite" href="#s2">02</a>
+            </p>
+            <ul>
+              <li>Treat design guidelines as a new deliverable, shipped alongside components and reference docs.<a class="cite" href="#s2">02</a></li>
+              <li>Write them as agent <em>skills</em>: short, decision-oriented, product-specific.</li>
+              <li>Include negative examples — "do not generate X for Y context" — because the default training data will get this wrong.<a class="cite" href="#s2">02</a></li>
+            </ul>
+          </article>
+
+          <!-- Step 4 -->
+          <article class="step-card" id="step-4">
+            <div class="step-card-head">
+              <span class="step-card-num">04</span>
+              <span class="step-card-label">Guardrails · Tooling</span>
+            </div>
+            <h3>Put MCPs, AGENTS.md, and skills in the codebase.</h3>
+            <p class="why">When LLMs have access to your codebase, they'll use anything they find as a pattern. The models aren't trained on your code; they're trained on public code — which is why Tailwind and ShadCN are so over-represented.<a class="cite" href="#s2">02</a></p>
+            <ul>
+              <li><strong>MCP server</strong> — exposes the design system to agents as a structured resource they can query, not scrape.</li>
+              <li><strong>AGENTS.md</strong> — a manifest at the repo root telling agents which components to use, which patterns are forbidden, where the tokens live.</li>
+              <li><strong>Agent skills</strong> — small, focused instruction files that capture decision rules (the <em>why</em> from step three).<a class="cite" href="#s2">02</a></li>
+            </ul>
+<pre class="code-block" data-lang="agents.md"><span class="c"># AGENTS.md (excerpt)</span>
 <span class="k">use_components_from:</span> <span class="s">"@acme/ds"</span>
 <span class="k">forbid:</span>
   - <span class="s">"inline tailwind utility classes for colour"</span>
   - <span class="s">"recreating components that already exist in @acme/ds"</span>
 <span class="k">tokens:</span> <span class="s">"./tokens/semantic.json"</span>
 <span class="k">skills:</span> <span class="s">"./.skills/"</span></pre>
-      </div>
-    </li>
+          </article>
 
-    <li class="step">
-      <div class="step-num" data-label="Step / Patterns">05</div>
-      <div class="step-body">
-        <h2>Ship components as data — not just code.</h2>
-        <p class="why">What if a Payment element is not a single component, but a set of structured relationships that describe how to use all the individual atomic components?<a class="cite" href="#s2">02</a></p>
-        <p>
-          Patterns have always been the design-system bogeyman: built for one
-          product purpose, made of many sub-components, and exploding in
-          variation. Encoding them as rigid code components creates a
-          maintenance burden and pushes teams toward workarounds.
-          <a class="cite" href="#s2">02</a>
-          Schemas — "components as data" — describe the relationship instead:
-          which components compose into which patterns, what context a
-          component requires, which siblings are valid.
+          <!-- Step 5 -->
+          <article class="step-card" id="step-5">
+            <div class="step-card-head">
+              <span class="step-card-num">05</span>
+              <span class="step-card-label">Patterns · Schemas</span>
+            </div>
+            <h3>Ship components as data — not just code.</h3>
+            <p class="why">What if a payment element is not a single component, but a set of structured relationships that describe how to use the individual atomic components?<a class="cite" href="#s2">02</a></p>
+            <p>
+              Encoding patterns as rigid code components creates maintenance
+              burden and pushes teams toward workarounds. Schemas —
+              "components as data" — describe the relationship instead:
+              which components compose into which patterns, what context a
+              component requires, which siblings are valid.
+            </p>
+            <ul>
+              <li>For each pattern, ship a schema describing its sub-components, contexts, and allowed siblings — not a monolithic code component.</li>
+              <li>Use semantic naming so an agent can compose meaningfully (a <code>CancelButton</code> in <code>modalContext</code> is far clearer than a generic <code>Button</code>).<a class="cite" href="#s2">02</a></li>
+              <li>This is what enables multi-turn, dynamically recomposing UI — the same primitive that lets products like Expedia render inside ChatGPT.<a class="cite" href="#s2">02</a></li>
+            </ul>
+          </article>
+
+          <!-- Step 6 -->
+          <article class="step-card" id="step-6">
+            <div class="step-card-head">
+              <span class="step-card-num">06</span>
+              <span class="step-card-label">Diagnostic · Drift</span>
+            </div>
+            <h3>Build the diagnostic layer.</h3>
+            <p class="why">No feedback loop. No diagnostic layer. Just two teams working in parallel, producing divergent results.<a class="cite" href="#s4">04</a></p>
+            <p>
+              Drift is the check-engine light of design systems. It rarely
+              fails catastrophically; it just quietly diverges, sprint by
+              sprint, demoralising the people who care most.<a class="cite" href="#s4">04</a>
+            </p>
+            <ul>
+              <li>Automated parity checks between Figma source-of-truth and production code (tokens, components, props).</li>
+              <li>Bidirectional sync — when a designer changes a variant, code knows; when an engineer ships a divergence, design sees it.</li>
+              <li>Treat drift as technical debt with a measurable cost, not a vibes problem.</li>
+            </ul>
+          </article>
+
+          <!-- Step 7 -->
+          <article class="step-card" id="step-7">
+            <div class="step-card-head">
+              <span class="step-card-num">07</span>
+              <span class="step-card-label">Day-to-day</span>
+            </div>
+            <h3>Put LLMs to work on the unglamorous tasks first.</h3>
+            <p class="why">Right now, the best way to use LLMs in your design system is to focus on meaningfully filling gaps. Think less about generating new components and more about delivering on the promise of design systems.<a class="cite" href="#s3">03</a></p>
+            <ul>
+              <li><strong>Refactors and migrations</strong> — token renames, API changes, deprecations. Glorified find-and-replace at scale.<a class="cite" href="#s3">03</a></li>
+              <li><strong>Interaction prototyping</strong> — let designers exercise real flows in the browser via tools like v0, Lovable, or Dessn.<a class="cite" href="#s3">03</a></li>
+              <li><strong>Keeping examples fresh</strong> — Storybook stories and sandbox states that go stale the moment a component changes.<a class="cite" href="#s3">03</a></li>
+            </ul>
+            <div class="callout warning">
+              <div class="callout-label">Anti-pattern</div>
+              <p>Don't let an LLM write your design-system documentation. The output reads like a third-rate style guide ("An input is an element users can type into") and lacks the context your team needs about <em>when</em> and <em>why</em> to use a component.<a class="cite" href="#s3">03</a></p>
+            </div>
+          </article>
+
+          <!-- Step 8 -->
+          <article class="step-card" id="step-8">
+            <div class="step-card-head">
+              <span class="step-card-num">08</span>
+              <span class="step-card-label">Posture · Ecosystem</span>
+            </div>
+            <h3>Build in the open. Extend, don't restart.</h3>
+            <p class="why">We need to stop creating new systems for every project. Build within existing ecosystems. Avoid starting fresh unless absolutely necessary.<a class="cite" href="#s5">05</a></p>
+            <p>
+              AI thrives in open environments because it has been trained on
+              them. The corresponding warning is sameness — when every team
+              uses the same kits and the same prompts, diversity collapses
+              and the design system stops carrying any identity.<a class="cite" href="#s5">05</a>
+            </p>
+            <ul>
+              <li>Adopt or extend existing systems gradually, component by component.<a class="cite" href="#s5">05</a></li>
+              <li>Make transparency and machine-readability architectural principles from day one.</li>
+              <li>Contribute back when you patch or extend — it keeps the ecosystem (and the models trained on it) honest.</li>
+              <li>Curate against vibe-coded sameness: where does your product actually need to look unlike the default?</li>
+            </ul>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- ===== 03 DESIGN SIDE ============================================ -->
+      <section class="section" id="design-side">
+        <div class="section-num">03 — The design side</div>
+        <h2 class="section-title">Making Figma legible to AI.</h2>
+        <p class="section-lede">
+          When Figma is connected to an editor through MCP, the model does
+          not see pixels the way a human does. Everything that follows
+          assumes Figma stays the design surface and that the goal is to
+          encode as much intent into the file as possible — so the agent has
+          less to interpret and more to consume.
         </p>
-        <ul>
-          <li>For each pattern, ship a schema describing its sub-components, contexts, and allowed siblings — not a monolithic code component.</li>
-          <li>Use semantic naming so an agent can compose meaningfully (a <code>CancelButton</code> in <code>modalContext</code> is far clearer than a generic <code>Button</code>).<a class="cite" href="#s2">02</a></li>
-          <li>This is what enables multi-turn, dynamically recomposing UI — the same primitive that lets products like Expedia render inside ChatGPT.<a class="cite" href="#s2">02</a></li>
+
+        <!-- 3.1 -->
+        <div class="subsection" id="ds-mcp">
+          <div class="subsection-num">3.1 — Inputs to the model</div>
+          <h3 class="subsection-title">What an LLM sees through MCP.</h3>
+          <p>
+            Connect Figma to your editor via an MCP server and the model
+            primarily receives these signals — not pixels.
+          </p>
+          <ul class="mcp-list">
+            <li>
+              <strong>Components &amp; instances</strong>
+              <span>Names, descriptions, dev resources, props, variants.</span>
+            </li>
+            <li>
+              <strong>Auto-layout</strong>
+              <span>Directions, gaps, padding — the visual cousin of flexbox; maps to your DOM structure.</span>
+            </li>
+            <li>
+              <strong>Variables</strong>
+              <span>Colours, typography, spacing, code syntax mapping.</span>
+            </li>
+            <li>
+              <strong>Text content &amp; styles</strong>
+              <span>The actual strings plus the type tokens applied.</span>
+            </li>
+            <li>
+              <strong>Page &amp; frame structure</strong>
+              <span>Names matter — call frames <code>Header</code>, <code>Hero</code>, <code>CTA</code>, <code>Row</code>, <code>Content</code>; never <code>Frame 2137</code>.</span>
+            </li>
+            <li>
+              <strong>Exportable assets</strong>
+              <span>Their names become file names downstream.</span>
+            </li>
+            <li>
+              <strong>Annotations</strong>
+              <span>Anything you write into the file as structured intent.</span>
+            </li>
+            <li>
+              <strong>Constraints</strong>
+              <span>For absolute-positioned and frame elements — how they should resize.</span>
+            </li>
+          </ul>
+          <p class="lead">
+            The takeaway: every layer name, every variable mapping, every
+            annotation is doing real work. Whatever the model cannot read
+            structurally, it has to guess at — and you pay for the guess in
+            tokens, latency, and quality.
+          </p>
+
+          <h4>File hygiene checklist</h4>
+          <ul>
+            <li>Organise pages by intent — <code>Style Guide</code>, <code>Components</code>, <code>Design</code> screens — and keep exploration separate from production.<a class="cite" href="#r1">r1</a></li>
+            <li>Delete or rename placeholder layers (<code>Rectangle 23</code>, <code>Text 1</code>, <code>Frame 49</code>). The model reads them and treats them as semantic.<a class="cite" href="#r1">r1</a></li>
+            <li>Match component names to your intended code structure (<code>Button / Primary</code>, not <code>Btn Blue</code>).<a class="cite" href="#r1">r1</a></li>
+            <li>Use realistic content instead of Lorem Ipsum so generated copy and layout feel real.<a class="cite" href="#r1">r1</a></li>
+          </ul>
+
+          <h4>Responsive specifications</h4>
+          <p>Create separate frames per breakpoint with explicit names so the agent gets responsive intent for free:<a class="cite" href="#r1">r1</a></p>
+<pre class="code-block" data-lang="frames">Home / Desktop / 1440
+Home / Tablet / 768
+Home / Mobile / 375</pre>
+        </div>
+
+        <!-- 3.2 -->
+        <div class="subsection" id="ds-intent">
+          <div class="subsection-num">3.2 — Interaction</div>
+          <h3 class="subsection-title">Share interaction intent, not just appearance.</h3>
+          <p>
+            Communicating interactive elements is as important as the static
+            ones. Add annotations that capture <em>desired behaviour</em> —
+            states, transitions, dynamic content. Clear notes on what should
+            happen on hover, on focus, when data is empty, when an action is
+            destructive — these reduce guesswork dramatically and push the
+            first-pass output much closer to your intent.
+          </p>
+          <p>
+            A button without annotation is just a coloured rectangle to the
+            model. A button annotated <em>"Loading state shows spinner;
+            disabled when form invalid; primary CTA on confirmation
+            screen"</em> is a contract.
+          </p>
+        </div>
+
+        <!-- 3.3 -->
+        <div class="subsection" id="ds-variables">
+          <div class="subsection-num">3.3 — Source of truth</div>
+          <h3 class="subsection-title">Variable code syntax.</h3>
+          <p>
+            Variable code syntax in Figma gives both designers and AI coding
+            tools a single source of truth for colours, typography, spacing,
+            and states. Every variable maps to its production-side
+            counterpart — a Tailwind class, a CSS custom property, a design
+            token name — and the model gets that mapping for free.
+          </p>
+          <p>
+            This is also something you can auto-generate from scripts or via
+            the unofficial Figma Console MCP — meaning you don't have to type
+            the mapping by hand for every token. Make it part of the file
+            template so every new design starts with the mapping already in
+            place.
+          </p>
+
+          <h4>Naming conventions worth committing to</h4>
+          <p>Be intentional and semantic. The model uses these names verbatim downstream:<a class="cite" href="#r1">r1</a></p>
+<pre class="code-block" data-lang="tokens"><span class="c"># colour</span>
+color/background/surface
+color/text/primary
+
+<span class="c"># typography</span>
+font/heading
+font/body
+
+<span class="c"># spacing</span>
+space/4
+space/8
+space/16
+
+<span class="c"># radii &amp; shadows</span>
+radius/sm   shadow/md</pre>
+        </div>
+
+        <!-- 3.4 -->
+        <div class="subsection" id="ds-codeconnect">
+          <div class="subsection-num">3.4 — The bridge</div>
+          <h3 class="subsection-title">Code Connect &amp; slots.</h3>
+          <p>
+            Code Connect explicitly links a Figma component to its production
+            code component, documenting how variants and properties map
+            between the two. It removes an entire class of "is this the same
+            thing on both sides?" questions — and once an MCP server can
+            read it, the agent inherits the mapping.
+          </p>
+          <p>
+            Slots are supported in Code Connect, and they appear directly in
+            the rendered code snippets. When an engineer (or an agent) looks
+            at a slot-based component in Figma, they immediately see how it
+            maps to production: structure stays consistent, content stays
+            flexible. This is exactly what container components need — the
+            place where variation is expected by design.
+          </p>
+          <div class="callout success">
+            <div class="callout-label">Why it matters</div>
+            <p>Without Code Connect the agent has to infer the design ↔ code mapping every time. With it, the mapping is declared once and reused everywhere downstream — handoff becomes predictable instead of repeatedly negotiated.</p>
+          </div>
+
+          <h4>Slot configuration patterns</h4>
+          <p>Two intentional choices to make for every slot:<a class="cite" href="#r3">r3</a></p>
+          <ul>
+            <li><strong>Pre-filled vs. empty.</strong> Default content provides context and clarity; an empty slot signals to the designer that they must add something. Pick one deliberately per slot — both are valid, neither is the default.</li>
+            <li><strong>Preferred instances.</strong> Set the recommended component instances a slot can accept. They appear as curated options when designers interact with the slot, which accelerates the workflow <em>and</em> nudges everyone toward consistency without forcing it.</li>
+          </ul>
+          <p>
+            Implementation is light: insert a frame inside a main component,
+            right-click → "Convert to slot" (<code>⇧⌘S</code>). Slots can't live on
+            canvas directly, only inside a main component.<a class="cite" href="#r3">r3</a>
+          </p>
+        </div>
+
+        <!-- 3.5 -->
+        <div class="subsection" id="ds-plugins">
+          <div class="subsection-num">3.5 — Tooling</div>
+          <h3 class="subsection-title">Internal plugins to speed up handoff.</h3>
+          <p>
+            The fastest wins are small Figma plugins tailored to your system.
+            Run a brainstorming session with the design + DS team. A starting
+            backlog:
+          </p>
+          <ul>
+            <li>Attach the correct variables to non-zero values: radius tokens to radii, spacing tokens to spacing.</li>
+            <li>Reconnect detached typography styles automatically.</li>
+            <li>Highlight elements that don't have a colour style applied.</li>
+            <li>Rename layers from <code>Frame 2137</code> to something meaningful — <code>div</code>, <code>stack</code>, <code>flex</code>, <code>card</code>.</li>
+            <li>Scan all layers inside a given frame and report component-coverage percentage. Designs below 50 % go to the DS team for review.</li>
+            <li>Monthly Library Analytics digest — which team has lowest coverage, which component is most often detached.</li>
+          </ul>
+          <p>
+            Each one of these is small. Together they remove an enormous
+            amount of friction from the file before anything ever reaches a
+            coding agent.
+          </p>
+        </div>
+
+        <!-- 3.6 -->
+        <div class="subsection" id="ds-audit">
+          <div class="subsection-num">3.6 — Drift detection</div>
+          <h3 class="subsection-title">Audit alignment with the Figma MCP server.</h3>
+          <p>
+            With the Figma MCP server an agent can use design context to
+            audit drift between your designs and codebase — and propose
+            structural fixes on either side:
+          </p>
+          <ul>
+            <li>Audit design-token usage in code vs. the selected Figma frame, and vice versa.</li>
+            <li>Flag layer names that should change to better align Figma with code components.</li>
+            <li>Suggest Figma prop changes that bring the design closer to the production API.</li>
+            <li>Make code responsive and surface design issues earlier in the cycle.</li>
+          </ul>
+          <p>Example prompt — feed it the Figma selection and the production files, ask for divergences:</p>
+<pre class="code-block" data-lang="prompt">#get_variable_defs from the selected Figma elements and compare them
+with the variables and styles used in the code implementation in
+#file:ChatBox.tsx and #file:chatBox.css</pre>
+        </div>
+      </section>
+
+      <!-- ===== 04 CODE SIDE ============================================== -->
+      <section class="section" id="code-side">
+        <div class="section-num">04 — The code side</div>
+        <h2 class="section-title">Testing &amp; verifying what was generated.</h2>
+        <p class="section-lede">
+          Once an agent has produced code from your system, you need a way to
+          verify it without sitting through a manual QA pass on every output.
+          Storybook is the cheapest answer.
+        </p>
+
+        <div class="subsection" id="cs-storybook">
+          <div class="subsection-num">4.1 — Verification</div>
+          <h3 class="subsection-title">Storybook as test runner.</h3>
+          <p>
+            Storybook is an open-source tool that lets developers build,
+            test, and visualise UI components in isolation. Its built-in
+            test runner — based on Jest and Playwright — automatically
+            verifies whether a component renders correctly, while also
+            validating accessibility and performance characteristics.
+            Visual-regression testing can run in the cloud to catch issues
+            caused by CSS changes.
+          </p>
+          <p>
+            For an agent-driven workflow this is essential: every component
+            generated or modified by an LLM should land in a story that
+            exercises its states, and the test runner becomes your safety
+            net. Without it, drift between generated code and intent is
+            invisible until production.
+          </p>
+          <div class="callout">
+            <div class="callout-label">Pairing</div>
+            <p>Step 7 ("LLMs on unglamorous work") and Storybook reinforce each other: ask an agent to keep stories in sync with components, then let the test runner catch any case where it didn't. The two combined remove the single most tedious DS maintenance task.<a class="cite" href="#s3">03</a></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 05 ROLES ================================================== -->
+      <section class="section" id="roles">
+        <div class="section-num">05 — Roles</div>
+        <h2 class="section-title">The new craft.</h2>
+        <p class="section-lede">
+          If agents can compose interfaces, what happens to the people who
+          used to compose them? The honest answer from across the essays:
+          the work doesn't shrink, it relocates — and at the same time, an
+          entirely new role is emerging in its own right.<a class="cite" href="#s1">01</a><a class="cite" href="#s5">05</a>
+        </p>
+
+        <!-- 5.1 -->
+        <div class="subsection" id="roles-upstream">
+          <div class="subsection-num">5.1 — Relocation</div>
+          <h3 class="subsection-title">The roles move upstream.</h3>
+          <div class="roles-grid">
+            <div class="role-card">
+              <div class="role-tag">From</div>
+              <p>Building individual screens, individual components, individual stories. Picking colours, drawing variants, shipping pixel mocks across to engineering. Performing repetitive maintenance by hand.<a class="cite" href="#s5">05</a></p>
+            </div>
+            <div class="role-arrow" aria-hidden="true">→</div>
+            <div class="role-card accent">
+              <div class="role-tag">To</div>
+              <p>Authoring the tokens, contracts, and decision rules that the system uses to assemble itself. Defining the vocabulary, not arranging the sentences. Reviewing, refining, and governing what agents produce.<a class="cite" href="#s1">01</a><a class="cite" href="#s5">05</a></p>
+            </div>
+          </div>
+          <div class="roles-notes">
+            <div class="role-note">
+              <h4>Designers become rule-authors.</h4>
+              <p>Instead of designing individual screens, designers define the vocabulary, constraints, and rules that govern how screens get generated.<a class="cite" href="#s1">01</a></p>
+            </div>
+            <div class="role-note">
+              <h4>Engineers build contracts.</h4>
+              <p>Instead of building components from scratch, engineers build the contracts and infrastructure that let components be assembled correctly at scale.<a class="cite" href="#s1">01</a></p>
+            </div>
+            <div class="role-note">
+              <h4>Handovers become stewardship.</h4>
+              <p>The doer-to-curator shift means reviews can happen iteratively — even on mobile — and "handover" gives way to collective stewardship of the system itself.<a class="cite" href="#s5">05</a></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5.2 -->
+        <div class="subsection" id="roles-de">
+          <div class="subsection-num">5.2 — A new role</div>
+          <h3 class="subsection-title">The Design Engineer.</h3>
+          <p>
+            A new role gaining ground — both confusing and exciting, because
+            expectations for how software should look and feel have never
+            been higher. Design Engineers are the practitioners who close the
+            gap between intent and implementation, and they are increasingly
+            the people whose work makes an AI-coded interface feel
+            considered rather than generic.
+          </p>
+
+          <h4>The Design Engineer's toolbox</h4>
+          <ul>
+            <li>Design in Figma — fluent, but not exclusively</li>
+            <li>Design in code — comfortable shipping production-quality interfaces</li>
+            <li>Debug browser performance — and care about it</li>
+            <li>Design micro-animations and motion details</li>
+            <li>Create and maintain core components on both sides (design + code)</li>
+            <li>Maintain documentation — Storybooks, READMEs, MDX</li>
+            <li>Improve accessibility — and verify it, not just assert it</li>
+          </ul>
+
+          <h4>What they care about</h4>
+          <p>For the web, the Design Engineer's priorities tend to include:</p>
+          <ul>
+            <li>User interactions — fidelity, responsiveness, feel</li>
+            <li>Reusable components and primitives</li>
+            <li>Design <em>and</em> page-speed quality together, never one without the other</li>
+            <li>Inclusive input modes — touch, pointers, keyboard</li>
+            <li>Respecting user preferences — reduced motion, colour scheme, language</li>
+            <li>Accessibility for assistive-technology users</li>
+          </ul>
+
+          <p class="pull">
+            There's a lot of work behind the pretty pixels.
+            <span class="by">— the working definition</span>
+          </p>
+
+          <p>
+            Design Engineers go beyond visual appeal and own the other
+            pieces that make exceptional experiences possible. In an
+            agent-driven workflow they are the practical centre of gravity:
+            they author the contracts, write the skills, maintain the
+            stories, and review what the system produces.
+          </p>
+
+          <h4>How Vercel describes the role</h4>
+          <p>Vercel's own framing of the role is worth quoting almost verbatim — it covers the three working modes a Design Engineer moves between:<a class="cite" href="#r7">r7</a></p>
+          <ul>
+            <li><strong>Design collaboration.</strong> Partnering with designers iteratively in Figma <em>or</em> in code — consulting on implementation cost, component reusability, and prototyping explorations that are easier to execute outside design tools.</li>
+            <li><strong>Product team integration.</strong> Embedding within a product team for month-plus features, implementing UI while platform engineering handles the infrastructure.</li>
+            <li><strong>Independent ownership.</strong> Owning small-to-medium features end-to-end — from sketching through shipping — and driving design-led system projects (the Geist font, the documentation site, the component library).</li>
+          </ul>
+          <p>
+            Vercel emphasises a culture point that travels well: focus on the
+            outcome, not the process or the tool — and "iterate to greatness"
+            rather than wait for perfection.<a class="cite" href="#r7">r7</a>
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== 06 RISKS ================================================== -->
+      <section class="section" id="risks">
+        <div class="section-num">06 — Risks &amp; traps</div>
+        <h2 class="section-title">Where this goes wrong.</h2>
+        <p class="section-lede">
+          AI doesn't fix a design system; it amplifies whatever shape your
+          system is already in. Six pitfalls the essays keep returning to.
+        </p>
+
+        <div class="risks-grid">
+          <article class="risk-card" id="risk-hallucination">
+            <div class="risk-head">
+              <span class="risk-rune">i</span>
+              <h4>Hallucinated files and ghost components.</h4>
+            </div>
+            <p>Agents will confidently reference components, props, and paths that do not exist. The fix isn't "tell it to stop" — it's structured ground truth (MCP, AGENTS.md, schemas) and stable, well-maintained sources to draw from.<a class="cite" href="#s5">05</a></p>
+          </article>
+
+          <article class="risk-card" id="risk-sameness">
+            <div class="risk-head">
+              <span class="risk-rune">ii</span>
+              <h4>Sameness creep.</h4>
+            </div>
+            <p>Everyone uses the same kits and "vibe codes". Fast remixing speeds delivery but stifles diversity — most teams still reinvent rather than extend, and end up with the same default aesthetic.<a class="cite" href="#s5">05</a></p>
+          </article>
+
+          <article class="risk-card" id="risk-bias">
+            <div class="risk-head">
+              <span class="risk-rune">iii</span>
+              <h4>Bias &amp; accessibility blind spots.</h4>
+            </div>
+            <p>Ethical checks for bias and inclusivity become more important once an agent is composing UI at speed.<a class="cite" href="#s5">05</a> Accessibility requirements belong inside contracts and skills — not in a separate doc no agent reads.</p>
+          </article>
+
+          <article class="risk-card" id="risk-multimodal">
+            <div class="risk-head">
+              <span class="risk-rune">iv</span>
+              <h4>"It's multimodal — let it look at the frame."</h4>
+            </div>
+            <p>A screenshot closes part of the interpretation gap, but it's still inference from pixels, and it does nothing for drift — the screenshot is stale the moment the component changes. Vision patches reading; it doesn't patch maintenance.<a class="cite" href="#s6">06</a></p>
+          </article>
+
+          <article class="risk-card" id="risk-docs">
+            <div class="risk-head">
+              <span class="risk-rune">v</span>
+              <h4>Letting the LLM write your documentation.</h4>
+            </div>
+            <p>The output reads like a third-rate style guide and lacks the context your team actually needs about <em>when</em> and <em>why</em> to use a component.<a class="cite" href="#s3">03</a> Use LLMs to migrate, sync stories, write codemods — not to originate the system's voice.</p>
+          </article>
+
+          <article class="risk-card" id="risk-finishline">
+            <div class="risk-head">
+              <span class="risk-rune">vi</span>
+              <h4>"We have a DS" as the finish line.</h4>
+            </div>
+            <p>Design systems are crossing the same threshold responsive design crossed a decade ago. In two years, "do you have a design system?" will sound as quaint as "is your site mobile-friendly?" — minimum cost of entry, not differentiation.<a class="cite" href="#s4">04</a></p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===== 07 CHECKLIST ============================================= -->
+      <section class="section" id="checklist">
+        <div class="section-num">07 — Readiness</div>
+        <h2 class="section-title">The readiness checklist.</h2>
+        <p class="section-lede">Tick what you can defend. Anything unchecked is where an agent will guess.</p>
+
+        <ul class="checklist">
+          <li><span class="box" aria-hidden="true"></span><span>Every token is semantically named and used consistently in shipped code.</span></li>
+          <li><span class="box" aria-hidden="true"></span><span>Every component has a structured contract — props, states, interactions, a11y — that a machine can parse.</span></li>
+          <li><span class="box" aria-hidden="true"></span><span>Documentation lives in <code>description</code> fields as markdown, not as orphaned visual frames.</span></li>
+          <li><span class="box" aria-hidden="true"></span><span>An <code>AGENTS.md</code> manifest sits at the root of the codebase.</span></li>
+          <li><span class="box" aria-hidden="true"></span><span>An MCP (or equivalent) exposes the design system to agents as queryable structure.</span></li>
+          <li><span class="box" aria-hidden="true"></span><span>Decision-rule skills capture the <em>why</em>: when to use which component, what to never do.</span></li>
+          <li><span class="box" aria-hidden="true"></span><span>Patterns ship as schemas of relationships, not as monolithic code components.</span></li>
+          <li><span class="box" aria-hidden="true"></span><span>A diagnostic layer reports drift between Figma source and production code.</span></li>
+          <li><span class="box" aria-hidden="true"></span><span>Storybook stories (with Jest/Playwright tests) cover every component's states.</span></li>
+          <li><span class="box" aria-hidden="true"></span><span>Figma variables map to code via variable code syntax — single source of truth.</span></li>
+          <li><span class="box" aria-hidden="true"></span><span>Code Connect (or equivalent) declares Figma ↔ code mapping per component.</span></li>
+          <li><span class="box" aria-hidden="true"></span><span>Annotations capture interactive intent — states, transitions, edge cases.</span></li>
+          <li><span class="box" aria-hidden="true"></span><span>Frame names are semantic (<code>Hero</code>, <code>CTA</code>) — never <code>Frame 2137</code>.</span></li>
+          <li><span class="box" aria-hidden="true"></span><span>Internal Figma plugins handle the tedious normalisation tasks for designers.</span></li>
+          <li><span class="box" aria-hidden="true"></span><span>The system extends an existing ecosystem where possible, and contributes back when it patches one.</span></li>
+          <li><span class="box" aria-hidden="true"></span><span>A Design Engineer (or equivalent owner) is accountable for cross-stack quality.</span></li>
         </ul>
-      </div>
-    </li>
+      </section>
 
-    <li class="step">
-      <div class="step-num" data-label="Step / Diagnostic">06</div>
-      <div class="step-body">
-        <h2>Build the diagnostic layer.</h2>
-        <p class="why">No feedback loop. No diagnostic layer. Just two teams working in parallel, producing divergent results.<a class="cite" href="#s4">04</a></p>
-        <p>
-          Drift is the check engine light of design systems. It rarely fails
-          catastrophically; it just quietly diverges, sprint by sprint,
-          demoralising the people who care most about getting it right.<a class="cite" href="#s4">04</a>
-          The fix is a layer that constantly compares what was designed against
-          what shipped — and surfaces the gap as a first-class signal, not a
-          slack thread.
-        </p>
-        <ul>
-          <li>Automated parity checks between Figma source-of-truth and production code (tokens, components, props).</li>
-          <li>Bidirectional sync — when a designer changes a variant, code knows; when an engineer ships a divergence, design sees it.</li>
-          <li>Treat drift as technical debt with a measurable cost, not a vibes problem.</li>
-        </ul>
-      </div>
-    </li>
+      <!-- ===== 08 SOURCES =============================================== -->
+      <section class="section" id="sources">
+        <div class="section-num">08 — Sources</div>
+        <h2 class="section-title">Primary essays &amp; further reading.</h2>
+        <p class="section-lede">The six essays this manual is synthesised from, plus a curated reading list for everything around the Figma + MCP + Code Connect stack.</p>
 
-    <li class="step">
-      <div class="step-num" data-label="Step / Day-to-day">07</div>
-      <div class="step-body">
-        <h2>Put LLMs to work on the unglamorous tasks first.</h2>
-        <p class="why">Right now, the best way to use LLMs in your design system is to focus on meaningfully filling gaps. Think less about generating new components and more about delivering on the promise of design systems.<a class="cite" href="#s3">03</a></p>
-        <p>
-          Don't ask the LLM to invent your input component. Use it for the work
-          that almost never gets prioritised against product roadmaps but
-          quietly erodes trust in the system.<a class="cite" href="#s3">03</a>
-        </p>
-        <ul>
-          <li><strong>Refactors and migrations</strong> — token renames, API changes, deprecations. Glorified find-and-replace at scale.<a class="cite" href="#s3">03</a></li>
-          <li><strong>Interaction prototyping</strong> — let designers exercise real flows in the browser via tools like v0, Lovable, or Dessn, surfacing edge cases before engineering starts.<a class="cite" href="#s3">03</a></li>
-          <li><strong>Keeping examples fresh</strong> — Storybook stories, doc snippets, sandbox states that go stale the moment a component changes.<a class="cite" href="#s3">03</a></li>
-        </ul>
-        <div class="callout" data-label="Anti-pattern">
-          <p>Don't let an LLM write your design-system documentation. The output reads like a third-rate style guide ("An input is an element users can type into") and lacks the context your team actually needs.<a class="cite" href="#s3">03</a></p>
+        <div class="subsection" id="sources-primary">
+          <div class="subsection-num">8.1 — Synthesised from</div>
+          <h3 class="subsection-title">Primary essays.</h3>
+          <ol class="sources-list">
+            <li id="s1">
+              <a href="https://zeroheight.com/blog/the-future-of-design-systems-part-1-the-product-your-design-system-is-actually-building/" target="_blank" rel="noopener">The future of design systems — part 1: The product your design system is actually building</a>
+              <span class="meta">TJ Pitre · zeroheight</span>
+            </li>
+            <li id="s2">
+              <a href="https://zeroheight.com/blog/ai-in-design-systems-whats-changing-in-2026/" target="_blank" rel="noopener">AI in design systems: What's changing in 2026</a>
+              <span class="meta">Elyse · zeroheight</span>
+            </li>
+            <li id="s3">
+              <a href="https://zeroheight.com/blog/3-practical-ways-llms-can-support-design-systems-teams-today/" target="_blank" rel="noopener">3 practical ways LLMs can support design systems teams today</a>
+              <span class="meta">Elyse · zeroheight</span>
+            </li>
+            <li id="s4">
+              <a href="https://zeroheight.com/blog/the-future-of-design-systems-part-2-the-check-engine-light-is-on/" target="_blank" rel="noopener">The future of design systems — part 2: The check engine light is on</a>
+              <span class="meta">TJ Pitre · zeroheight</span>
+            </li>
+            <li id="s5">
+              <a href="https://zeroheight.com/blog/rethinking-design-systems-in-the-open/" target="_blank" rel="noopener">Rethinking design systems in the open</a>
+              <span class="meta">zeroheight</span>
+            </li>
+            <li id="s6">
+              <a href="https://southleft.substack.com/p/designed-vs-declared-how-to-document" target="_blank" rel="noopener">Designed vs Declared: How to document a design system for AI</a>
+              <span class="meta">TJ · Southleft</span>
+            </li>
+          </ol>
         </div>
-      </div>
-    </li>
 
-    <li class="step">
-      <div class="step-num" data-label="Step / Posture">08</div>
-      <div class="step-body">
-        <h2>Build in the open. Extend, don't restart.</h2>
-        <p class="why">We need to stop creating new systems for every project. Build within existing ecosystems. Avoid starting fresh unless absolutely necessary.<a class="cite" href="#s5">05</a></p>
-        <p>
-          AI thrives in open environments because it has been trained on them.
-          Open code, open documentation, open patterns: the more your system
-          looks like an extension of widely-known primitives, the more
-          predictable agent output becomes.<a class="cite" href="#s5">05</a>
-          The corresponding warning is sameness — when every team uses the
-          same kits and the same prompts, diversity collapses and the design
-          system stops carrying any identity.<a class="cite" href="#s5">05</a>
-        </p>
-        <ul>
-          <li>Adopt or extend existing systems gradually, component by component.<a class="cite" href="#s5">05</a></li>
-          <li>Make transparency and machine-readability architectural principles from day one.</li>
-          <li>Contribute back when you patch or extend — it keeps the ecosystem (and the models trained on it) honest.</li>
-          <li>Curate against "vibe-coded sameness": where does your product actually need to look unlike the default?</li>
-        </ul>
-      </div>
-    </li>
-
-  </ol>
-
-  <!-- INTERLUDE: ROLES =================================================== -->
-  <section class="roles">
-    <div class="roles-head">
-      <div class="roles-eyebrow">Interlude · 01</div>
-      <h2 class="roles-title">The roles <em>move&nbsp;upstream</em>.</h2>
-      <p class="roles-deck">
-        If agents can compose interfaces, what happens to the people who used
-        to compose them? The honest answer from across the essays: the work
-        doesn't shrink, it relocates.<a class="cite" href="#s1">01</a><a class="cite" href="#s5">05</a>
-      </p>
-    </div>
-    <div class="roles-grid">
-      <div class="role-card">
-        <div class="role-tag">From</div>
-        <p class="role-from">
-          Building individual screens, individual components, individual
-          stories. Picking colours, drawing variants, shipping pixel mocks
-          across to engineering. Performing repetitive system maintenance by
-          hand.<a class="cite" href="#s5">05</a>
-        </p>
-      </div>
-      <div class="role-arrow" aria-hidden="true">→</div>
-      <div class="role-card role-card--accent">
-        <div class="role-tag">To</div>
-        <p class="role-to">
-          Authoring the tokens, contracts, and decision rules that the system
-          uses to assemble itself. Defining the vocabulary, not arranging the
-          sentences. Reviewing, refining, and governing what agents
-          produce.<a class="cite" href="#s1">01</a><a class="cite" href="#s5">05</a>
-        </p>
-      </div>
-    </div>
-    <div class="roles-notes">
-      <div class="role-note">
-        <h3>Designers become rule-authors.</h3>
-        <p>
-          Instead of designing individual screens, designers define the
-          vocabulary, the constraints, the rules that govern how screens get
-          generated. The creative judgment doesn't disappear — it moves
-          upstream, into the system itself.<a class="cite" href="#s1">01</a>
-        </p>
-      </div>
-      <div class="role-note">
-        <h3>Engineers build contracts.</h3>
-        <p>
-          Instead of building components from scratch, engineers build the
-          contracts and infrastructure that let components be assembled
-          correctly at scale: the props, the states, the diagnostic checks,
-          the schemas.<a class="cite" href="#s1">01</a>
-        </p>
-      </div>
-      <div class="role-note">
-        <h3>Handovers become stewardship.</h3>
-        <p>
-          The doer-to-manager shift means reviews can happen iteratively —
-          even on a phone between meetings — and "handover" gives way to
-          collective stewardship of the system itself.<a class="cite" href="#s5">05</a>
-          It is not less work. It is different work, and it requires more
-          intentionality, not less.<a class="cite" href="#s1">01</a>
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- INTERLUDE: RISKS =================================================== -->
-  <section class="risks">
-    <div class="risks-head">
-      <div class="risks-eyebrow">Interlude · 02</div>
-      <h2 class="risks-title">Risks <em>&amp;&nbsp;traps</em>.</h2>
-      <p class="risks-deck">
-        AI doesn't fix a design system; it amplifies whatever shape your
-        system is already in. Six pitfalls the essays keep returning to.
-      </p>
-    </div>
-
-    <ol class="risk-list">
-      <li class="risk">
-        <div class="risk-num">i</div>
-        <div class="risk-body">
-          <h3>Hallucinated files and ghost components.</h3>
-          <p>
-            Agents will confidently reference components, props, and paths
-            that do not exist. The fix is not "tell it to stop" — it is
-            structured ground-truth (MCP, AGENTS.md, schemas) and stable,
-            well-maintained sources to draw from.<a class="cite" href="#s5">05</a>
-          </p>
+        <div class="subsection" id="sources-resources">
+          <div class="subsection-num">8.2 — Further reading</div>
+          <h3 class="subsection-title">A curated reading list.</h3>
+          <p>References to dig deeper into Figma + MCP + Code Connect, the Design Engineer role, and concrete case studies.</p>
+          <ul class="resources-grid">
+            <li id="r1"><a href="https://arie-m-prasetyo.medium.com/figma-recommended-practices-in-the-age-of-ai-e766b098ef9f" target="_blank" rel="noopener">Figma recommended practices in the age of AI</a></li>
+            <li><a href="https://paper.design" target="_blank" rel="noopener">paper.design</a></li>
+            <li><a href="https://www.figma.com/blog/how-razorpay-sharpened-developer-workflows/" target="_blank" rel="noopener">How Razorpay sharpened developer workflows</a></li>
+            <li id="r7"><a href="https://vercel.com/blog/design-engineering-at-vercel" target="_blank" rel="noopener">Design Engineering at Vercel</a></li>
+            <li id="r2"><a href="https://www.figma.com/blog/design-systems-ai-mcp/" target="_blank" rel="noopener">Design systems and AI: Why MCP servers are the unlock</a></li>
+            <li><a href="https://github.com/figma/sds" target="_blank" rel="noopener">Simple Design System (figma/sds)</a></li>
+            <li><a href="https://www.figma.com/blog/why-you-should-care-about-design-context/" target="_blank" rel="noopener">Why you should care about design context</a></li>
+            <li><a href="https://medium.com/@shaheermansoor321/exploring-storybook-a-comprehensive-guide-for-ui-development-581bb4a99053" target="_blank" rel="noopener">Exploring Storybook — a comprehensive guide</a></li>
+            <li><a href="https://www.youtube.com/watch?v=CYPeIjgIfOE" target="_blank" rel="noopener">How 12 Senior Designers Do Engineering Handoff in 2026</a></li>
+            <li><a href="https://github.com/southleft/figma-console-mcp" target="_blank" rel="noopener">Unofficial Figma Console MCP Server</a></li>
+            <li><a href="https://developers.figma.com/docs/figma-mcp-server/skill-code-connect-components/" target="_blank" rel="noopener">Skill: Code Connect Components</a></li>
+            <li><a href="https://developers.figma.com/docs/rest-api/" target="_blank" rel="noopener">The Figma REST API</a></li>
+            <li><a href="https://www.youtube.com/watch?v=A4mqzgFbmjI" target="_blank" rel="noopener">Figma + developer workflows — Code Connect, MCP</a></li>
+            <li><a href="https://react.carbondesignsystem.com/?path=/docs/getting-started-welcome--welcome" target="_blank" rel="noopener">Carbon Storybook</a></li>
+            <li><a href="https://developers.figma.com/docs/plugins/plugin-quickstart-guide/" target="_blank" rel="noopener">Figma Plugin Quickstart Guide</a></li>
+            <li><a href="https://figma.github.io/sds/storybook/?path=/story/sds-hello--story-hello" target="_blank" rel="noopener">Figma SDS Storybook</a></li>
+            <li><a href="https://medium.com/carbondesign/carbon-and-figma-code-connect-redefining-the-design-to-code-experience-836eb3f454fc" target="_blank" rel="noopener">Carbon &amp; Figma Code Connect</a></li>
+            <li><a href="https://developers.figma.com/docs/code-connect/" target="_blank" rel="noopener">Code Connect Documentation</a></li>
+            <li><a href="https://michel-velis.medium.com/bridging-design-and-code-a-comprehensive-guide-to-figma-mcp-code-connect-and-figma-make-1d5c5afef8fe" target="_blank" rel="noopener">Bridging Design and Code: Figma MCP, Code Connect, Figma Make</a></li>
+            <li><a href="https://www.designsystemscollective.com/towards-an-agentic-design-system-c7e0a6469bb1" target="_blank" rel="noopener">Towards an agentic design system</a></li>
+            <li><a href="https://www.figma.com/blog/design-context-everywhere-you-build/" target="_blank" rel="noopener">Design context, everywhere you build</a></li>
+            <li><a href="https://www.designsystemscollective.com/building-an-ai-ready-design-system-35e709f54edf" target="_blank" rel="noopener">Building an AI-Ready design system</a></li>
+            <li><a href="https://www.youtube.com/watch?v=5GVNfbltrQg" target="_blank" rel="noopener">Framework: A more connected DS with Code Connect</a></li>
+            <li><a href="https://www.uber.com/en-CA/blog/automate-design-specs/" target="_blank" rel="noopener">How Uber Built an Agentic System to Automate Design Specs</a></li>
+            <li><a href="https://www.figma.com/blog/design-systems-103-documentation-that-drives-adoption/" target="_blank" rel="noopener">Design system 103: Documentation that drives adoption</a></li>
+            <li><a href="https://www.youtube.com/watch?v=i1k6lLPC4LY" target="_blank" rel="noopener">How to instantly add code syntax to variables (Figma)</a></li>
+            <li id="r3"><a href="https://www.figma.com/blog/supercharge-your-design-system-with-slots/" target="_blank" rel="noopener">Supercharge your design system with slots</a></li>
+            <li><a href="https://developers.figma.com/docs/figma-mcp-server/skill-create-design-system-rules/" target="_blank" rel="noopener">Skill: Create Design System Rules</a></li>
+            <li><a href="https://www.figma.com/customer/from-design-to-code-how-juspay-achieved-5x-faster-workflows-with-figma/" target="_blank" rel="noopener">Juspay: 5× faster workflows with Figma</a></li>
+            <li><a href="https://github.com/figma/mcp-server-guide/tree/main" target="_blank" rel="noopener">Figma MCP Server Guide</a></li>
+            <li><a href="https://carbondesignsystem.com/developing/carbon-mcp/prompts/#best-practices" target="_blank" rel="noopener">Carbon MCP prompt writing — DOs and DON'Ts</a></li>
+          </ul>
         </div>
-      </li>
-      <li class="risk">
-        <div class="risk-num">ii</div>
-        <div class="risk-body">
-          <h3>Sameness creep.</h3>
-          <p>
-            Everyone is using the same kits and the same "vibe codes". Fast
-            remixing speeds delivery but stifles diversity — most teams still
-            reinvent rather than extend, and end up with the same default
-            aesthetic.<a class="cite" href="#s5">05</a> Ask: where does our product
-            actually need to look unlike the default, and have we documented
-            that opinion clearly enough for an agent to hold the line?
-          </p>
-        </div>
-      </li>
-      <li class="risk">
-        <div class="risk-num">iii</div>
-        <div class="risk-body">
-          <h3>Bias and accessibility blind spots.</h3>
-          <p>
-            Ethical checks for bias and inclusivity become more important
-            once an agent is composing UI at speed.<a class="cite" href="#s5">05</a>
-            Accessibility requirements belong inside component contracts and
-            decision-rule skills — not in a separate doc no agent reads.
-          </p>
-        </div>
-      </li>
-      <li class="risk">
-        <div class="risk-num">iv</div>
-        <div class="risk-body">
-          <h3>"It's multimodal — it can just look at the frame."</h3>
-          <p>
-            Tempting, but only a partial fix. A screenshot closes part of the
-            interpretation gap, but it is still inference from pixels, and it
-            does nothing for drift — the screenshot is stale the moment the
-            component changes. Vision patches reading; it does not patch
-            maintenance.<a class="cite" href="#s6">06</a>
-          </p>
-        </div>
-      </li>
-      <li class="risk">
-        <div class="risk-num">v</div>
-        <div class="risk-body">
-          <h3>Letting the LLM write your documentation.</h3>
-          <p>
-            The output reads like a third-rate style guide — "An input is an
-            element users can type into" — and lacks the context your team
-            actually needs about <em>when</em> and <em>why</em> to use a
-            component.<a class="cite" href="#s3">03</a> Use LLMs to migrate, to
-            keep examples in sync, to write codemods. Don't use them to
-            originate the system's voice.
-          </p>
-        </div>
-      </li>
-      <li class="risk">
-        <div class="risk-num">vi</div>
-        <div class="risk-body">
-          <h3>Treating "we have a design system" as a finish line.</h3>
-          <p>
-            Design systems are crossing the same threshold responsive design
-            crossed a decade ago. In two years, asking "do you have a design
-            system?" will sound as quaint as "is your site mobile-friendly?"
-            It is not a differentiator. It is the minimum cost of entry for
-            participating in AI-generated, adaptive
-            interfaces.<a class="cite" href="#s4">04</a>
-          </p>
-        </div>
-      </li>
-    </ol>
-  </section>
+      </section>
 
-  <!-- CHECKLIST -->
-  <section class="checklist-section">
-    <h2>The <em>readiness</em> checklist.</h2>
-    <p class="sub">Tick what you can defend. Anything unchecked is where an agent will guess.</p>
-    <ul class="checklist">
-      <li><span class="box" aria-hidden="true"></span><span>Every token is semantically named and used consistently in shipped code.</span></li>
-      <li><span class="box" aria-hidden="true"></span><span>Every component has a structured contract — props, states, interactions, a11y — that a machine can parse.</span></li>
-      <li><span class="box" aria-hidden="true"></span><span>Documentation lives in <code>description</code> fields as markdown, not as orphaned visual frames.</span></li>
-      <li><span class="box" aria-hidden="true"></span><span>An <code>AGENTS.md</code> manifest sits at the root of the codebase.</span></li>
-      <li><span class="box" aria-hidden="true"></span><span>An MCP (or equivalent) exposes the design system to agents as queryable structure.</span></li>
-      <li><span class="box" aria-hidden="true"></span><span>Decision-rule skills capture the <em>why</em>: when to use which component, what to never do.</span></li>
-      <li><span class="box" aria-hidden="true"></span><span>Patterns ship as schemas of relationships, not as monolithic code components.</span></li>
-      <li><span class="box" aria-hidden="true"></span><span>A diagnostic layer reports drift between Figma source and production code.</span></li>
-      <li><span class="box" aria-hidden="true"></span><span>Storybook (or equivalent) examples are kept in sync — automatically, not by memory.</span></li>
-      <li><span class="box" aria-hidden="true"></span><span>The system extends an existing ecosystem where possible, and contributes back when it patches one.</span></li>
-    </ul>
-  </section>
+    </main>
+  </div>
+</div>
 
-  <!-- SOURCES -->
-  <section class="sources" id="sources">
-    <h2>Sources.</h2>
-    <ol>
-      <li id="s1">
-        <a href="https://zeroheight.com/blog/the-future-of-design-systems-part-1-the-product-your-design-system-is-actually-building/" target="_blank" rel="noopener">The future of design systems — part 1: The product your design system is actually building</a>
-        <span class="pub">TJ Pitre · zeroheight</span>
-      </li>
-      <li id="s2">
-        <a href="https://zeroheight.com/blog/ai-in-design-systems-whats-changing-in-2026/" target="_blank" rel="noopener">AI in design systems: What's changing in 2026</a>
-        <span class="pub">Elyse · zeroheight</span>
-      </li>
-      <li id="s3">
-        <a href="https://zeroheight.com/blog/3-practical-ways-llms-can-support-design-systems-teams-today/" target="_blank" rel="noopener">3 practical ways LLMs can support design systems teams today</a>
-        <span class="pub">Elyse · zeroheight</span>
-      </li>
-      <li id="s4">
-        <a href="https://zeroheight.com/blog/the-future-of-design-systems-part-2-the-check-engine-light-is-on/" target="_blank" rel="noopener">The future of design systems — part 2: The check engine light is on</a>
-        <span class="pub">TJ Pitre · zeroheight</span>
-      </li>
-      <li id="s5">
-        <a href="https://zeroheight.com/blog/rethinking-design-systems-in-the-open/" target="_blank" rel="noopener">Rethinking design systems in the open</a>
-        <span class="pub">zeroheight</span>
-      </li>
-      <li id="s6">
-        <a href="https://southleft.substack.com/p/designed-vs-declared-how-to-document" target="_blank" rel="noopener">Designed vs Declared: How to document design systems for AI</a>
-        <span class="pub">Southleft</span>
-      </li>
-    </ol>
-  </section>
-
-</main>
-
-<footer class="colophon">
-  <div class="wrap" style="display:contents">
-    <div>Synthesised May 2026 · Set in Fraunces, Newsreader, &amp; IBM Plex Mono</div>
-    <div class="mark">A field manual for the systems people.</div>
+<footer class="foot">
+  <div class="foot-inner">
+    <div>Field Manual · v1.1 · synthesised may 2026</div>
+    <div>Set in Geist · published on GitHub Pages</div>
   </div>
 </footer>
 
+<script>
+  // Active-section highlighting in TOC
+  (function () {
+    var links = document.querySelectorAll('.toc a[href^="#"]');
+    var map = {};
+    links.forEach(function (a) {
+      var id = a.getAttribute('href').slice(1);
+      var t = document.getElementById(id);
+      if (t) map[id] = a;
+    });
+    if (!('IntersectionObserver' in window)) return;
+    var current = null;
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          if (current) current.classList.remove('active');
+          current = map[e.target.id];
+          if (current) current.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+    Object.keys(map).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) obs.observe(el);
+    });
+  })();
+</script>
 </body>
 </html>
