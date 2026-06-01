@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ephemeral UI in AI-driven SaaS — A Pattern Study</title>
+<meta name="description" content="Ephemeral UI: interfaces an AI assembles on demand for a single user intent, then dismisses. A worked example in e-commerce analytics, with triggers, components, a full flow, and how to lay it out in Figma." />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#fafaf7" media="(prefers-color-scheme: light)" />
+<script>
+  // No-flash theme init — runs before any paint
+  (function () {
+    try {
+      var saved = localStorage.getItem('theme');
+      var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+      var theme = saved || (prefersLight ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-theme', theme);
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css">
+<link rel="stylesheet" href="../assets/ephemeral.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html">
+      <span class="brand-mark"></span>
+      <span class="brand-crumb"><span class="brand-home">index</span> / ephemeral-ui</span>
+    </a>
+    <div class="topbar-right">
+      <div class="topbar-meta">
+        <span class="dot"></span>
+        <span>pattern study · jun 2026</span>
+      </div>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle colour scheme">
+        <svg class="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <svg class="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="container" id="top">
+  <div class="layout">
+
+    <!-- ============================ HERO =================================== -->
+    <section class="hero">
+      <div class="eyebrow">
+        <span class="badge">PATTERN STUDY</span>
+        <span>Generative interfaces · for AI-driven products</span>
+      </div>
+      <h1 class="hero-title">UI the AI builds <span class="accent">for one intent</span>, then dismisses.</h1>
+      <p class="hero-deck">
+        Ephemeral UI is best understood not as a prettier overlay, but as an
+        interface the system assembles or surfaces for a single user intent.
+        The user doesn't hunt for a feature — the product reads the context and
+        shows exactly the small slice of UI that's useful right now, then gets
+        out of the way.
+      </p>
+      <div class="hero-meta-row">
+        <div class="hero-meta-item">
+          <div class="k">Scope</div>
+          <div class="v">1 worked example · 5 components</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="k">Read time</div>
+          <div class="v">~ 16 minutes</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="k">For</div>
+          <div class="v">Product designers · design engineers</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="k">Tooling</div>
+          <div class="v">Figma · variables · interactive components</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ TOC ==================================== -->
+    <aside class="toc">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#concept">What ephemeral UI is</a></li>
+        <li>
+          <a href="#example">A worked example</a>
+          <ol class="toc-sub">
+            <li><a href="#example-detect">The insight appears</a></li>
+            <li><a href="#example-why">Show me why</a></li>
+            <li><a href="#example-act">Create the task</a></li>
+            <li><a href="#example-outcome">The outcome</a></li>
+          </ol>
+        </li>
+        <li><a href="#layers">The product as layers</a></li>
+        <li><a href="#figma">Bringing it to Figma</a></li>
+        <li><a href="#intent">Start from intent</a></li>
+        <li><a href="#triggers">Define the triggers</a></li>
+        <li><a href="#components">Components, not screens</a></li>
+        <li><a href="#flow">One full flow</a></li>
+        <li><a href="#visual">Visual direction</a></li>
+        <li><a href="#start">How to start</a></li>
+        <li><a href="#rule">The one rule</a></li>
+        <li><a href="#sources">Sources</a></li>
+      </ol>
+    </aside>
+
+    <!-- ============================ CONTENT ================================ -->
+    <main class="content">
+
+      <!-- ===== 00 CONCEPT ============================================== -->
+      <section class="section" id="concept">
+        <div class="section-num">00 — Concept</div>
+        <h2 class="section-title">What ephemeral UI is.</h2>
+        <p class="section-lede">In the era of AI-driven SaaS, the most useful framing is this: ephemeral UI is an interface the AI creates or reveals in response to a concrete intent, and removes once that intent is served.</p>
+
+        <p>The sources describe ephemeral UI as an interface that is generated on demand, temporary, and dependent on the user's context. In the wider <strong>generative UI</strong> trend, the idea is that AI can produce more than a block of text — it can produce interactive tools, panels, visualisations, and flows fitted to a prompt or a task.<a class="cite" href="#src-1">[1]</a></p>
+
+        <div class="callout">
+          <div class="callout-label">The shape of it</div>
+          <p>An ephemeral component <strong>appears for a reason</strong>, lets you <strong>act</strong>, and then <strong>disappears</strong> — leaving a durable trace behind it. If it lingers with no purpose, it has stopped being ephemeral and started being clutter.</p>
+        </div>
+      </section>
+
+      <!-- ===== 01 EXAMPLE ============================================== -->
+      <section class="section" id="example">
+        <div class="section-num">01 — Worked example</div>
+        <h2 class="section-title">AI-driven analytics for e-commerce.</h2>
+        <p class="section-lede">Say you're designing a SaaS for online store owners. Normally it would have a dashboard, charts, filters, tables, reports. In an ephemeral-UI approach the user doesn't click through all of that. The system detects the problem and surfaces a brief, contextual interface instead.</p>
+
+        <div class="subsection" id="example-detect">
+          <div class="subsection-num">01.1 — Detection</div>
+          <h3 class="subsection-title">The insight appears in place.</h3>
+          <p>The user opens their store dashboard. The AI notices something and, instead of just flagging an alert or dumping a table, it surfaces a temporary insight card right next to the chart it relates to.</p>
+
+          <div class="mock mock-dash" data-label="Dashboard · ephemeral insight">
+            <div class="dash">
+              <div class="dash-bar">
+                <span class="tdot"></span><span class="tdot"></span><span class="tdot"></span>
+                <span class="tname">storeflow · overview</span>
+              </div>
+              <div class="dash-body">
+                <div class="stat-row">
+                  <div class="stat"><div class="sk">Revenue · 7d</div><div class="sv">$48.2k</div><div class="sd up">+4.1%</div></div>
+                  <div class="stat"><div class="sk">Conversion</div><div class="sv">1.9%</div><div class="sd down">−12%</div></div>
+                  <div class="stat"><div class="sk">Sessions</div><div class="sv">122k</div><div class="sd up">+8.0%</div></div>
+                </div>
+                <div class="chart">
+                  <div class="ck">Mobile conversion · last 14 days</div>
+                  <div class="bars">
+                    <span style="height:72%"></span><span style="height:80%"></span><span style="height:68%"></span>
+                    <span style="height:84%"></span><span style="height:76%"></span><span style="height:88%"></span>
+                    <span style="height:70%"></span><span style="height:64%"></span>
+                    <span class="drop" style="height:48%"></span><span class="drop" style="height:40%"></span>
+                    <span class="drop" style="height:34%"></span><span class="drop" style="height:30%"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="dash-float">
+                <div class="insight-card">
+                  <div class="ic-head">
+                    <span class="ai-spark"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 5.6L19.5 9l-4.5 2.9L16.2 18 12 14.7 7.8 18l1.2-6.1L4.5 9l5.7-1.4z"/></svg></span>
+                    <span class="ic-label">AI insight</span>
+                    <span class="ic-dismiss">×</span>
+                  </div>
+                  <h4 class="ic-title">Mobile conversion dropped 18%</h4>
+                  <p class="ic-body">Down <strong>18%</strong> versus last week. The strongest signal comes from <strong>paid mobile traffic</strong> on slow product pages.</p>
+                  <div class="ai-chips">
+                    <span class="ai-chip"><span class="dot-hi"></span>Confidence: High</span>
+                    <span class="ai-chip src">GA4 + Shopify · 7d</span>
+                  </div>
+                  <div class="mbtn-row">
+                    <span class="mbtn mbtn-primary">Show why</span>
+                    <span class="mbtn mbtn-secondary">Save</span>
+                    <span class="mbtn mbtn-ghost">Ignore</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p>The card answers the first question on its own — <em>why am I seeing this?</em> — with a confidence level and its data sources, so the AI doesn't read as a black box.</p>
+        </div>
+
+        <div class="subsection" id="example-why">
+          <div class="subsection-num">01.2 — Explanation</div>
+          <h3 class="subsection-title">“Show me why” opens a panel — not a page.</h3>
+          <p>Clicking <strong>Show why</strong> doesn't navigate anywhere. A temporary panel slides in with the reasoning, the evidence, and a recommended action.</p>
+
+          <div class="mock center" data-label="Ephemeral · explanation panel">
+            <div class="exp-panel">
+              <div class="exp-head">
+                <span class="ai-spark sm"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 5.6L19.5 9l-4.5 2.9L16.2 18 12 14.7 7.8 18l1.2-6.1L4.5 9l5.7-1.4z"/></svg></span>
+                <h4>Why mobile conversion dropped</h4>
+                <span class="ic-dismiss" style="margin-left:auto">×</span>
+              </div>
+              <div class="exp-body">
+                <p class="exp-eyebrow">Evidence</p>
+                <ol class="evidence">
+                  <li>Product page load time rose from <strong>2.1s to 4.8s</strong>.</li>
+                  <li>Paid mobile traffic increased by <strong>32%</strong>.</li>
+                  <li>Add-to-cart rate dropped mostly on <strong>iOS</strong>.</li>
+                </ol>
+                <div class="recommend">
+                  <div class="rl">Recommended action</div>
+                  <p>Compress product images above 500&nbsp;KB and re-test mobile checkout speed.</p>
+                </div>
+                <div class="mbtn-row">
+                  <span class="mbtn mbtn-primary">Create task</span>
+                  <span class="mbtn mbtn-secondary">Send to developer</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection" id="example-act">
+          <div class="subsection-num">01.3 — Action</div>
+          <h3 class="subsection-title">“Create task” generates a form for this one job.</h3>
+          <p>This isn't the permanent “New task” screen. It's a temporary form, pre-filled from the recommendation, that exists only because the AI proposed an action.</p>
+
+          <div class="mock center" data-label="Ephemeral · generated form">
+            <div class="task-form">
+              <div class="tf-head">
+                <span class="ai-spark sm"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 5.6L19.5 9l-4.5 2.9L16.2 18 12 14.7 7.8 18l1.2-6.1L4.5 9l5.7-1.4z"/></svg></span>
+                <span class="t">Create optimization task</span>
+                <span class="tf-tag">AI-generated</span>
+              </div>
+              <div class="tf-body">
+                <div class="tf-field">
+                  <span class="lbl">Task title</span>
+                  <div class="tf-input">Optimize product images for mobile</div>
+                </div>
+                <div class="tf-row">
+                  <div class="tf-field">
+                    <span class="lbl">Priority</span>
+                    <div class="tf-input"><span class="pill high">High</span></div>
+                  </div>
+                  <div class="tf-field">
+                    <span class="lbl">Assignee</span>
+                    <div class="tf-input">Frontend team</div>
+                  </div>
+                </div>
+                <div class="tf-field">
+                  <span class="lbl">Description</span>
+                  <div class="tf-input ta">Mobile conversion down 18% (7d). Product page load rose 2.1s → 4.8s; add-to-cart fell mostly on iOS. Compress images &gt; 500&nbsp;KB and re-test checkout.</div>
+                </div>
+                <div class="mbtn-row end">
+                  <span class="mbtn mbtn-primary">Create task</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection" id="example-outcome">
+          <div class="subsection-num">01.4 — Outcome</div>
+          <h3 class="subsection-title">The UI disappears — the result stays.</h3>
+          <p>On confirm, the form is gone. A small toast tells the user what happened, with a way to inspect it or undo. The decision is now a durable record in the activity log.</p>
+
+          <div class="mock center" data-label="Ephemeral · outcome toast">
+            <div class="toast">
+              <span class="check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <div>
+                <div class="tt">Task created</div>
+                <div class="ts">Added to the Growth backlog.</div>
+                <div class="ta-links"><a href="#">View task</a><a href="#">Undo</a></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout success">
+            <div class="callout-label">That's the whole pattern</div>
+            <p>The AI <strong>detects context</strong>, shows a <strong>temporary UI</strong>, lets the user <strong>act</strong>, and <strong>disappears</strong> — leaving a saved outcome behind.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 02 LAYERS ============================================== -->
+      <section class="section" id="layers">
+        <div class="section-num">02 — Architecture</div>
+        <h2 class="section-title">The product as layers, not one big chatbot.</h2>
+        <p class="section-lede">In a SaaS like this, don't design a single giant “AI chat” in the corner — that's the common mistake. Design an AI layer: a stratum of intelligent, contextual elements that surface in many places across the product.</p>
+
+        <div class="mock" data-label="Product structure">
+          <div class="layers">
+            <div class="layer">
+              <span class="ln">Base SaaS UI</span>
+              <div class="layer-text"><span class="lt">Dashboards, tables, reports, settings, users</span><span class="ld">The normal product. It doesn't go away.</span></div>
+            </div>
+            <div class="layer">
+              <span class="ln">AI context layer</span>
+              <div class="layer-text"><span class="lt">Insight cards, suggestions, recommendations, quick actions</span><span class="ld">Intelligence woven into the existing surfaces.</span></div>
+            </div>
+            <div class="layer ai">
+              <span class="ln">Ephemeral UI layer</span>
+              <div class="layer-text"><span class="lt">Temporary panels, generated forms, mini-flows, overlays</span><span class="ld">Assembled on demand, dismissed after use.</span></div>
+            </div>
+            <div class="layer">
+              <span class="ln">Outcome layer</span>
+              <div class="layer-text"><span class="lt">Saved tasks, notes, reports, decision history</span><span class="ld">The durable trace every ephemeral action leaves.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <p>The user still has a normal SaaS product. The AI simply adds an intelligent layer on top of it.</p>
+      </section>
+
+      <!-- ===== 03 FIGMA ============================================== -->
+      <section class="section" id="figma">
+        <div class="section-num">03 — Translation</div>
+        <h2 class="section-title">Bringing it to Figma.</h2>
+        <p class="section-lede">In Figma, set the file up not as a stack of screens but as a system of behaviours. The structure should read as logic, not as a gallery.</p>
+
+        <ul class="file-tree">
+          <li><span class="fn">01</span> <span>Product context</span></li>
+          <li><span class="fn">02</span> <span>User intents</span></li>
+          <li><span class="fn">03</span> <span>AI triggers</span></li>
+          <li><span class="fn">04</span> <span>Ephemeral components</span></li>
+          <li><span class="fn">05</span> <span>Component states</span></li>
+          <li><span class="fn">06</span> <span>Example flows</span></li>
+          <li><span class="fn">07</span> <span>Prototype</span></li>
+          <li><span class="fn">08</span> <span>Rules &amp; UX writing</span></li>
+        </ul>
+      </section>
+
+      <!-- ===== 04 INTENT ============================================== -->
+      <section class="section" id="intent">
+        <div class="section-num">04 — Step one</div>
+        <h2 class="section-title">Start from intent, not layout.</h2>
+        <p class="section-lede">First write down what the user is trying to achieve. Without this, it's easy to slide straight into styling. For AI-driven analytics it might look like this.</p>
+
+        <div class="ttable">
+          <div class="tr head">
+            <div class="td">User intent</div>
+            <div class="td">What the AI does</div>
+            <div class="td">UI that appears</div>
+          </div>
+          <div class="tr">
+            <div class="td">Understand what changed</div>
+            <div class="td">Detects a shift in the data</div>
+            <div class="td"><span class="ui-tag">Insight Card</span></div>
+          </div>
+          <div class="tr">
+            <div class="td">Know why something dropped</div>
+            <div class="td">Analyses likely causes</div>
+            <div class="td"><span class="ui-tag">Explanation Panel</span></div>
+          </div>
+          <div class="tr">
+            <div class="td">Act quickly</div>
+            <div class="td">Proposes the next step</div>
+            <div class="td"><span class="ui-tag">Action Panel</span></div>
+          </div>
+          <div class="tr">
+            <div class="td">Fix the problem</div>
+            <div class="td">Generates a task or checklist</div>
+            <div class="td"><span class="ui-tag">Task Form</span></div>
+          </div>
+          <div class="tr">
+            <div class="td">Show it to someone</div>
+            <div class="td">Writes a short summary</div>
+            <div class="td"><span class="ui-tag">Share Summary</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 05 TRIGGERS ============================================ -->
+      <section class="section" id="triggers">
+        <div class="section-num">05 — Step two</div>
+        <h2 class="section-title">Define the triggers.</h2>
+        <p class="section-lede">Ephemeral UI must have a clear reason to appear. Give each component an explicit condition that summons it.</p>
+
+        <div class="ttable">
+          <div class="tr head">
+            <div class="td">Trigger</div>
+            <div class="td">Condition</div>
+            <div class="td">UI</div>
+          </div>
+          <div class="tr">
+            <div class="td">Data anomaly</div>
+            <div class="td">Conversion falls more than 10%</div>
+            <div class="td"><span class="ui-tag">AI Insight Card</span></div>
+          </div>
+          <div class="tr">
+            <div class="td">Incomplete setup</div>
+            <div class="td">User hasn't connected GA4</div>
+            <div class="td"><span class="ui-tag">Setup Assistant</span></div>
+          </div>
+          <div class="tr">
+            <div class="td">Repeated action</div>
+            <div class="td">Same report exported 3×</div>
+            <div class="td"><span class="ui-tag">Automation Suggestion</span></div>
+          </div>
+          <div class="tr">
+            <div class="td">User error</div>
+            <div class="td">Segment returns no data</div>
+            <div class="td"><span class="ui-tag">Fix Suggestion</span></div>
+          </div>
+          <div class="tr">
+            <div class="td">User prompt</div>
+            <div class="td">“Why did sales drop?”</div>
+            <div class="td"><span class="ui-tag">Generated Analysis</span></div>
+          </div>
+        </div>
+
+        <p>In Figma, give this its own <strong>AI triggers</strong> section and show each trigger as a small flow.</p>
+      </section>
+
+      <!-- ===== 06 COMPONENTS ========================================= -->
+      <section class="section" id="components">
+        <div class="section-num">06 — Step three</div>
+        <h2 class="section-title">Design components, not screens.</h2>
+        <p class="section-lede">Start with five. Each is a small, reusable behaviour rather than a page — the same parts recombine across every trigger.</p>
+
+        <h4>A · AI Insight Card</h4>
+        <p>The small card that appears on the dashboard: a title, a short explanation, confidence and source, a primary action, a secondary action, and dismiss. (Shown in the example above.)</p>
+
+        <h4>B · Explanation Panel</h4>
+        <p>Opens from an insight: problem, evidence, possible cause, recommended action, and a call to action. It earns trust by showing its working.</p>
+
+        <h4>C · Generated Action Form</h4>
+        <p>A form the AI produces for one action only — title, assignee, priority, an AI-written description, due date, create. Not a permanent “Create task” screen.</p>
+
+        <h4>D · Confidence / Source Chip</h4>
+        <p>AI-driven SaaS has to build trust. A small chip on every insight states what it's based on, so the system never looks like a magic black box — research on AI SaaS UX repeatedly stresses trust, output variability, and the need to explain what the AI is doing.<a class="cite" href="#src-2">[2]</a></p>
+
+        <div class="mock center" data-label="Component · confidence chip">
+          <div class="ai-chips" style="margin:0">
+            <span class="ai-chip">Based on last 7 days</span>
+            <span class="ai-chip"><span class="dot-hi"></span>Confidence: High</span>
+            <span class="ai-chip src">Source: GA4 + Shopify</span>
+          </div>
+        </div>
+
+        <h4>E · Outcome Toast</h4>
+        <p>After an action, the UI disappears but the user still knows what happened — with a way to view the result or undo it. (Shown in the example above.)</p>
+      </section>
+
+      <!-- ===== 07 FLOW =============================================== -->
+      <section class="section" id="flow">
+        <div class="section-num">07 — Step four</div>
+        <h2 class="section-title">Draw one full flow.</h2>
+        <p class="section-lede">Don't start from the whole system. Build one polished flow end to end — the conversion-drop case is the clearest.</p>
+
+        <div class="mock" data-label="Flow · AI detects conversion drop">
+          <div class="flow">
+            <div class="flow-step">
+              <div class="flow-thumb"><span class="mini"></span></div>
+              <span class="flow-num">01</span>
+              <span class="flow-cap">Dashboard default</span>
+            </div>
+            <div class="flow-step">
+              <div class="flow-thumb ai"><span class="mini"></span></div>
+              <span class="flow-num">02</span>
+              <span class="flow-cap">Insight card appears</span>
+            </div>
+            <div class="flow-step">
+              <div class="flow-thumb ai"><span class="mini"></span></div>
+              <span class="flow-num">03</span>
+              <span class="flow-cap">Explanation panel</span>
+            </div>
+            <div class="flow-step">
+              <div class="flow-thumb ai"><span class="mini"></span></div>
+              <span class="flow-num">04</span>
+              <span class="flow-cap">Generated task form</span>
+            </div>
+            <div class="flow-step">
+              <div class="flow-thumb toast-mini"><span class="mini"></span></div>
+              <span class="flow-num">05</span>
+              <span class="flow-cap">Confirm → UI disappears</span>
+            </div>
+          </div>
+        </div>
+
+        <h4>Prototyping it in Figma</h4>
+        <p>Use overlays and interactive components so the appearance and disappearance — the part that matters most for ephemeral UI — is part of the prototype, not just the look.</p>
+
+        <div class="ttable">
+          <div class="tr head">
+            <div class="td">Action</div>
+            <div class="td" style="grid-column: span 2;">Figma interaction</div>
+          </div>
+          <div class="tr"><div class="td">AI card appears after a beat</div><div class="td" style="grid-column: span 2;">After delay → Open overlay</div></div>
+          <div class="tr"><div class="td">Click “Show why”</div><div class="td" style="grid-column: span 2;">On click → Swap overlay</div></div>
+          <div class="tr"><div class="td">Click “Create task”</div><div class="td" style="grid-column: span 2;">On click → Open overlay</div></div>
+          <div class="tr"><div class="td">Click “Confirm”</div><div class="td" style="grid-column: span 2;">On click → Swap overlay: success toast</div></div>
+          <div class="tr"><div class="td">Click “Undo”</div><div class="td" style="grid-column: span 2;">On click → Previous state</div></div>
+        </div>
+      </section>
+
+      <!-- ===== 08 VISUAL ============================================= -->
+      <section class="section" id="visual">
+        <div class="section-num">08 — Craft</div>
+        <h2 class="section-title">Visual direction.</h2>
+        <p class="section-lede">You don't need futuristic glassmorphism. For AI SaaS a clean, enterprise style works better: soft cards, subtle shadows, rounded corners, compact panels, small status chips, light motion, clear CTAs, muted AI iconography.</p>
+
+        <div class="roles-grid">
+          <div class="role-card">
+            <div class="role-tag">Base UI</div>
+            <p>Calm, productive, tabular. This is where work happens — keep it quiet.</p>
+          </div>
+          <div class="role-arrow">→</div>
+          <div class="role-card accent">
+            <div class="role-tag">AI &amp; ephemeral layer</div>
+            <p>A little softer and more contextual, lightly distinguished — visible, but never blocking the work.</p>
+          </div>
+        </div>
+
+        <p>The goal: AI elements that are <strong>noticeable but not pushy</strong>. Base UI stays neutral; the AI layer earns a touch of warmth and a subtle accent so the user always knows which parts are the machine talking.</p>
+      </section>
+
+      <!-- ===== 09 START ============================================== -->
+      <section class="section" id="start">
+        <div class="section-num">09 — Practice</div>
+        <h2 class="section-title">How to start, step by step.</h2>
+        <p class="section-lede">A path you can follow in an afternoon. Pick narrow, go deep, resist the urge to design the whole product.</p>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-card-head"><span class="step-card-num">01</span><span class="step-card-label">Pick a product</span></div>
+            <h3>Choose one SaaS type.</h3>
+            <p>AI analytics for e-commerce, AI CRM, AI project management, AI support desk, AI recruitment. Analytics for e-commerce is a strong starting point if you have UX, SaaS and analytics background.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-card-head"><span class="step-card-num">02</span><span class="step-card-label">Pick a situation</span></div>
+            <h3>Take a single moment.</h3>
+            <p>Not the whole product — one situation: <em>“the user wants to understand why sales dropped.”</em></p>
+          </div>
+          <div class="step-card">
+            <div class="step-card-head"><span class="step-card-num">03</span><span class="step-card-label">Decision logic</span></div>
+            <h3>Write the AI's reasoning.</h3>
+            <p><strong>Input:</strong> sales, conversion, traffic source, device, page speed. <strong>Detects:</strong> mobile conversion dropped. <strong>Explains:</strong> slow product pages hit paid mobile traffic. <strong>Suggests:</strong> compress images, check mobile checkout. <strong>UI:</strong> insight card + explanation panel + task form.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-card-head"><span class="step-card-num">04</span><span class="step-card-label">Components</span></div>
+            <h3>Design the minimum set.</h3>
+            <p>Insight Card, Explanation Panel, Generated Task Form, Outcome Toast, Activity Log Item. Five components carry the entire flow.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-card-head"><span class="step-card-num">05</span><span class="step-card-label">Prototype</span></div>
+            <h3>Wire the flow.</h3>
+            <p>Dashboard → Insight → Explanation → Action → Confirmation. Show appearance and disappearance, not just static frames.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-card-head"><span class="step-card-num">06</span><span class="step-card-label">Rules</span></div>
+            <h3>Write the rules last.</h3>
+            <p>When the AI may interrupt. When the UI should disappear. When the user must confirm. When a result should be saved. When the system should explain its confidence.</p>
+          </div>
+        </div>
+
+        <div class="callout">
+          <div class="callout-label">First Figma board</div>
+          <p>Make your opening frame show the <strong>mechanism</strong>, not just the UI — context on the left, AI interpretation in the middle, the generated response on the right. It tells a client or team that you designed a logical AI system, not a random popup.</p>
+        </div>
+
+        <div class="mock" data-label="First board · the mechanism">
+          <div class="figma-board">
+            <div class="fb-col">
+              <div class="fb-eyebrow">User context</div>
+              <p>User is viewing the weekly conversion dashboard.</p>
+            </div>
+            <div class="fb-arrow">→</div>
+            <div class="fb-col ai">
+              <div class="fb-eyebrow">AI interpretation</div>
+              <p><strong>Likely issue:</strong> slow product pages on mobile are dragging conversion down.</p>
+            </div>
+            <div class="fb-arrow">→</div>
+            <div class="fb-col">
+              <div class="fb-eyebrow">Ephemeral UI response</div>
+              <p>Show an insight card with explanation and a recommended action.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 10 RULE =============================================== -->
+      <section class="section" id="rule">
+        <div class="section-num">10 — The principle</div>
+        <h2 class="section-title">The one rule.</h2>
+        <p class="section-lede">In AI-driven SaaS, ephemeral UI should answer three questions. If a component can't, it's probably a decorative AI element, not good ephemeral UI.</p>
+
+        <div class="maxim">
+          <div class="maxim-eyebrow">It must answer</div>
+          <p class="maxim-line">Why am I seeing this?</p>
+          <p class="maxim-line">What should I do next?</p>
+          <p class="maxim-line">What happens after I act?</p>
+        </div>
+
+        <p class="pull">
+          AI detects a problem → shows an insight → explains the cause → proposes an action → creates an outcome.
+          <span class="by">The cleanest case to start from</span>
+        </p>
+
+        <p>That single arc is the most legible example to build first — for a portfolio, a pitch, or a real product. Get it right once, and the rest of the AI layer is just more instances of the same idea.</p>
+      </section>
+
+      <!-- ===== SOURCES =============================================== -->
+      <section class="section" id="sources">
+        <div class="section-num">11 — References</div>
+        <h2 class="section-title">Sources.</h2>
+        <ol class="sources-list">
+          <li id="src-1">
+            <a href="https://isolutions.medium.com/ephemeral-ui-in-ai-generated-on-demand-interfaces-81dbc8cd4579" target="_blank" rel="noopener">Ephemeral UI in AI-Generated, On-Demand Interfaces</a>
+            <span class="meta">Medium · iSolutions</span>
+          </li>
+          <li id="src-2">
+            <a href="https://www.uxstudioteam.com/ux-blog/ai-design-patterns-in-saas-products" target="_blank" rel="noopener">Exploring AI Design Patterns in SaaS Products</a>
+            <span class="meta">UX Studio</span>
+          </li>
+        </ol>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <div>Ephemeral UI · Pattern Study · jun 2026</div>
+    <div>Set in Geist · <a href="../index.html" style="color:inherit;text-decoration:none;border-bottom:1px solid var(--border-strong)">back to index</a></div>
+  </div>
+</footer>
+
+<script src="../assets/app.js"></script>
+</body>
+</html>

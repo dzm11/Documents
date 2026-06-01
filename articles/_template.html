@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- TODO: set the article title and description -->
+<title>New Article — Design Systems for AI</title>
+<meta name="description" content="TODO: one-sentence summary of this article." />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#fafaf7" media="(prefers-color-scheme: light)" />
+<script>
+  // No-flash theme init — runs before any paint. Keep inline.
+  (function () {
+    try {
+      var saved = localStorage.getItem('theme');
+      var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+      var theme = saved || (prefersLight ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-theme', theme);
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css">
+<!-- Optional: page-specific styles. Create ../assets/<name>.css and link it here. -->
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html">
+      <span class="brand-mark"></span>
+      <!-- TODO: replace the slug after "index /" -->
+      <span class="brand-crumb"><span class="brand-home">index</span> / new-article</span>
+    </a>
+    <div class="topbar-right">
+      <div class="topbar-meta">
+        <span class="dot"></span>
+        <span>draft · 2026</span>
+      </div>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle colour scheme">
+        <svg class="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <svg class="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="container" id="top">
+  <div class="layout">
+
+    <!-- ============================ HERO =================================== -->
+    <section class="hero">
+      <div class="eyebrow">
+        <span class="badge">ARTICLE</span>
+        <span><!-- TODO: short kicker --></span>
+      </div>
+      <h1 class="hero-title"><!-- TODO: headline --> Your <span class="accent">headline</span> here.</h1>
+      <p class="hero-deck"><!-- TODO: one-paragraph deck that sells the article. --></p>
+      <div class="hero-meta-row">
+        <div class="hero-meta-item"><div class="k">Scope</div><div class="v">TODO</div></div>
+        <div class="hero-meta-item"><div class="k">Read time</div><div class="v">~ N minutes</div></div>
+        <div class="hero-meta-item"><div class="k">For</div><div class="v">TODO audience</div></div>
+      </div>
+    </section>
+
+    <!-- ============================ TOC ==================================== -->
+    <!-- The TOC auto-highlights based on section ids via app.js. Keep hrefs in sync with section ids. -->
+    <aside class="toc">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#section-1">First section</a></li>
+        <li><a href="#section-2">Second section</a></li>
+        <!-- TODO: add an <li> per section -->
+      </ol>
+    </aside>
+
+    <!-- ============================ CONTENT ================================ -->
+    <main class="content">
+
+      <!-- ===== Copy this <section> block for each new section ============ -->
+      <section class="section" id="section-1">
+        <div class="section-num">00 — Section label</div>
+        <h2 class="section-title">Section heading.</h2>
+        <p class="section-lede"><!-- TODO: a lede sentence introducing the section. --></p>
+
+        <p><!-- TODO: body text. Use <strong> for emphasis, <em> for asides. --></p>
+
+        <!-- Optional building blocks you can reuse from styles.css:
+
+          <div class="callout">
+            <div class="callout-label">Note</div>
+            <p>An aside. Variants: callout warning, callout success.</p>
+          </div>
+
+          <pre class="code-block" data-lang="text">
+your code or schema here
+          </pre>
+
+          <p class="pull">A pull quote.<span class="by">Attribution</span></p>
+        -->
+
+        <div class="subsection" id="section-1-sub">
+          <div class="subsection-num">00.1 — Subsection</div>
+          <h3 class="subsection-title">Optional subsection.</h3>
+          <p><!-- TODO --></p>
+        </div>
+      </section>
+
+      <section class="section" id="section-2">
+        <div class="section-num">01 — Section label</div>
+        <h2 class="section-title">Next heading.</h2>
+        <p class="section-lede"><!-- TODO --></p>
+        <p><!-- TODO --></p>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <div><!-- TODO: footer label --> · 2026</div>
+    <div>Set in Geist · <a href="../index.html" style="color:inherit;text-decoration:none;border-bottom:1px solid var(--border-strong)">back to index</a></div>
+  </div>
+</footer>
+
+<script src="../assets/app.js"></script>
+</body>
+</html>

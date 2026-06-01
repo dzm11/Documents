@@ -1,0 +1,1072 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Design Systems for AI Coding — A Field Manual</title>
+<meta name="description" content="A practical, step-by-step field manual for preparing a design system to be consumed by AI coding agents. Synthesised from essays by zeroheight, Southleft, and notes on the Figma+MCP workflow." />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#fafaf7" media="(prefers-color-scheme: light)" />
+<script>
+  // No-flash theme init — runs before any paint
+  (function () {
+    try {
+      var saved = localStorage.getItem('theme');
+      var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+      var theme = saved || (prefersLight ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-theme', theme);
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html">
+      <span class="brand-mark"></span>
+      <span class="brand-crumb"><span class="brand-home">index</span> / design-systems-for-ai</span>
+    </a>
+    <div class="topbar-right">
+      <div class="topbar-meta">
+        <span class="dot"></span>
+        <span>v1.1 · synthesised may 2026</span>
+      </div>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle colour scheme">
+        <svg class="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <svg class="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="container" id="top">
+  <div class="layout">
+
+    <!-- ============================ HERO =================================== -->
+    <section class="hero">
+      <div class="eyebrow">
+        <span class="badge">FIELD MANUAL</span>
+        <span>For systems people · working with coding agents</span>
+      </div>
+      <h1 class="hero-title">A design system <span class="accent">your agents</span> can actually read.</h1>
+      <p class="hero-deck">
+        A practical, opinionated guide for preparing a design system to be
+        consumed by AI coding agents — synthesised from six essays by
+        practitioners at zeroheight and Southleft, plus working notes on the
+        Figma + MCP handoff stack.
+      </p>
+      <div class="hero-meta-row">
+        <div class="hero-meta-item">
+          <div class="k">Scope</div>
+          <div class="v">8 steps · 6 sections · 30+ resources</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="k">Read time</div>
+          <div class="v">~ 22 minutes</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="k">Audience</div>
+          <div class="v">DS engineers · designers · design engineers</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="k">Stack</div>
+          <div class="v">Figma · MCP · Storybook · Code Connect</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ TOC ==================================== -->
+    <aside class="toc">
+      <div class="toc-title">Table of contents</div>
+      <ol>
+        <li>
+          <a href="#primer">Primer</a>
+          <ol class="toc-sub">
+            <li><a href="#primer">Who this is for · glossary</a></li>
+          </ol>
+        </li>
+        <li>
+          <a href="#intro">Why this exists</a>
+          <ol class="toc-sub">
+            <li><a href="#intro-shift">The shift in what a DS is for</a></li>
+            <li><a href="#intro-figma">How AI "sees" Figma vs Paper</a></li>
+          </ol>
+        </li>
+        <li>
+          <a href="#steps">The eight foundations</a>
+          <ol class="toc-sub">
+            <li><a href="#step-1">System as an API</a></li>
+            <li><a href="#step-2">Fix the foundation</a></li>
+            <li><a href="#step-3">Encode the why</a></li>
+            <li><a href="#step-4">MCPs, AGENTS.md, skills</a></li>
+            <li><a href="#step-5">Components as data</a></li>
+            <li><a href="#step-6">The diagnostic layer</a></li>
+            <li><a href="#step-7">LLMs on unglamorous work</a></li>
+            <li><a href="#step-8">Build in the open</a></li>
+          </ol>
+        </li>
+        <li>
+          <a href="#design-side">The design side</a>
+          <ol class="toc-sub">
+            <li><a href="#ds-mcp">What an LLM sees via MCP</a></li>
+            <li><a href="#ds-intent">Share interaction intent</a></li>
+            <li><a href="#ds-variables">Variable code syntax</a></li>
+            <li><a href="#ds-codeconnect">Code Connect &amp; slots</a></li>
+            <li><a href="#ds-plugins">Internal plugins</a></li>
+            <li><a href="#ds-audit">Audit alignment with MCP</a></li>
+          </ol>
+        </li>
+        <li>
+          <a href="#code-side">The code side</a>
+          <ol class="toc-sub">
+            <li><a href="#cs-storybook">Storybook as test runner</a></li>
+          </ol>
+        </li>
+        <li>
+          <a href="#roles">Roles &amp; the new craft</a>
+          <ol class="toc-sub">
+            <li><a href="#roles-upstream">The roles move upstream</a></li>
+            <li><a href="#roles-de">The Design Engineer</a></li>
+          </ol>
+        </li>
+        <li>
+          <a href="#risks">Risks &amp; traps</a>
+          <ol class="toc-sub">
+            <li><a href="#risk-hallucination">Hallucinated files</a></li>
+            <li><a href="#risk-sameness">Sameness creep</a></li>
+            <li><a href="#risk-bias">Bias &amp; a11y blind spots</a></li>
+            <li><a href="#risk-multimodal">Multimodal as shortcut</a></li>
+            <li><a href="#risk-docs">LLM-written docs</a></li>
+            <li><a href="#risk-finishline">DS as finish line</a></li>
+          </ol>
+        </li>
+        <li>
+          <a href="#checklist">Readiness checklist</a>
+        </li>
+        <li>
+          <a href="#sources">Sources &amp; further reading</a>
+          <ol class="toc-sub">
+            <li><a href="#sources-primary">Primary essays</a></li>
+            <li><a href="#sources-resources">Further reading</a></li>
+          </ol>
+        </li>
+      </ol>
+    </aside>
+
+    <!-- ============================ CONTENT ================================ -->
+    <main class="content">
+
+      <!-- ===== 00 PRIMER ================================================= -->
+      <section class="section primer" id="primer">
+        <div class="section-num">00 — Primer</div>
+        <h2 class="section-title">Before you start.</h2>
+        <p class="section-lede">If you've already shipped a design system and you've at least heard of MCP, you can skip this and jump to <a href="#intro">section 01</a>. Otherwise — read this first; everything later assumes it.</p>
+
+        <div class="primer-grid">
+          <div class="primer-block">
+            <h3 class="primer-h3">Who this is for</h3>
+            <ul class="primer-list">
+              <li><strong>DS practitioners</strong> — you own the system. You will implement most of this directly.</li>
+              <li><strong>Designers using Figma daily</strong> — sections 03 and 05 are the core for you.</li>
+              <li><strong>Engineers shipping with AI assistants</strong> — sections 02 and 04 describe the contracts your agents read from.</li>
+              <li><strong>Curious newcomers</strong> — keep this primer open; come back to it when a term stops meaning anything.</li>
+            </ul>
+          </div>
+          <div class="primer-block">
+            <h3 class="primer-h3">Quick glossary <span class="primer-h3-aside">— 8 terms used throughout</span></h3>
+            <dl class="glossary">
+              <div class="gloss">
+                <dt>MCP</dt>
+                <dd>Model Context Protocol. A small server that hands an AI agent structured data about your system — so it can query the source of truth instead of scraping screenshots.</dd>
+              </div>
+              <div class="gloss">
+                <dt>AGENTS.md</dt>
+                <dd>A manifest file at the root of a codebase. Tells an AI assistant which components to use, which to avoid, where the tokens live.</dd>
+              </div>
+              <div class="gloss">
+                <dt>Skill</dt>
+                <dd>A small instruction file that encodes one decision rule for an agent. Example: "use the Switch component when only one option is selectable".</dd>
+              </div>
+              <div class="gloss">
+                <dt>Declared docs</dt>
+                <dd>Component documentation written in description fields as markdown, so an agent can parse it without inferring meaning from a picture.</dd>
+              </div>
+              <div class="gloss">
+                <dt>Drift</dt>
+                <dd>The gap between what was designed and what actually shipped. Usually invisible until production.</dd>
+              </div>
+              <div class="gloss">
+                <dt>Diagnostic layer</dt>
+                <dd>Automated checks that detect and report drift between Figma source and production code.</dd>
+              </div>
+              <div class="gloss">
+                <dt>Slot</dt>
+                <dd>A Figma feature. Creates a flexible content region inside a component, so the same component can hold different children without exploding into variants.</dd>
+              </div>
+              <div class="gloss">
+                <dt>Code Connect</dt>
+                <dd>A Figma feature that explicitly links a design component to its production code counterpart — declaring how variants and props map.</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 01 INTRO ================================================== -->
+      <section class="section" id="intro">
+        <div class="section-num">01 — Introduction</div>
+        <h2 class="section-title">Why this exists.</h2>
+        <p class="lead">
+          Design systems were always a means to an end. They existed to ship
+          products faster and more consistently. The end has just changed
+          shape: agents now assemble your product in the moment, from your
+          component library — and the margin for error in that output is
+          zero.<a class="cite" href="#s1">01</a>
+        </p>
+        <p>
+          A messy system used to be a productivity problem. Today it's a
+          strategic liability. A human developer can route around inconsistent
+          tokens or stale docs; an agent can't.<a class="cite" href="#s4">04</a>
+          This manual collects what to fix, in the order that matters, so an
+          agent can compose your product without guessing.
+        </p>
+
+        <div class="subsection" id="intro-shift">
+          <div class="subsection-num">1.1 — The shift</div>
+          <h3 class="subsection-title">From human-readable to agent-readable.</h3>
+          <p>
+            The good news, repeated across every essay: the fix is
+            unglamorous and well-known. Tokens. Contracts. Schemas.
+            Machine-readable documentation. A diagnostic layer that keeps
+            design and code in sync.<a class="cite" href="#s1">01</a> Do that
+            work in the right order and you don't just survive the shift —
+            you get to use it.
+          </p>
+        </div>
+
+        <div class="subsection" id="intro-figma">
+          <div class="subsection-num">1.2 — How models "see" Figma</div>
+          <h3 class="subsection-title">Why Figma is harder for an AI than Paper.</h3>
+          <p>
+            Every Figma file is read by two audiences now. The designer next
+            to you, and the AI model your team plugged in last month. When
+            the file is prepared for both, agents generate faster, use fewer
+            tokens, and hit your intent on the first try.
+          </p>
+          <p>
+            It's no accident that tools like
+            <a href="https://paper.design" target="_blank" rel="noopener">paper.design</a>
+            and pencil.dev exist — and that paper's founders came out of
+            Figma. Paper renders real HTML; Figma draws vectors. When Figma
+            is your source of truth, the model has to interpret those
+            vectors — and you pay for it in tokens, latency, and accuracy.
+            The fix is to give the model the structure it actually needs.
+          </p>
+          <div class="callout">
+            <div class="callout-label">Premise</div>
+            <p>
+              Figma will remain the best tool for design work for the
+              foreseeable future. The question is not <em>whether</em> to keep
+              using it but <em>how</em> to make it cheap and accurate for an
+              LLM to read.
+            </p>
+            <p>
+              The mental model that helps: <em>when you connect Figma to your
+              AI-powered IDE through MCP, you are turning your design file
+              into a prompt.</em><a class="cite" href="#r1">r1</a> Everything
+              ambiguous about the file becomes ambiguous in the generated
+              code.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 02 STEPS ================================================== -->
+      <section class="section" id="steps">
+        <div class="section-num">02 — The foundations</div>
+        <h2 class="section-title">Eight steps, in order.</h2>
+        <p class="section-lede">
+          The chain is unforgiving. You cannot generate adaptive UI without a
+          system an agent can reliably consume; you cannot have such a system
+          without a diagnostic layer that keeps design and code in sync; you
+          cannot build that layer without first fixing the drift that caused
+          it. Skip a step and the chain breaks.<a class="cite" href="#s1">01</a>
+        </p>
+
+        <div class="steps-grid">
+
+          <!-- Step 1 -->
+          <article class="step-card" id="step-1">
+            <div class="step-card-head">
+              <span class="step-card-num">01</span>
+              <span class="step-card-label">Posture · Foundation</span>
+            </div>
+            <h3>Treat the system as an API, not a gallery.</h3>
+            <p class="why">An API doesn't hand you a picture and ask you to figure out what it meant. It returns structured data with a contract.<a class="cite" href="#s6">06</a></p>
+            <p>
+              The single most important shift: document your system as
+              <em>declared</em> data, not as a <em>designed</em> artefact.
+            </p>
+            <p>
+              Designed frames — visual layouts, do/don't pairs, callout boxes
+              pinned around a component — are optimised for human browsing.
+              But they force an agent to infer meaning from a node tree.<a class="cite" href="#s6">06</a>
+              Declared documentation lives in description fields, in
+              markdown. An agent can parse it without guessing.
+            </p>
+            <ul>
+              <li>Populate component <code>description</code> fields with clear markdown: purpose, usage, constraints, do/don't expressed as text.</li>
+              <li>Couple documentation to components — rename or delete the component and the docs travel with it.<a class="cite" href="#s6">06</a></li>
+              <li>Keep designed frames for human stakeholders, but stop treating them as machine-readable.</li>
+              <li>The readability test: can an agent understand this without visual inference? If not, declare it.</li>
+            </ul>
+          </article>
+
+          <!-- Step 2 -->
+          <article class="step-card" id="step-2">
+            <div class="step-card-head">
+              <span class="step-card-num">02</span>
+              <span class="step-card-label">Tokens · Contracts</span>
+            </div>
+            <h3>Fix the foundation before you generate anything.</h3>
+            <p>
+              "Mostly documented" or "good enough for the team that built it"
+              is not enough. <strong>Complete is the bar.</strong><a class="cite" href="#s1">01</a>
+              For AI to generate a correct, branded, accessible interface,
+              it needs absolute clarity about what your components are, how
+              they behave, and the constraints they must respect.<a class="cite" href="#s1">01</a>
+            </p>
+            <div class="audit">
+              <div class="audit-row head">
+                <div class="audit-cell">Failure</div>
+                <div class="audit-cell">Where you pay</div>
+              </div>
+              <div class="audit-row">
+                <div class="audit-cell"><strong>Hardcoded hex values</strong> in production code</div>
+                <div class="audit-cell">Every brand tweak becomes a find-replace sweep.</div>
+              </div>
+              <div class="audit-row">
+                <div class="audit-cell"><strong>Inconsistent token names</strong> across files</div>
+                <div class="audit-cell">Agent picks the wrong one. Silently.</div>
+              </div>
+              <div class="audit-row">
+                <div class="audit-cell"><strong>Missing component metadata</strong></div>
+                <div class="audit-cell">Agent infers behaviour from the name alone.</div>
+              </div>
+              <div class="audit-row">
+                <div class="audit-cell"><strong>Component locked to one platform</strong></div>
+                <div class="audit-cell">Half a contract. Second platform reinvents it.<a class="cite" href="#s1">01</a></div>
+              </div>
+            </div>
+            <ul>
+              <li>Audit tokens: are they consistent, semantic, free of one-off hex values?<a class="cite" href="#s4">04</a></li>
+              <li>Write component contracts that specify every prop, state, interaction pattern, and accessibility requirement.<a class="cite" href="#s1">01</a></li>
+              <li>Add metadata that a machine can parse — not just human-readable Figma annotations.</li>
+            </ul>
+            <div class="callout">
+              <div class="callout-label">Field note</div>
+              <p>Two real failure modes from enterprise teams: designers building careful Figma variants while engineers ship inline styles; and a 50-engineer team colour-picking from screenshots because the design-to-code path didn't exist.<a class="cite" href="#s4">04</a> Same root cause both times: no structural communication encoded in the system itself.</p>
+            </div>
+          </article>
+
+          <!-- Step 3 -->
+          <article class="step-card" id="step-3">
+            <div class="step-card-head">
+              <span class="step-card-num">03</span>
+              <span class="step-card-label">Guidelines · Decisions</span>
+            </div>
+            <h3>Encode the <em>why</em>, not just the <em>how</em>.</h3>
+            <p class="why">LLMs are trained on generic code and design practices. The choices already represented in your system — and not encoded anywhere — are exactly what they get wrong.<a class="cite" href="#s2">02</a></p>
+            <p>
+              Most component docs describe mechanics: what props exist, the
+              difference between a checkbox and a radio. That is the
+              <em>how</em>. What an agent needs in addition is the
+              <em>why</em>: when to use a switch instead of a checkbox, when
+              never to use a semantic-red chip (e.g. to indicate medical risk
+              status), when a "select all / none" pattern is
+              required.<a class="cite" href="#s2">02</a>
+            </p>
+            <ul>
+              <li>Treat design guidelines as a new deliverable, shipped alongside components and reference docs.<a class="cite" href="#s2">02</a></li>
+              <li>Write them as agent <em>skills</em>: short, decision-oriented, product-specific.</li>
+              <li>Include negative examples — "do not generate X for Y context" — because the default training data will get this wrong.<a class="cite" href="#s2">02</a></li>
+            </ul>
+          </article>
+
+          <!-- Step 4 -->
+          <article class="step-card" id="step-4">
+            <div class="step-card-head">
+              <span class="step-card-num">04</span>
+              <span class="step-card-label">Guardrails · Tooling</span>
+            </div>
+            <h3>Put MCPs, AGENTS.md, and skills in the codebase.</h3>
+            <p class="why">When LLMs have access to your codebase, they'll use anything they find as a pattern. The models aren't trained on your code; they're trained on public code — which is why Tailwind and ShadCN are so over-represented.<a class="cite" href="#s2">02</a></p>
+            <ul>
+              <li><strong>MCP server</strong> — exposes the design system to agents as a structured resource they can query, not scrape.</li>
+              <li><strong>AGENTS.md</strong> — a manifest at the repo root telling agents which components to use, which patterns are forbidden, where the tokens live.</li>
+              <li><strong>Agent skills</strong> — small, focused instruction files that capture decision rules (the <em>why</em> from step three).<a class="cite" href="#s2">02</a></li>
+            </ul>
+<pre class="code-block" data-lang="agents.md"><span class="c"># AGENTS.md (excerpt)</span>
+<span class="k">use_components_from:</span> <span class="s">"@acme/ds"</span>
+<span class="k">forbid:</span>
+  - <span class="s">"inline tailwind utility classes for colour"</span>
+  - <span class="s">"recreating components that already exist in @acme/ds"</span>
+<span class="k">tokens:</span> <span class="s">"./tokens/semantic.json"</span>
+<span class="k">skills:</span> <span class="s">"./.skills/"</span></pre>
+          </article>
+
+          <!-- Step 5 -->
+          <article class="step-card" id="step-5">
+            <div class="step-card-head">
+              <span class="step-card-num">05</span>
+              <span class="step-card-label">Patterns · Schemas</span>
+            </div>
+            <h3>Ship components as data — not just code.</h3>
+            <p>
+              Patterns have always been the design-system bogeyman: built for
+              one product purpose, made of many sub-components, exploding in
+              variations. Encoding them as rigid code components creates
+              maintenance burden and pushes teams toward workarounds.<a class="cite" href="#s2">02</a>
+              Schemas describe the relationship instead — which components
+              compose into which patterns, what context they require, which
+              siblings are valid. Less code; more contract.
+            </p>
+            <div class="schema-preview">
+              <div class="schema-preview-head">Example · components-as-data</div>
+<pre><span class="c">// A button described by its relationship, not its code.</span>
+{
+  <span class="k">"name"</span>: <span class="s">"CancelButton"</span>,
+  <span class="k">"extends"</span>: <span class="s">"Button"</span>,
+  <span class="k">"context"</span>: <span class="s">"modal"</span>,
+  <span class="k">"siblings"</span>: [<span class="s">"ConfirmButton"</span>],
+  <span class="k">"intent"</span>: <span class="s">"dismiss without action"</span>
+}</pre>
+            </div>
+            <ul>
+              <li>For each pattern, ship a schema describing its sub-components, contexts, and allowed siblings — not a monolithic code component.</li>
+              <li>Use semantic naming so an agent can compose meaningfully (a <code>CancelButton</code> in <code>modalContext</code> is far clearer than a generic <code>Button</code>).<a class="cite" href="#s2">02</a></li>
+              <li>This is what enables multi-turn, dynamically recomposing UI — the same primitive that lets products like Expedia render inside ChatGPT.<a class="cite" href="#s2">02</a></li>
+            </ul>
+          </article>
+
+          <!-- Step 6 -->
+          <article class="step-card" id="step-6">
+            <div class="step-card-head">
+              <span class="step-card-num">06</span>
+              <span class="step-card-label">Diagnostic · Drift</span>
+            </div>
+            <h3>Build the diagnostic layer.</h3>
+            <p class="why">No feedback loop. No diagnostic layer. Just two teams working in parallel, producing divergent results.<a class="cite" href="#s4">04</a></p>
+            <p>
+              Drift is the check-engine light of design systems. It rarely
+              fails catastrophically; it just quietly diverges, sprint by
+              sprint, demoralising the people who care most.<a class="cite" href="#s4">04</a>
+            </p>
+            <ul>
+              <li>Automated parity checks between Figma source-of-truth and production code (tokens, components, props).</li>
+              <li>Bidirectional sync — when a designer changes a variant, code knows; when an engineer ships a divergence, design sees it.</li>
+              <li>Treat drift as technical debt with a measurable cost, not a vibes problem.</li>
+            </ul>
+          </article>
+
+          <!-- Step 7 -->
+          <article class="step-card" id="step-7">
+            <div class="step-card-head">
+              <span class="step-card-num">07</span>
+              <span class="step-card-label">Day-to-day</span>
+            </div>
+            <h3>Put LLMs to work on the unglamorous tasks first.</h3>
+            <p class="why">Right now, the best way to use LLMs in your design system is to focus on meaningfully filling gaps. Think less about generating new components and more about delivering on the promise of design systems.<a class="cite" href="#s3">03</a></p>
+            <ul>
+              <li><strong>Refactors and migrations</strong> — token renames, API changes, deprecations. Glorified find-and-replace at scale.<a class="cite" href="#s3">03</a></li>
+              <li><strong>Interaction prototyping</strong> — let designers exercise real flows in the browser via tools like v0, Lovable, or Dessn.<a class="cite" href="#s3">03</a></li>
+              <li><strong>Keeping examples fresh</strong> — Storybook stories and sandbox states that go stale the moment a component changes.<a class="cite" href="#s3">03</a></li>
+            </ul>
+            <div class="callout warning">
+              <div class="callout-label">Anti-pattern</div>
+              <p>Don't let an LLM write your design-system documentation. The output reads like a third-rate style guide ("An input is an element users can type into") and lacks the context your team needs about <em>when</em> and <em>why</em> to use a component.<a class="cite" href="#s3">03</a></p>
+            </div>
+          </article>
+
+          <!-- Step 8 -->
+          <article class="step-card" id="step-8">
+            <div class="step-card-head">
+              <span class="step-card-num">08</span>
+              <span class="step-card-label">Posture · Ecosystem</span>
+            </div>
+            <h3>Build in the open. Extend, don't restart.</h3>
+            <div class="maxim">
+              <div class="maxim-eyebrow">Rule of thumb</div>
+              <p class="maxim-line">Extend what already exists.</p>
+              <p class="maxim-line">Contribute back when you patch it.</p>
+              <p class="maxim-line">Start from scratch only when nothing else fits.</p>
+            </div>
+            <p>
+              AI thrives in open environments because it has been trained on
+              them. The corresponding warning is sameness — when every team
+              uses the same kits and the same prompts, diversity collapses
+              and the design system stops carrying any identity.<a class="cite" href="#s5">05</a>
+            </p>
+            <ul>
+              <li>Adopt or extend existing systems gradually, component by component.<a class="cite" href="#s5">05</a></li>
+              <li>Make transparency and machine-readability architectural principles from day one.</li>
+              <li>Contribute back when you patch or extend — it keeps the ecosystem (and the models trained on it) honest.</li>
+              <li>Curate against vibe-coded sameness: where does your product actually need to look unlike the default?</li>
+            </ul>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- ===== 03 DESIGN SIDE ============================================ -->
+      <section class="section" id="design-side">
+        <div class="section-num">03 — The design side</div>
+        <h2 class="section-title">Making Figma legible to AI.</h2>
+        <p class="section-lede">
+          When Figma is connected to an editor through MCP, the model does
+          not see pixels the way a human does. Everything that follows
+          assumes Figma stays the design surface and that the goal is to
+          encode as much intent into the file as possible — so the agent has
+          less to interpret and more to consume.
+        </p>
+
+        <!-- 3.1 -->
+        <div class="subsection" id="ds-mcp">
+          <div class="subsection-num">3.1 — Inputs to the model</div>
+          <h3 class="subsection-title">What an LLM sees through MCP.</h3>
+          <p>
+            Connect Figma to your editor via an MCP server and the model
+            primarily receives these signals — not pixels.
+          </p>
+          <ul class="mcp-list">
+            <li>
+              <strong>Components &amp; instances</strong>
+              <span>Names, descriptions, dev resources, props, variants.</span>
+            </li>
+            <li>
+              <strong>Auto-layout</strong>
+              <span>Directions, gaps, padding — the visual cousin of flexbox; maps to your DOM structure.</span>
+            </li>
+            <li>
+              <strong>Variables</strong>
+              <span>Colours, typography, spacing, code syntax mapping.</span>
+            </li>
+            <li>
+              <strong>Text content &amp; styles</strong>
+              <span>The actual strings plus the type tokens applied.</span>
+            </li>
+            <li>
+              <strong>Page &amp; frame structure</strong>
+              <span>Names matter — call frames <code>Header</code>, <code>Hero</code>, <code>CTA</code>, <code>Row</code>, <code>Content</code>; never <code>Frame 2137</code>.</span>
+            </li>
+            <li>
+              <strong>Exportable assets</strong>
+              <span>Their names become file names downstream.</span>
+            </li>
+            <li>
+              <strong>Annotations</strong>
+              <span>Anything you write into the file as structured intent.</span>
+            </li>
+            <li>
+              <strong>Constraints</strong>
+              <span>For absolute-positioned and frame elements — how they should resize.</span>
+            </li>
+          </ul>
+          <p class="lead">
+            The takeaway: every layer name, every variable mapping, every
+            annotation is doing real work. Whatever the model cannot read
+            structurally, it has to guess at — and you pay for the guess in
+            tokens, latency, and quality.
+          </p>
+
+          <h4>File hygiene checklist</h4>
+          <ul>
+            <li>Organise pages by intent — <code>Style Guide</code>, <code>Components</code>, <code>Design</code> screens — and keep exploration separate from production.<a class="cite" href="#r1">r1</a></li>
+            <li>Delete or rename placeholder layers (<code>Rectangle 23</code>, <code>Text 1</code>, <code>Frame 49</code>). The model reads them and treats them as semantic.<a class="cite" href="#r1">r1</a></li>
+            <li>Match component names to your intended code structure (<code>Button / Primary</code>, not <code>Btn Blue</code>).<a class="cite" href="#r1">r1</a></li>
+            <li>Use realistic content instead of Lorem Ipsum so generated copy and layout feel real.<a class="cite" href="#r1">r1</a></li>
+          </ul>
+
+          <h4>Responsive specifications</h4>
+          <p>Create separate frames per breakpoint with explicit names so the agent gets responsive intent for free:<a class="cite" href="#r1">r1</a></p>
+<pre class="code-block" data-lang="frames">Home / Desktop / 1440
+Home / Tablet / 768
+Home / Mobile / 375</pre>
+        </div>
+
+        <!-- 3.2 -->
+        <div class="subsection" id="ds-intent">
+          <div class="subsection-num">3.2 — Interaction</div>
+          <h3 class="subsection-title">Share interaction intent, not just appearance.</h3>
+          <p>
+            Communicating interactive elements is as important as the static
+            ones. Add annotations that capture <em>desired behaviour</em> —
+            states, transitions, dynamic content. Clear notes on what should
+            happen on hover, on focus, when data is empty, when an action is
+            destructive — these reduce guesswork dramatically and push the
+            first-pass output much closer to your intent.
+          </p>
+          <p>
+            A button without annotation is just a coloured rectangle to the
+            model. A button annotated <em>"Loading state shows spinner;
+            disabled when form invalid; primary CTA on confirmation
+            screen"</em> is a contract.
+          </p>
+        </div>
+
+        <!-- 3.3 -->
+        <div class="subsection" id="ds-variables">
+          <div class="subsection-num">3.3 — Source of truth</div>
+          <h3 class="subsection-title">Variable code syntax.</h3>
+          <p>
+            Variable code syntax in Figma gives both designers and AI coding
+            tools a single source of truth for colours, typography, spacing,
+            and states. Every variable maps to its production-side
+            counterpart — a Tailwind class, a CSS custom property, a design
+            token name — and the model gets that mapping for free.
+          </p>
+          <p>
+            This is also something you can auto-generate from scripts or via
+            the unofficial Figma Console MCP — meaning you don't have to type
+            the mapping by hand for every token. Make it part of the file
+            template so every new design starts with the mapping already in
+            place.
+          </p>
+
+          <h4>Naming conventions worth committing to</h4>
+          <p>Be intentional and semantic. The model uses these names verbatim downstream:<a class="cite" href="#r1">r1</a></p>
+<pre class="code-block" data-lang="tokens"><span class="c"># colour</span>
+color/background/surface
+color/text/primary
+
+<span class="c"># typography</span>
+font/heading
+font/body
+
+<span class="c"># spacing</span>
+space/4
+space/8
+space/16
+
+<span class="c"># radii &amp; shadows</span>
+radius/sm   shadow/md</pre>
+        </div>
+
+        <!-- 3.4 -->
+        <div class="subsection" id="ds-codeconnect">
+          <div class="subsection-num">3.4 — The bridge</div>
+          <h3 class="subsection-title">Code Connect &amp; slots.</h3>
+          <p>
+            Code Connect explicitly links a Figma component to its production
+            code component, documenting how variants and properties map
+            between the two. It removes an entire class of "is this the same
+            thing on both sides?" questions — and once an MCP server can
+            read it, the agent inherits the mapping.
+          </p>
+          <p>
+            Slots are supported in Code Connect, and they appear directly in
+            the rendered code snippets. When an engineer (or an agent) looks
+            at a slot-based component in Figma, they immediately see how it
+            maps to production: structure stays consistent, content stays
+            flexible. This is exactly what container components need — the
+            place where variation is expected by design.
+          </p>
+          <div class="callout success">
+            <div class="callout-label">Why it matters</div>
+            <p>Without Code Connect the agent has to infer the design ↔ code mapping every time. With it, the mapping is declared once and reused everywhere downstream — handoff becomes predictable instead of repeatedly negotiated.</p>
+          </div>
+
+          <h4>Slot configuration patterns</h4>
+          <p>Two intentional choices to make for every slot:<a class="cite" href="#r3">r3</a></p>
+          <ul>
+            <li><strong>Pre-filled vs. empty.</strong> Default content provides context and clarity; an empty slot signals to the designer that they must add something. Pick one deliberately per slot — both are valid, neither is the default.</li>
+            <li><strong>Preferred instances.</strong> Set the recommended component instances a slot can accept. They appear as curated options when designers interact with the slot, which accelerates the workflow <em>and</em> nudges everyone toward consistency without forcing it.</li>
+          </ul>
+          <p>
+            Implementation is light: insert a frame inside a main component,
+            right-click → "Convert to slot" (<code>⇧⌘S</code>). Slots can't live on
+            canvas directly, only inside a main component.<a class="cite" href="#r3">r3</a>
+          </p>
+        </div>
+
+        <!-- 3.5 -->
+        <div class="subsection" id="ds-plugins">
+          <div class="subsection-num">3.5 — Tooling</div>
+          <h3 class="subsection-title">Internal plugins to speed up handoff.</h3>
+          <p>
+            The fastest wins are small Figma plugins tailored to your system.
+            Run a brainstorming session with the design + DS team. A starting
+            backlog:
+          </p>
+          <ul>
+            <li>Attach the correct variables to non-zero values: radius tokens to radii, spacing tokens to spacing.</li>
+            <li>Reconnect detached typography styles automatically.</li>
+            <li>Highlight elements that don't have a colour style applied.</li>
+            <li>Rename layers from <code>Frame 2137</code> to something meaningful — <code>div</code>, <code>stack</code>, <code>flex</code>, <code>card</code>.</li>
+            <li>Scan all layers inside a given frame and report component-coverage percentage. Designs below 50 % go to the DS team for review.</li>
+            <li>Monthly Library Analytics digest — which team has lowest coverage, which component is most often detached.</li>
+          </ul>
+          <p>
+            Each one of these is small. Together they remove an enormous
+            amount of friction from the file before anything ever reaches a
+            coding agent.
+          </p>
+        </div>
+
+        <!-- 3.6 -->
+        <div class="subsection" id="ds-audit">
+          <div class="subsection-num">3.6 — Drift detection</div>
+          <h3 class="subsection-title">Audit alignment with the Figma MCP server.</h3>
+          <p>
+            With the Figma MCP server an agent can use design context to
+            audit drift between your designs and codebase — and propose
+            structural fixes on either side:
+          </p>
+          <ul>
+            <li>Audit design-token usage in code vs. the selected Figma frame, and vice versa.</li>
+            <li>Flag layer names that should change to better align Figma with code components.</li>
+            <li>Suggest Figma prop changes that bring the design closer to the production API.</li>
+            <li>Make code responsive and surface design issues earlier in the cycle.</li>
+          </ul>
+          <p>Example prompt — feed it the Figma selection and the production files, ask for divergences:</p>
+<pre class="code-block" data-lang="prompt">#get_variable_defs from the selected Figma elements and compare them
+with the variables and styles used in the code implementation in
+#file:ChatBox.tsx and #file:chatBox.css</pre>
+        </div>
+      </section>
+
+      <!-- ===== 04 CODE SIDE ============================================== -->
+      <section class="section" id="code-side">
+        <div class="section-num">04 — The code side</div>
+        <h2 class="section-title">Testing &amp; verifying what was generated.</h2>
+        <p class="section-lede">
+          Once an agent has produced code from your system, you need a way to
+          verify it without sitting through a manual QA pass on every output.
+          Storybook is the cheapest answer.
+        </p>
+
+        <div class="subsection" id="cs-storybook">
+          <div class="subsection-num">4.1 — Verification</div>
+          <h3 class="subsection-title">Storybook as test runner.</h3>
+          <p>
+            Storybook is an open-source tool that lets developers build,
+            test, and visualise UI components in isolation. Its built-in
+            test runner — based on Jest and Playwright — automatically
+            verifies whether a component renders correctly, while also
+            validating accessibility and performance characteristics.
+            Visual-regression testing can run in the cloud to catch issues
+            caused by CSS changes.
+          </p>
+          <p>
+            For an agent-driven workflow this is essential: every component
+            generated or modified by an LLM should land in a story that
+            exercises its states, and the test runner becomes your safety
+            net. Without it, drift between generated code and intent is
+            invisible until production.
+          </p>
+          <div class="callout">
+            <div class="callout-label">Pairing</div>
+            <p>Step 7 ("LLMs on unglamorous work") and Storybook reinforce each other: ask an agent to keep stories in sync with components, then let the test runner catch any case where it didn't. The two combined remove the single most tedious DS maintenance task.<a class="cite" href="#s3">03</a></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 05 ROLES ================================================== -->
+      <section class="section" id="roles">
+        <div class="section-num">05 — Roles</div>
+        <h2 class="section-title">The new craft.</h2>
+        <p class="section-lede">
+          If agents can compose interfaces, what happens to the people who
+          used to compose them? The honest answer from across the essays:
+          the work doesn't shrink, it relocates — and at the same time, an
+          entirely new role is emerging in its own right.<a class="cite" href="#s1">01</a><a class="cite" href="#s5">05</a>
+        </p>
+
+        <!-- 5.1 -->
+        <div class="subsection" id="roles-upstream">
+          <div class="subsection-num">5.1 — Relocation</div>
+          <h3 class="subsection-title">The roles move upstream.</h3>
+          <div class="roles-grid">
+            <div class="role-card">
+              <div class="role-tag">From</div>
+              <p>Building individual screens, individual components, individual stories. Picking colours, drawing variants, shipping pixel mocks across to engineering. Performing repetitive maintenance by hand.<a class="cite" href="#s5">05</a></p>
+            </div>
+            <div class="role-arrow" aria-hidden="true">→</div>
+            <div class="role-card accent">
+              <div class="role-tag">To</div>
+              <p>Authoring the tokens, contracts, and decision rules that the system uses to assemble itself. Defining the vocabulary, not arranging the sentences. Reviewing, refining, and governing what agents produce.<a class="cite" href="#s1">01</a><a class="cite" href="#s5">05</a></p>
+            </div>
+          </div>
+          <div class="roles-notes">
+            <div class="role-note">
+              <h4>Designers become rule-authors.</h4>
+              <p>Instead of designing individual screens, designers define the vocabulary, constraints, and rules that govern how screens get generated.<a class="cite" href="#s1">01</a></p>
+            </div>
+            <div class="role-note">
+              <h4>Engineers build contracts.</h4>
+              <p>Instead of building components from scratch, engineers build the contracts and infrastructure that let components be assembled correctly at scale.<a class="cite" href="#s1">01</a></p>
+            </div>
+            <div class="role-note">
+              <h4>Handovers become stewardship.</h4>
+              <p>The doer-to-curator shift means reviews can happen iteratively — even on mobile — and "handover" gives way to collective stewardship of the system itself.<a class="cite" href="#s5">05</a></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5.2 -->
+        <div class="subsection" id="roles-de">
+          <div class="subsection-num">5.2 — A new role</div>
+          <h3 class="subsection-title">The Design Engineer.</h3>
+          <p>
+            A new role gaining ground — both confusing and exciting, because
+            expectations for how software should look and feel have never
+            been higher. Design Engineers are the practitioners who close the
+            gap between intent and implementation, and they are increasingly
+            the people whose work makes an AI-coded interface feel
+            considered rather than generic.
+          </p>
+
+          <h4>The Design Engineer's toolbox</h4>
+          <ul>
+            <li>Design in Figma — fluent, but not exclusively</li>
+            <li>Design in code — comfortable shipping production-quality interfaces</li>
+            <li>Debug browser performance — and care about it</li>
+            <li>Design micro-animations and motion details</li>
+            <li>Create and maintain core components on both sides (design + code)</li>
+            <li>Maintain documentation — Storybooks, READMEs, MDX</li>
+            <li>Improve accessibility — and verify it, not just assert it</li>
+          </ul>
+
+          <h4>What they care about</h4>
+          <p>For the web, the Design Engineer's priorities tend to include:</p>
+          <ul>
+            <li>User interactions — fidelity, responsiveness, feel</li>
+            <li>Reusable components and primitives</li>
+            <li>Design <em>and</em> page-speed quality together, never one without the other</li>
+            <li>Inclusive input modes — touch, pointers, keyboard</li>
+            <li>Respecting user preferences — reduced motion, colour scheme, language</li>
+            <li>Accessibility for assistive-technology users</li>
+          </ul>
+
+          <p class="pull">
+            There's a lot of work behind the pretty pixels.
+            <span class="by">— operating principle</span>
+          </p>
+
+          <p>
+            Design Engineers go beyond visual appeal. They own the pieces
+            that make an interface feel considered — motion, performance,
+            accessibility, micro-detail. In an agent-driven workflow they end
+            up running the system itself: authoring the contracts, writing
+            the skills, maintaining the stories, reviewing what the agent
+            produced.
+          </p>
+
+          <h4>How Vercel describes the role</h4>
+          <p>Vercel's own framing of the role is worth quoting almost verbatim — it covers the three working modes a Design Engineer moves between:<a class="cite" href="#r7">r7</a></p>
+          <ul>
+            <li><strong>Design collaboration.</strong> Partnering with designers iteratively in Figma <em>or</em> in code — consulting on implementation cost, component reusability, and prototyping explorations that are easier to execute outside design tools.</li>
+            <li><strong>Product team integration.</strong> Embedding within a product team for month-plus features, implementing UI while platform engineering handles the infrastructure.</li>
+            <li><strong>Independent ownership.</strong> Owning small-to-medium features end-to-end — from sketching through shipping — and driving design-led system projects (the Geist font, the documentation site, the component library).</li>
+          </ul>
+          <p>
+            Vercel emphasises a culture point that travels well: focus on the
+            outcome, not the process or the tool — and "iterate to greatness"
+            rather than wait for perfection.<a class="cite" href="#r7">r7</a>
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== 06 RISKS ================================================== -->
+      <section class="section" id="risks">
+        <div class="section-num">06 — Risks &amp; traps</div>
+        <h2 class="section-title">Where this goes wrong.</h2>
+        <p class="section-lede">
+          AI doesn't fix a design system; it amplifies whatever shape your
+          system is already in. Six pitfalls the essays keep returning to.
+        </p>
+
+        <div class="risks-grid">
+          <article class="risk-card" id="risk-hallucination">
+            <div class="risk-head">
+              <span class="risk-rune">i</span>
+              <h4>Hallucinated files and ghost components.</h4>
+            </div>
+            <p>Agents will confidently reference components, props, and paths that do not exist. The fix isn't "tell it to stop" — it's structured ground truth (MCP, AGENTS.md, schemas) and stable, well-maintained sources to draw from.<a class="cite" href="#s5">05</a></p>
+          </article>
+
+          <article class="risk-card" id="risk-sameness">
+            <div class="risk-head">
+              <span class="risk-rune">ii</span>
+              <h4>Sameness creep.</h4>
+            </div>
+            <p>Everyone uses the same kits and "vibe codes". Fast remixing speeds delivery but stifles diversity — most teams still reinvent rather than extend, and end up with the same default aesthetic.<a class="cite" href="#s5">05</a></p>
+          </article>
+
+          <article class="risk-card" id="risk-bias">
+            <div class="risk-head">
+              <span class="risk-rune">iii</span>
+              <h4>Bias &amp; accessibility blind spots.</h4>
+            </div>
+            <p>Ethical checks for bias and inclusivity become more important once an agent is composing UI at speed.<a class="cite" href="#s5">05</a> Accessibility requirements belong inside contracts and skills — not in a separate doc no agent reads.</p>
+          </article>
+
+          <article class="risk-card" id="risk-multimodal">
+            <div class="risk-head">
+              <span class="risk-rune">iv</span>
+              <h4>"It's multimodal — let it look at the frame."</h4>
+            </div>
+            <p>A screenshot closes part of the interpretation gap, but it's still inference from pixels, and it does nothing for drift — the screenshot is stale the moment the component changes. Vision patches reading; it doesn't patch maintenance.<a class="cite" href="#s6">06</a></p>
+          </article>
+
+          <article class="risk-card" id="risk-docs">
+            <div class="risk-head">
+              <span class="risk-rune">v</span>
+              <h4>Letting the LLM write your documentation.</h4>
+            </div>
+            <p>The output reads like a third-rate style guide and lacks the context your team actually needs about <em>when</em> and <em>why</em> to use a component.<a class="cite" href="#s3">03</a> Use LLMs to migrate, sync stories, write codemods — not to originate the system's voice.</p>
+          </article>
+
+          <article class="risk-card" id="risk-finishline">
+            <div class="risk-head">
+              <span class="risk-rune">vi</span>
+              <h4>"We have a DS" as the finish line.</h4>
+            </div>
+            <p>Design systems are crossing the same threshold responsive design crossed a decade ago. In two years, "do you have a design system?" will sound as quaint as "is your site mobile-friendly?" — minimum cost of entry, not differentiation.<a class="cite" href="#s4">04</a></p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===== 07 CHECKLIST ============================================= -->
+      <section class="section" id="checklist">
+        <div class="section-num">07 — Readiness</div>
+        <h2 class="section-title">The readiness checklist.</h2>
+        <p class="section-lede">Tick what you can defend. Anything unchecked is where an agent will guess.</p>
+
+        <div class="checklist-toolbar">
+          <button type="button" class="cl-btn" data-action="reset" aria-label="Reset checklist">Reset</button>
+          <span class="cl-progress" id="cl-progress">0 / 16</span>
+        </div>
+        <ul class="checklist">
+          <li><label><input type="checkbox" class="cb" data-key="cl-1"><span class="box" aria-hidden="true"></span><span>Every token is semantically named and used consistently in shipped code.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-2"><span class="box" aria-hidden="true"></span><span>Every component has a structured contract — props, states, interactions, a11y — that a machine can parse.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-3"><span class="box" aria-hidden="true"></span><span>Documentation lives in <code>description</code> fields as markdown, not as orphaned visual frames.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-4"><span class="box" aria-hidden="true"></span><span>An <code>AGENTS.md</code> manifest sits at the root of the codebase.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-5"><span class="box" aria-hidden="true"></span><span>An MCP (or equivalent) exposes the design system to agents as queryable structure.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-6"><span class="box" aria-hidden="true"></span><span>Decision-rule skills capture the <em>why</em>: when to use which component, what to never do.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-7"><span class="box" aria-hidden="true"></span><span>Patterns ship as schemas of relationships, not as monolithic code components.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-8"><span class="box" aria-hidden="true"></span><span>A diagnostic layer reports drift between Figma source and production code.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-9"><span class="box" aria-hidden="true"></span><span>Storybook stories (with Jest/Playwright tests) cover every component's states.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-10"><span class="box" aria-hidden="true"></span><span>Figma variables map to code via variable code syntax — single source of truth.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-11"><span class="box" aria-hidden="true"></span><span>Code Connect (or equivalent) declares Figma ↔ code mapping per component.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-12"><span class="box" aria-hidden="true"></span><span>Annotations capture interactive intent — states, transitions, edge cases.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-13"><span class="box" aria-hidden="true"></span><span>Frame names are semantic (<code>Hero</code>, <code>CTA</code>) — never <code>Frame 2137</code>.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-14"><span class="box" aria-hidden="true"></span><span>Internal Figma plugins handle the tedious normalisation tasks for designers.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-15"><span class="box" aria-hidden="true"></span><span>The system extends an existing ecosystem where possible, and contributes back when it patches one.</span></label></li>
+          <li><label><input type="checkbox" class="cb" data-key="cl-16"><span class="box" aria-hidden="true"></span><span>A Design Engineer (or equivalent owner) is accountable for cross-stack quality.</span></label></li>
+        </ul>
+      </section>
+
+      <!-- ===== 08 SOURCES =============================================== -->
+      <section class="section" id="sources">
+        <div class="section-num">08 — Sources</div>
+        <h2 class="section-title">Primary essays &amp; further reading.</h2>
+        <p class="section-lede">The six essays this manual is synthesised from, plus a curated reading list for everything around the Figma + MCP + Code Connect stack.</p>
+
+        <div class="subsection" id="sources-primary">
+          <div class="subsection-num">8.1 — Synthesised from</div>
+          <h3 class="subsection-title">Primary essays.</h3>
+          <ol class="sources-list">
+            <li id="s1">
+              <a href="https://zeroheight.com/blog/the-future-of-design-systems-part-1-the-product-your-design-system-is-actually-building/" target="_blank" rel="noopener">The future of design systems — part 1: The product your design system is actually building</a>
+              <span class="meta">TJ Pitre · zeroheight</span>
+            </li>
+            <li id="s2">
+              <a href="https://zeroheight.com/blog/ai-in-design-systems-whats-changing-in-2026/" target="_blank" rel="noopener">AI in design systems: What's changing in 2026</a>
+              <span class="meta">Elyse · zeroheight</span>
+            </li>
+            <li id="s3">
+              <a href="https://zeroheight.com/blog/3-practical-ways-llms-can-support-design-systems-teams-today/" target="_blank" rel="noopener">3 practical ways LLMs can support design systems teams today</a>
+              <span class="meta">Elyse · zeroheight</span>
+            </li>
+            <li id="s4">
+              <a href="https://zeroheight.com/blog/the-future-of-design-systems-part-2-the-check-engine-light-is-on/" target="_blank" rel="noopener">The future of design systems — part 2: The check engine light is on</a>
+              <span class="meta">TJ Pitre · zeroheight</span>
+            </li>
+            <li id="s5">
+              <a href="https://zeroheight.com/blog/rethinking-design-systems-in-the-open/" target="_blank" rel="noopener">Rethinking design systems in the open</a>
+              <span class="meta">zeroheight</span>
+            </li>
+            <li id="s6">
+              <a href="https://southleft.substack.com/p/designed-vs-declared-how-to-document" target="_blank" rel="noopener">Designed vs Declared: How to document a design system for AI</a>
+              <span class="meta">TJ · Southleft</span>
+            </li>
+          </ol>
+        </div>
+
+        <div class="subsection" id="sources-resources">
+          <div class="subsection-num">8.2 — Further reading</div>
+          <h3 class="subsection-title">A curated reading list.</h3>
+          <p>References to dig deeper into Figma + MCP + Code Connect, the Design Engineer role, and concrete case studies.</p>
+          <ul class="resources-grid">
+            <li id="r1"><a href="https://arie-m-prasetyo.medium.com/figma-recommended-practices-in-the-age-of-ai-e766b098ef9f" target="_blank" rel="noopener">Figma recommended practices in the age of AI</a></li>
+            <li><a href="https://paper.design" target="_blank" rel="noopener">paper.design</a></li>
+            <li><a href="https://www.figma.com/blog/how-razorpay-sharpened-developer-workflows/" target="_blank" rel="noopener">How Razorpay sharpened developer workflows</a></li>
+            <li id="r7"><a href="https://vercel.com/blog/design-engineering-at-vercel" target="_blank" rel="noopener">Design Engineering at Vercel</a></li>
+            <li id="r2"><a href="https://www.figma.com/blog/design-systems-ai-mcp/" target="_blank" rel="noopener">Design systems and AI: Why MCP servers are the unlock</a></li>
+            <li><a href="https://github.com/figma/sds" target="_blank" rel="noopener">Simple Design System (figma/sds)</a></li>
+            <li><a href="https://www.figma.com/blog/why-you-should-care-about-design-context/" target="_blank" rel="noopener">Why you should care about design context</a></li>
+            <li><a href="https://medium.com/@shaheermansoor321/exploring-storybook-a-comprehensive-guide-for-ui-development-581bb4a99053" target="_blank" rel="noopener">Exploring Storybook — a comprehensive guide</a></li>
+            <li><a href="https://www.youtube.com/watch?v=CYPeIjgIfOE" target="_blank" rel="noopener">How 12 Senior Designers Do Engineering Handoff in 2026</a></li>
+            <li><a href="https://github.com/southleft/figma-console-mcp" target="_blank" rel="noopener">Unofficial Figma Console MCP Server</a></li>
+            <li><a href="https://developers.figma.com/docs/figma-mcp-server/skill-code-connect-components/" target="_blank" rel="noopener">Skill: Code Connect Components</a></li>
+            <li><a href="https://developers.figma.com/docs/rest-api/" target="_blank" rel="noopener">The Figma REST API</a></li>
+            <li><a href="https://www.youtube.com/watch?v=A4mqzgFbmjI" target="_blank" rel="noopener">Figma + developer workflows — Code Connect, MCP</a></li>
+            <li><a href="https://react.carbondesignsystem.com/?path=/docs/getting-started-welcome--welcome" target="_blank" rel="noopener">Carbon Storybook</a></li>
+            <li><a href="https://developers.figma.com/docs/plugins/plugin-quickstart-guide/" target="_blank" rel="noopener">Figma Plugin Quickstart Guide</a></li>
+            <li><a href="https://figma.github.io/sds/storybook/?path=/story/sds-hello--story-hello" target="_blank" rel="noopener">Figma SDS Storybook</a></li>
+            <li><a href="https://medium.com/carbondesign/carbon-and-figma-code-connect-redefining-the-design-to-code-experience-836eb3f454fc" target="_blank" rel="noopener">Carbon &amp; Figma Code Connect</a></li>
+            <li><a href="https://developers.figma.com/docs/code-connect/" target="_blank" rel="noopener">Code Connect Documentation</a></li>
+            <li><a href="https://michel-velis.medium.com/bridging-design-and-code-a-comprehensive-guide-to-figma-mcp-code-connect-and-figma-make-1d5c5afef8fe" target="_blank" rel="noopener">Bridging Design and Code: Figma MCP, Code Connect, Figma Make</a></li>
+            <li><a href="https://www.designsystemscollective.com/towards-an-agentic-design-system-c7e0a6469bb1" target="_blank" rel="noopener">Towards an agentic design system</a></li>
+            <li><a href="https://www.figma.com/blog/design-context-everywhere-you-build/" target="_blank" rel="noopener">Design context, everywhere you build</a></li>
+            <li><a href="https://www.designsystemscollective.com/building-an-ai-ready-design-system-35e709f54edf" target="_blank" rel="noopener">Building an AI-Ready design system</a></li>
+            <li><a href="https://www.youtube.com/watch?v=5GVNfbltrQg" target="_blank" rel="noopener">Framework: A more connected DS with Code Connect</a></li>
+            <li><a href="https://www.uber.com/en-CA/blog/automate-design-specs/" target="_blank" rel="noopener">How Uber Built an Agentic System to Automate Design Specs</a></li>
+            <li><a href="https://www.figma.com/blog/design-systems-103-documentation-that-drives-adoption/" target="_blank" rel="noopener">Design system 103: Documentation that drives adoption</a></li>
+            <li><a href="https://www.youtube.com/watch?v=i1k6lLPC4LY" target="_blank" rel="noopener">How to instantly add code syntax to variables (Figma)</a></li>
+            <li id="r3"><a href="https://www.figma.com/blog/supercharge-your-design-system-with-slots/" target="_blank" rel="noopener">Supercharge your design system with slots</a></li>
+            <li><a href="https://developers.figma.com/docs/figma-mcp-server/skill-create-design-system-rules/" target="_blank" rel="noopener">Skill: Create Design System Rules</a></li>
+            <li><a href="https://www.figma.com/customer/from-design-to-code-how-juspay-achieved-5x-faster-workflows-with-figma/" target="_blank" rel="noopener">Juspay: 5× faster workflows with Figma</a></li>
+            <li><a href="https://github.com/figma/mcp-server-guide/tree/main" target="_blank" rel="noopener">Figma MCP Server Guide</a></li>
+            <li><a href="https://carbondesignsystem.com/developing/carbon-mcp/prompts/#best-practices" target="_blank" rel="noopener">Carbon MCP prompt writing — DOs and DON'Ts</a></li>
+          </ul>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <div>Field Manual · v1.1 · synthesised may 2026</div>
+    <div>Set in Geist · published on GitHub Pages</div>
+  </div>
+</footer>
+
+<script src="../assets/app.js"></script>
+</body>
+</html>
