@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Ephemeral UI in AI-driven SaaS — A Pattern Study</title>
-<meta name="description" content="Ephemeral UI: interfaces an AI assembles on demand for a single user intent, then dismisses. A worked example in e-commerce analytics, with triggers, components, a full flow, and how to lay it out in Figma." />
+<title>Ephemeral UI in Omnicom SaaS — A Pattern Study</title>
+<meta name="description" content="Ephemeral UI for Omnicom SaaS — one AI-driven media intelligence platform shipped under several brand names. Four worked scenarios with designs: budget pacing, channel performance, audience decay, and brand-safety alerts." />
 <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
 <meta name="theme-color" content="#fafaf7" media="(prefers-color-scheme: light)" />
 <script>
@@ -37,7 +37,7 @@
     <div class="topbar-right">
       <div class="topbar-meta">
         <span class="dot"></span>
-        <span>pattern study · jun 2026</span>
+        <span>case study · jun 2026</span>
       </div>
       <button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle colour scheme">
         <svg class="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -58,33 +58,34 @@
     <!-- ============================ HERO =================================== -->
     <section class="hero">
       <div class="eyebrow">
-        <span class="badge">PATTERN STUDY</span>
-        <span>Generative interfaces · for AI-driven products</span>
+        <span class="badge">CASE STUDY</span>
+        <span>Ephemeral UI · for Omnicom SaaS</span>
       </div>
-      <h1 class="hero-title">UI the AI builds <span class="accent">for one intent</span>, then dismisses.</h1>
+      <h1 class="hero-title">UI the AI builds <span class="accent">for one decision</span>, then dismisses.</h1>
       <p class="hero-deck">
         Ephemeral UI is best understood not as a prettier overlay, but as an
-        interface the system assembles or surfaces for a single user intent.
-        The user doesn't hunt for a feature — the product reads the context and
-        shows exactly the small slice of UI that's useful right now, then gets
-        out of the way.
+        interface the system assembles for a single intent. A media planner
+        shouldn't hunt through dashboards — <strong>Omnicom SaaS</strong> reads the
+        campaign context and surfaces exactly the slice of UI that's useful right
+        now, lets them act, then gets out of the way. Below: four worked
+        scenarios with designs.
       </p>
       <div class="hero-meta-row">
         <div class="hero-meta-item">
-          <div class="k">Scope</div>
-          <div class="v">1 worked example · 5 components</div>
+          <div class="k">Product</div>
+          <div class="v">Omnicom SaaS · media intelligence</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="k">Scenarios</div>
+          <div class="v">4 worked flows · with designs</div>
         </div>
         <div class="hero-meta-item">
           <div class="k">Read time</div>
-          <div class="v">~ 16 minutes</div>
+          <div class="v">~ 18 minutes</div>
         </div>
         <div class="hero-meta-item">
           <div class="k">For</div>
-          <div class="v">Product designers · design engineers</div>
-        </div>
-        <div class="hero-meta-item">
-          <div class="k">Tooling</div>
-          <div class="v">Figma · variables · interactive components</div>
+          <div class="v">Media planners · buyers · data leads</div>
         </div>
       </div>
     </section>
@@ -94,21 +95,20 @@
       <div class="toc-title">Contents</div>
       <ol>
         <li><a href="#concept">What ephemeral UI is</a></li>
+        <li><a href="#product">The product · Omnicom SaaS</a></li>
         <li>
-          <a href="#example">A worked example</a>
+          <a href="#scenarios">Four scenarios</a>
           <ol class="toc-sub">
-            <li><a href="#example-detect">The insight appears</a></li>
-            <li><a href="#example-why">Show me why</a></li>
-            <li><a href="#example-act">Create the task</a></li>
-            <li><a href="#example-outcome">The outcome</a></li>
+            <li><a href="#sc-pacing">Budget pacing</a></li>
+            <li><a href="#sc-channel">Channel performance</a></li>
+            <li><a href="#sc-audience">Audience decay</a></li>
+            <li><a href="#sc-safety">Brand-safety alert</a></li>
           </ol>
         </li>
-        <li><a href="#layers">The product as layers</a></li>
-        <li><a href="#figma">Bringing it to Figma</a></li>
         <li><a href="#intent">Start from intent</a></li>
         <li><a href="#triggers">Define the triggers</a></li>
         <li><a href="#components">Components, not screens</a></li>
-        <li><a href="#flow">One full flow</a></li>
+        <li><a href="#figma">Designing it in Figma</a></li>
         <li><a href="#visual">Visual direction</a></li>
         <li><a href="#start">How to start</a></li>
         <li><a href="#rule">The one rule</a></li>
@@ -123,9 +123,9 @@
       <section class="section" id="concept">
         <div class="section-num">00 — Concept</div>
         <h2 class="section-title">What ephemeral UI is.</h2>
-        <p class="section-lede">In the era of AI-driven SaaS, the most useful framing is this: ephemeral UI is an interface the AI creates or reveals in response to a concrete intent, and removes once that intent is served.</p>
+        <p class="section-lede">Ephemeral UI is an interface the AI creates or reveals in response to a concrete intent, and removes once that intent is served. Temporary, contextual, generated on demand.</p>
 
-        <p>The sources describe ephemeral UI as an interface that is generated on demand, temporary, and dependent on the user's context. In the wider <strong>generative UI</strong> trend, the idea is that AI can produce more than a block of text — it can produce interactive tools, panels, visualisations, and flows fitted to a prompt or a task.<a class="cite" href="#src-1">[1]</a></p>
+        <p>The sources describe ephemeral UI as an interface generated on demand, temporary, and dependent on the user's context. In the wider <strong>generative UI</strong> trend, AI produces more than a block of text — it produces interactive tools, panels, and flows fitted to a task.<a class="cite" href="#src-1">[1]</a></p>
 
         <div class="callout">
           <div class="callout-label">The shape of it</div>
@@ -133,37 +133,86 @@
         </div>
       </section>
 
-      <!-- ===== 01 EXAMPLE ============================================== -->
-      <section class="section" id="example">
-        <div class="section-num">01 — Worked example</div>
-        <h2 class="section-title">AI-driven analytics for e-commerce.</h2>
-        <p class="section-lede">Say you're designing a SaaS for online store owners. Normally it would have a dashboard, charts, filters, tables, reports. In an ephemeral-UI approach the user doesn't click through all of that. The system detects the problem and surfaces a brief, contextual interface instead.</p>
+      <!-- ===== 01 PRODUCT ============================================== -->
+      <section class="section" id="product">
+        <div class="section-num">01 — The product</div>
+        <h2 class="section-title">Omnicom SaaS, in one layer.</h2>
+        <p class="section-lede">Omnicom SaaS is a single AI-driven media intelligence platform covering campaign optimization, audience &amp; data activation, and media planning. It ships to different teams under different brand names — but it's one product.</p>
 
-        <div class="subsection" id="example-detect">
-          <div class="subsection-num">01.1 — Detection</div>
-          <h3 class="subsection-title">The insight appears in place.</h3>
-          <p>The user opens their store dashboard. The AI notices something and, instead of just flagging an alert or dumping a table, it surfaces a temporary insight card right next to the chart it relates to.</p>
+        <div class="ships-as">
+          <span class="sa-label">Ships as</span>
+          <span class="brand-chip primary"><span class="bc-dot"></span>Omnicom SaaS</span>
+          <span class="brand-chip"><span class="bc-dot"></span>Interact</span>
+          <span class="brand-chip"><span class="bc-dot"></span>IPG Mediabrands</span>
+          <span class="brand-chip"><span class="bc-dot"></span>Kinesso</span>
+        </div>
 
-          <div class="mock mock-dash" data-label="Dashboard · ephemeral insight">
+        <p>So don't design one giant “AI chat” in the corner — that's the common mistake. Design an <strong>AI layer</strong>: intelligent, contextual elements that surface across the planning, buying, and activation surfaces the platform already has.</p>
+
+        <div class="mock" data-label="Omnicom SaaS · the layers">
+          <div class="layers">
+            <div class="layer">
+              <span class="ln">Base SaaS UI</span>
+              <div class="layer-text"><span class="lt">Campaign dashboards, delivery tables, audiences, reports</span><span class="ld">The normal platform. It doesn't go away.</span></div>
+            </div>
+            <div class="layer">
+              <span class="ln">AI context layer</span>
+              <div class="layer-text"><span class="lt">Insights, pacing flags, recommendations, quick actions</span><span class="ld">Intelligence woven into the existing surfaces.</span></div>
+            </div>
+            <div class="layer ai">
+              <span class="ln">Ephemeral UI layer</span>
+              <div class="layer-text"><span class="lt">Temporary panels, generated reallocations, alerts, mini-flows</span><span class="ld">Assembled on demand, dismissed after use.</span></div>
+            </div>
+            <div class="layer">
+              <span class="ln">Outcome layer</span>
+              <div class="layer-text"><span class="lt">Applied optimizations, saved audiences, decision log</span><span class="ld">The durable trace every ephemeral action leaves.</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 02 SCENARIOS ============================================ -->
+      <section class="section" id="scenarios">
+        <div class="section-num">02 — Worked scenarios</div>
+        <h2 class="section-title">Four scenarios, with designs.</h2>
+        <p class="section-lede">Each follows the same arc: a signal in the data, an AI reading of it, and a small ephemeral interface that lets the planner act without leaving the view they're in. The first is shown end to end; the rest focus on the key moment.</p>
+
+        <!-- ===== Scenario 1 — Budget pacing (full flow) ===== -->
+        <div class="scenario" id="sc-pacing">
+          <div class="scenario-head">
+            <span class="scenario-num">01</span>
+            <h3>Budget pacing</h3>
+          </div>
+          <div class="scenario-map">
+            <div class="sm-cell"><span class="sm-k">Signal</span><span class="sm-v">Spend pacing 23% ahead of plan</span></div>
+            <div class="sm-arr">→</div>
+            <div class="sm-cell ai"><span class="sm-k">AI reads</span><span class="sm-v">Budget will run out 9 days early</span></div>
+            <div class="sm-arr">→</div>
+            <div class="sm-cell"><span class="sm-k">Ephemeral UI</span><span class="sm-v">Pacing insight + reallocation</span></div>
+          </div>
+
+          <p>The planner opens the campaign overview. The AI surfaces a pacing insight right next to the spend chart — no alert inbox, no separate report.</p>
+
+          <div class="mock mock-dash" data-label="Omnicom SaaS · campaign overview">
             <div class="dash">
               <div class="dash-bar">
                 <span class="tdot"></span><span class="tdot"></span><span class="tdot"></span>
-                <span class="tname">storeflow · overview</span>
+                <span class="tname">omnicom saas · Q2 always-on</span>
               </div>
               <div class="dash-body">
                 <div class="stat-row">
-                  <div class="stat"><div class="sk">Revenue · 7d</div><div class="sv">$48.2k</div><div class="sd up">+4.1%</div></div>
-                  <div class="stat"><div class="sk">Conversion</div><div class="sv">1.9%</div><div class="sd down">−12%</div></div>
-                  <div class="stat"><div class="sk">Sessions</div><div class="sv">122k</div><div class="sd up">+8.0%</div></div>
+                  <div class="stat"><div class="sk">Spend · 7d</div><div class="sv">$612k</div><div class="sd up">+19%</div></div>
+                  <div class="stat"><div class="sk">Pacing</div><div class="sv">123%</div><div class="sd down">ahead of plan</div></div>
+                  <div class="stat"><div class="sk">ROAS</div><div class="sv">3.1×</div><div class="sd up">+0.2</div></div>
                 </div>
                 <div class="chart">
-                  <div class="ck">Mobile conversion · last 14 days</div>
+                  <div class="ck">Daily spend vs. plan · last 14 days</div>
                   <div class="bars">
-                    <span style="height:72%"></span><span style="height:80%"></span><span style="height:68%"></span>
-                    <span style="height:84%"></span><span style="height:76%"></span><span style="height:88%"></span>
-                    <span style="height:70%"></span><span style="height:64%"></span>
-                    <span class="drop" style="height:48%"></span><span class="drop" style="height:40%"></span>
-                    <span class="drop" style="height:34%"></span><span class="drop" style="height:30%"></span>
+                    <span style="height:54%"></span><span style="height:58%"></span><span style="height:60%"></span>
+                    <span style="height:64%"></span><span style="height:62%"></span><span style="height:70%"></span>
+                    <span style="height:74%"></span><span style="height:78%"></span>
+                    <span class="drop" style="height:88%"></span><span class="drop" style="height:92%"></span>
+                    <span class="drop" style="height:96%"></span><span class="drop" style="height:100%"></span>
                   </div>
                 </div>
               </div>
@@ -174,15 +223,15 @@
                     <span class="ic-label">AI insight</span>
                     <span class="ic-dismiss">×</span>
                   </div>
-                  <h4 class="ic-title">Mobile conversion dropped 18%</h4>
-                  <p class="ic-body">Down <strong>18%</strong> versus last week. The strongest signal comes from <strong>paid mobile traffic</strong> on slow product pages.</p>
+                  <h4 class="ic-title">Pacing 23% ahead of plan</h4>
+                  <p class="ic-body">At the current rate, <strong>Q2 Always-On</strong> exhausts its budget <strong>9 days before flight end</strong>. Overspend is concentrated in <strong>CTV</strong>.</p>
                   <div class="ai-chips">
                     <span class="ai-chip"><span class="dot-hi"></span>Confidence: High</span>
-                    <span class="ai-chip src">GA4 + Shopify · 7d</span>
+                    <span class="ai-chip src">Omni + Kinesso · live</span>
                   </div>
                   <div class="mbtn-row">
-                    <span class="mbtn mbtn-primary">Show why</span>
-                    <span class="mbtn mbtn-secondary">Save</span>
+                    <span class="mbtn mbtn-primary">Reallocate</span>
+                    <span class="mbtn mbtn-secondary">Show why</span>
                     <span class="mbtn mbtn-ghost">Ignore</span>
                   </div>
                 </div>
@@ -190,156 +239,230 @@
             </div>
           </div>
 
-          <p>The card answers the first question on its own — <em>why am I seeing this?</em> — with a confidence level and its data sources, so the AI doesn't read as a black box.</p>
-        </div>
-
-        <div class="subsection" id="example-why">
-          <div class="subsection-num">01.2 — Explanation</div>
-          <h3 class="subsection-title">“Show me why” opens a panel — not a page.</h3>
-          <p>Clicking <strong>Show why</strong> doesn't navigate anywhere. A temporary panel slides in with the reasoning, the evidence, and a recommended action.</p>
+          <p><strong>Show why</strong> opens a temporary panel — not a new page — with the evidence and a recommended move.</p>
 
           <div class="mock center" data-label="Ephemeral · explanation panel">
             <div class="exp-panel">
               <div class="exp-head">
                 <span class="ai-spark sm"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 5.6L19.5 9l-4.5 2.9L16.2 18 12 14.7 7.8 18l1.2-6.1L4.5 9l5.7-1.4z"/></svg></span>
-                <h4>Why mobile conversion dropped</h4>
+                <h4>Why it's over-pacing</h4>
                 <span class="ic-dismiss" style="margin-left:auto">×</span>
               </div>
               <div class="exp-body">
                 <p class="exp-eyebrow">Evidence</p>
                 <ol class="evidence">
-                  <li>Product page load time rose from <strong>2.1s to 4.8s</strong>.</li>
-                  <li>Paid mobile traffic increased by <strong>32%</strong>.</li>
-                  <li>Add-to-cart rate dropped mostly on <strong>iOS</strong>.</li>
+                  <li>CTV CPMs rose <strong>28%</strong> over the weekend.</li>
+                  <li>Auto-bidding raised bids against a <strong>high-demand</strong> window.</li>
+                  <li>The CTV daily cap sits <strong>20% above plan</strong>.</li>
                 </ol>
                 <div class="recommend">
                   <div class="rl">Recommended action</div>
-                  <p>Compress product images above 500&nbsp;KB and re-test mobile checkout speed.</p>
+                  <p>Lower the CTV daily cap and shift <strong>15%</strong> of remaining budget to Online Video.</p>
                 </div>
                 <div class="mbtn-row">
-                  <span class="mbtn mbtn-primary">Create task</span>
-                  <span class="mbtn mbtn-secondary">Send to developer</span>
+                  <span class="mbtn mbtn-primary">Apply reallocation</span>
+                  <span class="mbtn mbtn-secondary">Send to planner</span>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="subsection" id="example-act">
-          <div class="subsection-num">01.3 — Action</div>
-          <h3 class="subsection-title">“Create task” generates a form for this one job.</h3>
-          <p>This isn't the permanent “New task” screen. It's a temporary form, pre-filled from the recommendation, that exists only because the AI proposed an action.</p>
+          <p><strong>Apply reallocation</strong> generates a form for this one move — pre-filled, not the permanent budget editor.</p>
 
-          <div class="mock center" data-label="Ephemeral · generated form">
+          <div class="mock center" data-label="Ephemeral · generated reallocation">
             <div class="task-form">
               <div class="tf-head">
                 <span class="ai-spark sm"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 5.6L19.5 9l-4.5 2.9L16.2 18 12 14.7 7.8 18l1.2-6.1L4.5 9l5.7-1.4z"/></svg></span>
-                <span class="t">Create optimization task</span>
+                <span class="t">Reallocate budget</span>
                 <span class="tf-tag">AI-generated</span>
               </div>
               <div class="tf-body">
                 <div class="tf-field">
-                  <span class="lbl">Task title</span>
-                  <div class="tf-input">Optimize product images for mobile</div>
+                  <span class="lbl">Move</span>
+                  <div class="tf-input">
+                    <div class="realloc-flow">
+                      <span class="rf-node">CTV <span style="color:var(--danger)">−$45k</span></span>
+                      <span class="rf-arrow">→</span>
+                      <span class="rf-node" style="text-align:right">Online Video <span style="color:var(--success)">+$45k</span></span>
+                    </div>
+                  </div>
                 </div>
                 <div class="tf-row">
                   <div class="tf-field">
-                    <span class="lbl">Priority</span>
-                    <div class="tf-input"><span class="pill high">High</span></div>
+                    <span class="lbl">Amount</span>
+                    <div class="tf-input">$45,000 · 15% remaining</div>
                   </div>
                   <div class="tf-field">
-                    <span class="lbl">Assignee</span>
-                    <div class="tf-input">Frontend team</div>
+                    <span class="lbl">Projected pacing</span>
+                    <div class="tf-input"><span class="pill ok">99% of plan</span></div>
                   </div>
                 </div>
-                <div class="tf-field">
-                  <span class="lbl">Description</span>
-                  <div class="tf-input ta">Mobile conversion down 18% (7d). Product page load rose 2.1s → 4.8s; add-to-cart fell mostly on iOS. Compress images &gt; 500&nbsp;KB and re-test checkout.</div>
-                </div>
                 <div class="mbtn-row end">
-                  <span class="mbtn mbtn-primary">Create task</span>
+                  <span class="mbtn mbtn-primary">Apply reallocation</span>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="subsection" id="example-outcome">
-          <div class="subsection-num">01.4 — Outcome</div>
-          <h3 class="subsection-title">The UI disappears — the result stays.</h3>
-          <p>On confirm, the form is gone. A small toast tells the user what happened, with a way to inspect it or undo. The decision is now a durable record in the activity log.</p>
+          <p>On confirm, the form is gone. A toast reports what happened and offers an undo — the change is now in the decision log.</p>
 
           <div class="mock center" data-label="Ephemeral · outcome toast">
             <div class="toast">
               <span class="check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
               <div>
-                <div class="tt">Task created</div>
-                <div class="ts">Added to the Growth backlog.</div>
-                <div class="ta-links"><a href="#">View task</a><a href="#">Undo</a></div>
+                <div class="tt">Reallocation applied</div>
+                <div class="ts">$45k moved from CTV to Online Video. Pacing back to 99%.</div>
+                <div class="ta-links"><a href="#">View change</a><a href="#">Undo</a></div>
               </div>
             </div>
           </div>
 
           <div class="callout success">
             <div class="callout-label">That's the whole pattern</div>
-            <p>The AI <strong>detects context</strong>, shows a <strong>temporary UI</strong>, lets the user <strong>act</strong>, and <strong>disappears</strong> — leaving a saved outcome behind.</p>
+            <p>The AI <strong>detects context</strong>, shows a <strong>temporary UI</strong>, lets the planner <strong>act</strong>, and <strong>disappears</strong> — leaving an applied optimization behind. The other three scenarios are the same arc with different signals.</p>
+          </div>
+        </div>
+
+        <!-- ===== Scenario 2 — Channel performance ===== -->
+        <div class="scenario" id="sc-channel">
+          <div class="scenario-head">
+            <span class="scenario-num">02</span>
+            <h3>Channel performance drop</h3>
+          </div>
+          <div class="scenario-map">
+            <div class="sm-cell"><span class="sm-k">Signal</span><span class="sm-v">CTV ROAS down 31% week-over-week</span></div>
+            <div class="sm-arr">→</div>
+            <div class="sm-cell ai"><span class="sm-k">AI reads</span><span class="sm-v">Frequency too high — creative fatiguing</span></div>
+            <div class="sm-arr">→</div>
+            <div class="sm-cell"><span class="sm-k">Ephemeral UI</span><span class="sm-v">Insight card → explanation</span></div>
+          </div>
+
+          <p>The planner is reviewing channel mix. The AI flags the channel that moved, with its read of why — and a one-tap path to the fix.</p>
+
+          <div class="mock center" data-label="Ephemeral · channel insight">
+            <div class="insight-card">
+              <div class="ic-head">
+                <span class="ai-spark"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 5.6L19.5 9l-4.5 2.9L16.2 18 12 14.7 7.8 18l1.2-6.1L4.5 9l5.7-1.4z"/></svg></span>
+                <span class="ic-label">AI insight</span>
+                <span class="ic-dismiss">×</span>
+              </div>
+              <h4 class="ic-title">CTV ROAS dropped 31% this week</h4>
+              <p class="ic-body">The strongest signal is <strong>frequency on Households 3+</strong>. Creative looks to be fatiguing — incrementality is falling while spend holds.</p>
+              <div class="ai-chips">
+                <span class="ai-chip"><span class="dot-hi"></span>Confidence: Medium</span>
+                <span class="ai-chip src">DSP + Omni · 7d</span>
+              </div>
+              <div class="mbtn-row">
+                <span class="mbtn mbtn-primary">Show why</span>
+                <span class="mbtn mbtn-secondary">Cap frequency</span>
+                <span class="mbtn mbtn-ghost">Ignore</span>
+              </div>
+            </div>
+          </div>
+
+          <p>Because confidence is only <em>medium</em>, the primary action is <strong>Show why</strong> — the AI invites scrutiny before it proposes a spend change. Trust is built by showing the working, not by acting silently.</p>
+        </div>
+
+        <!-- ===== Scenario 3 — Audience decay ===== -->
+        <div class="scenario" id="sc-audience">
+          <div class="scenario-head">
+            <span class="scenario-num">03</span>
+            <h3>Audience / segment anomaly</h3>
+          </div>
+          <div class="scenario-map">
+            <div class="sm-cell"><span class="sm-k">Signal</span><span class="sm-v">Segment match rate fell to 41%</span></div>
+            <div class="sm-arr">→</div>
+            <div class="sm-cell ai"><span class="sm-k">AI reads</span><span class="sm-v">Audience decaying — fresher one ready</span></div>
+            <div class="sm-arr">→</div>
+            <div class="sm-cell"><span class="sm-k">Ephemeral UI</span><span class="sm-v">Audience swap suggestion</span></div>
+          </div>
+
+          <p>On the activation side, an audience is wearing out. The AI surfaces a suggestion sourced from Kinesso data — with the match-rate decay shown, so the recommendation is legible.</p>
+
+          <div class="mock center" data-label="Ephemeral · audience suggestion">
+            <div class="insight-card">
+              <div class="ic-head">
+                <span class="ai-spark"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.8 5.6L19.5 9l-4.5 2.9L16.2 18 12 14.7 7.8 18l1.2-6.1L4.5 9l5.7-1.4z"/></svg></span>
+                <span class="ic-label">AI insight</span>
+                <span class="ic-dismiss">×</span>
+              </div>
+              <h4 class="ic-title">“In-market: Auto Intenders” is decaying</h4>
+              <p class="ic-body">Match rate fell to <strong>41%</strong> and CPA is up <strong>2.2×</strong>. Kinesso has a fresher lookalike with higher overlap ready to swap in.</p>
+              <div style="margin:14px 0 4px">
+                <div class="sm-k" style="margin-bottom:6px">Match rate · current → suggested</div>
+                <div class="meter"><span style="width:41%"></span></div>
+                <div class="meter" style="margin-top:6px"><span class="ok" style="width:78%"></span></div>
+              </div>
+              <div class="ai-chips">
+                <span class="ai-chip src">Source: Kinesso</span>
+                <span class="ai-chip"><span class="dot-hi"></span>Confidence: High</span>
+              </div>
+              <div class="mbtn-row">
+                <span class="mbtn mbtn-primary">Swap audience</span>
+                <span class="mbtn mbtn-secondary">Compare</span>
+                <span class="mbtn mbtn-ghost">Ignore</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== Scenario 4 — Brand safety alert ===== -->
+        <div class="scenario" id="sc-safety">
+          <div class="scenario-head warn">
+            <span class="scenario-num">04</span>
+            <h3>Brand-safety &amp; spend alert</h3>
+          </div>
+          <div class="scenario-map">
+            <div class="sm-cell"><span class="sm-k">Signal</span><span class="sm-v">Spend on placements below suitability floor</span></div>
+            <div class="sm-arr">→</div>
+            <div class="sm-cell ai"><span class="sm-k">AI reads</span><span class="sm-v">High-severity brand-safety risk</span></div>
+            <div class="sm-arr">→</div>
+            <div class="sm-cell"><span class="sm-k">Ephemeral UI</span><span class="sm-v">Alert + one-tap pause</span></div>
+          </div>
+
+          <p>Some signals can't wait. A high-severity risk earns a warning-styled ephemeral alert with a destructive primary action — pause first, ask questions after.</p>
+
+          <div class="mock center" data-label="Ephemeral · brand-safety alert">
+            <div class="insight-card warn">
+              <div class="ic-head">
+                <span class="ai-spark warn"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="ic-label warn">Brand safety</span>
+                <span class="ic-dismiss">×</span>
+              </div>
+              <h4 class="ic-title">Spend flagged on 3 risky placements</h4>
+              <p class="ic-body"><strong>$12.4k</strong> spent in the last 2 hours on domains below your suitability floor. Spend is still live.</p>
+              <div class="ai-chips">
+                <span class="ai-chip sev"><span class="dot-hi"></span>Severity: High</span>
+                <span class="ai-chip src">Verification partner</span>
+              </div>
+              <div class="mbtn-row">
+                <span class="mbtn mbtn-danger">Pause placements</span>
+                <span class="mbtn mbtn-secondary">Review</span>
+                <span class="mbtn mbtn-ghost">Dismiss</span>
+              </div>
+            </div>
+          </div>
+
+          <p>The toast that follows confirms the safe state and keeps an undo within reach.</p>
+
+          <div class="mock center" data-label="Ephemeral · outcome toast">
+            <div class="toast">
+              <span class="check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <div>
+                <div class="tt">3 placements paused</div>
+                <div class="ts">Spend stopped on the flagged domains. Logged for review.</div>
+                <div class="ta-links"><a href="#">View placements</a><a href="#">Undo</a></div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- ===== 02 LAYERS ============================================== -->
-      <section class="section" id="layers">
-        <div class="section-num">02 — Architecture</div>
-        <h2 class="section-title">The product as layers, not one big chatbot.</h2>
-        <p class="section-lede">In a SaaS like this, don't design a single giant “AI chat” in the corner — that's the common mistake. Design an AI layer: a stratum of intelligent, contextual elements that surface in many places across the product.</p>
-
-        <div class="mock" data-label="Product structure">
-          <div class="layers">
-            <div class="layer">
-              <span class="ln">Base SaaS UI</span>
-              <div class="layer-text"><span class="lt">Dashboards, tables, reports, settings, users</span><span class="ld">The normal product. It doesn't go away.</span></div>
-            </div>
-            <div class="layer">
-              <span class="ln">AI context layer</span>
-              <div class="layer-text"><span class="lt">Insight cards, suggestions, recommendations, quick actions</span><span class="ld">Intelligence woven into the existing surfaces.</span></div>
-            </div>
-            <div class="layer ai">
-              <span class="ln">Ephemeral UI layer</span>
-              <div class="layer-text"><span class="lt">Temporary panels, generated forms, mini-flows, overlays</span><span class="ld">Assembled on demand, dismissed after use.</span></div>
-            </div>
-            <div class="layer">
-              <span class="ln">Outcome layer</span>
-              <div class="layer-text"><span class="lt">Saved tasks, notes, reports, decision history</span><span class="ld">The durable trace every ephemeral action leaves.</span></div>
-            </div>
-          </div>
-        </div>
-
-        <p>The user still has a normal SaaS product. The AI simply adds an intelligent layer on top of it.</p>
-      </section>
-
-      <!-- ===== 03 FIGMA ============================================== -->
-      <section class="section" id="figma">
-        <div class="section-num">03 — Translation</div>
-        <h2 class="section-title">Bringing it to Figma.</h2>
-        <p class="section-lede">In Figma, set the file up not as a stack of screens but as a system of behaviours. The structure should read as logic, not as a gallery.</p>
-
-        <ul class="file-tree">
-          <li><span class="fn">01</span> <span>Product context</span></li>
-          <li><span class="fn">02</span> <span>User intents</span></li>
-          <li><span class="fn">03</span> <span>AI triggers</span></li>
-          <li><span class="fn">04</span> <span>Ephemeral components</span></li>
-          <li><span class="fn">05</span> <span>Component states</span></li>
-          <li><span class="fn">06</span> <span>Example flows</span></li>
-          <li><span class="fn">07</span> <span>Prototype</span></li>
-          <li><span class="fn">08</span> <span>Rules &amp; UX writing</span></li>
-        </ul>
-      </section>
-
-      <!-- ===== 04 INTENT ============================================== -->
+      <!-- ===== 03 INTENT ============================================== -->
       <section class="section" id="intent">
-        <div class="section-num">04 — Step one</div>
+        <div class="section-num">03 — Step one</div>
         <h2 class="section-title">Start from intent, not layout.</h2>
-        <p class="section-lede">First write down what the user is trying to achieve. Without this, it's easy to slide straight into styling. For AI-driven analytics it might look like this.</p>
+        <p class="section-lede">Before any styling, write down what the planner is trying to do. The four scenarios map cleanly onto a handful of intents.</p>
 
         <div class="ttable">
           <div class="tr head">
@@ -348,36 +471,36 @@
             <div class="td">UI that appears</div>
           </div>
           <div class="tr">
-            <div class="td">Understand what changed</div>
-            <div class="td">Detects a shift in the data</div>
-            <div class="td"><span class="ui-tag">Insight Card</span></div>
+            <div class="td">Is this campaign on plan?</div>
+            <div class="td">Detects pacing drift</div>
+            <div class="td"><span class="ui-tag">Pacing Insight</span></div>
           </div>
           <div class="tr">
-            <div class="td">Know why something dropped</div>
+            <div class="td">Why did a channel drop?</div>
             <div class="td">Analyses likely causes</div>
             <div class="td"><span class="ui-tag">Explanation Panel</span></div>
           </div>
           <div class="tr">
-            <div class="td">Act quickly</div>
-            <div class="td">Proposes the next step</div>
-            <div class="td"><span class="ui-tag">Action Panel</span></div>
+            <div class="td">Rebalance budget fast</div>
+            <div class="td">Proposes a reallocation</div>
+            <div class="td"><span class="ui-tag">Reallocation Form</span></div>
           </div>
           <div class="tr">
-            <div class="td">Fix the problem</div>
-            <div class="td">Generates a task or checklist</div>
-            <div class="td"><span class="ui-tag">Task Form</span></div>
+            <div class="td">Refresh a tired audience</div>
+            <div class="td">Suggests a new segment</div>
+            <div class="td"><span class="ui-tag">Audience Suggestion</span></div>
           </div>
           <div class="tr">
-            <div class="td">Show it to someone</div>
-            <div class="td">Writes a short summary</div>
-            <div class="td"><span class="ui-tag">Share Summary</span></div>
+            <div class="td">Catch a risk early</div>
+            <div class="td">Flags brand-safety / spend</div>
+            <div class="td"><span class="ui-tag">Alert Card</span></div>
           </div>
         </div>
       </section>
 
-      <!-- ===== 05 TRIGGERS ============================================ -->
+      <!-- ===== 04 TRIGGERS ============================================ -->
       <section class="section" id="triggers">
-        <div class="section-num">05 — Step two</div>
+        <div class="section-num">04 — Step two</div>
         <h2 class="section-title">Define the triggers.</h2>
         <p class="section-lede">Ephemeral UI must have a clear reason to appear. Give each component an explicit condition that summons it.</p>
 
@@ -388,28 +511,28 @@
             <div class="td">UI</div>
           </div>
           <div class="tr">
-            <div class="td">Data anomaly</div>
-            <div class="td">Conversion falls more than 10%</div>
-            <div class="td"><span class="ui-tag">AI Insight Card</span></div>
+            <div class="td">Pacing drift</div>
+            <div class="td">Spend pace &gt;15% off plan</div>
+            <div class="td"><span class="ui-tag">Pacing Insight</span></div>
           </div>
           <div class="tr">
-            <div class="td">Incomplete setup</div>
-            <div class="td">User hasn't connected GA4</div>
-            <div class="td"><span class="ui-tag">Setup Assistant</span></div>
+            <div class="td">Performance drop</div>
+            <div class="td">Channel ROAS down &gt;25% WoW</div>
+            <div class="td"><span class="ui-tag">Explanation Panel</span></div>
           </div>
           <div class="tr">
-            <div class="td">Repeated action</div>
-            <div class="td">Same report exported 3×</div>
-            <div class="td"><span class="ui-tag">Automation Suggestion</span></div>
+            <div class="td">Audience decay</div>
+            <div class="td">Segment match rate &lt; 50%</div>
+            <div class="td"><span class="ui-tag">Audience Suggestion</span></div>
           </div>
           <div class="tr">
-            <div class="td">User error</div>
-            <div class="td">Segment returns no data</div>
-            <div class="td"><span class="ui-tag">Fix Suggestion</span></div>
+            <div class="td">Brand-safety risk</div>
+            <div class="td">Spend on flagged placement</div>
+            <div class="td"><span class="ui-tag">Alert Card</span></div>
           </div>
           <div class="tr">
-            <div class="td">User prompt</div>
-            <div class="td">“Why did sales drop?”</div>
+            <div class="td">Planner prompt</div>
+            <div class="td">“Why is CTV underperforming?”</div>
             <div class="td"><span class="ui-tag">Generated Analysis</span></div>
           </div>
         </div>
@@ -417,73 +540,54 @@
         <p>In Figma, give this its own <strong>AI triggers</strong> section and show each trigger as a small flow.</p>
       </section>
 
-      <!-- ===== 06 COMPONENTS ========================================= -->
+      <!-- ===== 05 COMPONENTS ========================================= -->
       <section class="section" id="components">
-        <div class="section-num">06 — Step three</div>
+        <div class="section-num">05 — Step three</div>
         <h2 class="section-title">Design components, not screens.</h2>
-        <p class="section-lede">Start with five. Each is a small, reusable behaviour rather than a page — the same parts recombine across every trigger.</p>
+        <p class="section-lede">Across all four scenarios there are only five building blocks. The same parts recombine for every trigger — that's what keeps an AI layer coherent instead of a pile of one-off popups.</p>
 
         <h4>A · AI Insight Card</h4>
-        <p>The small card that appears on the dashboard: a title, a short explanation, confidence and source, a primary action, a secondary action, and dismiss. (Shown in the example above.)</p>
+        <p>The small card that appears in place: title, short explanation, confidence and source, a primary action, a secondary action, dismiss. Pacing, channel, and audience scenarios all reuse it.</p>
 
         <h4>B · Explanation Panel</h4>
-        <p>Opens from an insight: problem, evidence, possible cause, recommended action, and a call to action. It earns trust by showing its working.</p>
+        <p>Opens from an insight: problem, evidence, possible cause, recommended action, CTA. It earns trust by showing its working — essential when the AI is about to move spend.</p>
 
         <h4>C · Generated Action Form</h4>
-        <p>A form the AI produces for one action only — title, assignee, priority, an AI-written description, due date, create. Not a permanent “Create task” screen.</p>
+        <p>A form the AI produces for one action only — a reallocation, an audience swap, a pause. Pre-filled from the recommendation; not the permanent editor.</p>
 
         <h4>D · Confidence / Source Chip</h4>
-        <p>AI-driven SaaS has to build trust. A small chip on every insight states what it's based on, so the system never looks like a magic black box — research on AI SaaS UX repeatedly stresses trust, output variability, and the need to explain what the AI is doing.<a class="cite" href="#src-2">[2]</a></p>
+        <p>Every insight states what it's based on — <code>Omni + Kinesso</code>, a DSP, a verification partner — and how sure it is. Research on AI SaaS UX repeatedly stresses trust, output variability, and the need to explain what the AI is doing.<a class="cite" href="#src-2">[2]</a></p>
 
         <div class="mock center" data-label="Component · confidence chip">
           <div class="ai-chips" style="margin:0">
             <span class="ai-chip">Based on last 7 days</span>
             <span class="ai-chip"><span class="dot-hi"></span>Confidence: High</span>
-            <span class="ai-chip src">Source: GA4 + Shopify</span>
+            <span class="ai-chip src">Source: Omni + Kinesso</span>
           </div>
         </div>
 
         <h4>E · Outcome Toast</h4>
-        <p>After an action, the UI disappears but the user still knows what happened — with a way to view the result or undo it. (Shown in the example above.)</p>
+        <p>After an action the UI disappears, but the planner still knows what happened — with a way to view the result or undo it. Especially important for destructive actions like pausing spend.</p>
       </section>
 
-      <!-- ===== 07 FLOW =============================================== -->
-      <section class="section" id="flow">
-        <div class="section-num">07 — Step four</div>
-        <h2 class="section-title">Draw one full flow.</h2>
-        <p class="section-lede">Don't start from the whole system. Build one polished flow end to end — the conversion-drop case is the clearest.</p>
+      <!-- ===== 06 FIGMA ============================================== -->
+      <section class="section" id="figma">
+        <div class="section-num">06 — Step four</div>
+        <h2 class="section-title">Designing it in Figma.</h2>
+        <p class="section-lede">Set the file up not as a stack of screens but as a system of behaviours. Structure it so it reads as logic, not as a gallery.</p>
 
-        <div class="mock" data-label="Flow · AI detects conversion drop">
-          <div class="flow">
-            <div class="flow-step">
-              <div class="flow-thumb"><span class="mini"></span></div>
-              <span class="flow-num">01</span>
-              <span class="flow-cap">Dashboard default</span>
-            </div>
-            <div class="flow-step">
-              <div class="flow-thumb ai"><span class="mini"></span></div>
-              <span class="flow-num">02</span>
-              <span class="flow-cap">Insight card appears</span>
-            </div>
-            <div class="flow-step">
-              <div class="flow-thumb ai"><span class="mini"></span></div>
-              <span class="flow-num">03</span>
-              <span class="flow-cap">Explanation panel</span>
-            </div>
-            <div class="flow-step">
-              <div class="flow-thumb ai"><span class="mini"></span></div>
-              <span class="flow-num">04</span>
-              <span class="flow-cap">Generated task form</span>
-            </div>
-            <div class="flow-step">
-              <div class="flow-thumb toast-mini"><span class="mini"></span></div>
-              <span class="flow-num">05</span>
-              <span class="flow-cap">Confirm → UI disappears</span>
-            </div>
-          </div>
-        </div>
+        <ul class="file-tree">
+          <li><span class="fn">01</span> <span>Product context</span></li>
+          <li><span class="fn">02</span> <span>Planner intents</span></li>
+          <li><span class="fn">03</span> <span>AI triggers</span></li>
+          <li><span class="fn">04</span> <span>Ephemeral components</span></li>
+          <li><span class="fn">05</span> <span>Component states</span></li>
+          <li><span class="fn">06</span> <span>Scenario flows</span></li>
+          <li><span class="fn">07</span> <span>Prototype</span></li>
+          <li><span class="fn">08</span> <span>Rules &amp; UX writing</span></li>
+        </ul>
 
-        <h4>Prototyping it in Figma</h4>
+        <h4>Prototyping the flow</h4>
         <p>Use overlays and interactive components so the appearance and disappearance — the part that matters most for ephemeral UI — is part of the prototype, not just the look.</p>
 
         <div class="ttable">
@@ -491,104 +595,104 @@
             <div class="td">Action</div>
             <div class="td" style="grid-column: span 2;">Figma interaction</div>
           </div>
-          <div class="tr"><div class="td">AI card appears after a beat</div><div class="td" style="grid-column: span 2;">After delay → Open overlay</div></div>
+          <div class="tr"><div class="td">Pacing insight appears</div><div class="td" style="grid-column: span 2;">After delay → Open overlay</div></div>
           <div class="tr"><div class="td">Click “Show why”</div><div class="td" style="grid-column: span 2;">On click → Swap overlay</div></div>
-          <div class="tr"><div class="td">Click “Create task”</div><div class="td" style="grid-column: span 2;">On click → Open overlay</div></div>
+          <div class="tr"><div class="td">Click “Apply reallocation”</div><div class="td" style="grid-column: span 2;">On click → Open overlay</div></div>
           <div class="tr"><div class="td">Click “Confirm”</div><div class="td" style="grid-column: span 2;">On click → Swap overlay: success toast</div></div>
           <div class="tr"><div class="td">Click “Undo”</div><div class="td" style="grid-column: span 2;">On click → Previous state</div></div>
         </div>
       </section>
 
-      <!-- ===== 08 VISUAL ============================================= -->
+      <!-- ===== 07 VISUAL ============================================= -->
       <section class="section" id="visual">
-        <div class="section-num">08 — Craft</div>
+        <div class="section-num">07 — Craft</div>
         <h2 class="section-title">Visual direction.</h2>
-        <p class="section-lede">You don't need futuristic glassmorphism. For AI SaaS a clean, enterprise style works better: soft cards, subtle shadows, rounded corners, compact panels, small status chips, light motion, clear CTAs, muted AI iconography.</p>
+        <p class="section-lede">You don't need futuristic glassmorphism. For a media platform a clean, enterprise style works better: soft cards, subtle shadows, rounded corners, compact panels, small status chips, light motion, clear CTAs, muted AI iconography.</p>
 
         <div class="roles-grid">
           <div class="role-card">
             <div class="role-tag">Base UI</div>
-            <p>Calm, productive, tabular. This is where work happens — keep it quiet.</p>
+            <p>Calm, dense, tabular. This is where planners work — keep it quiet.</p>
           </div>
           <div class="role-arrow">→</div>
           <div class="role-card accent">
             <div class="role-tag">AI &amp; ephemeral layer</div>
-            <p>A little softer and more contextual, lightly distinguished — visible, but never blocking the work.</p>
+            <p>A little softer and more contextual, lightly distinguished — visible, but never blocking the work. Risk states earn a warning accent.</p>
           </div>
         </div>
 
-        <p>The goal: AI elements that are <strong>noticeable but not pushy</strong>. Base UI stays neutral; the AI layer earns a touch of warmth and a subtle accent so the user always knows which parts are the machine talking.</p>
+        <p>The goal: AI elements that are <strong>noticeable but not pushy</strong>. The base platform stays neutral; the AI layer earns a touch of warmth and a subtle accent, so the planner always knows which parts are the machine talking.</p>
       </section>
 
-      <!-- ===== 09 START ============================================== -->
+      <!-- ===== 08 START ============================================== -->
       <section class="section" id="start">
-        <div class="section-num">09 — Practice</div>
+        <div class="section-num">08 — Practice</div>
         <h2 class="section-title">How to start, step by step.</h2>
-        <p class="section-lede">A path you can follow in an afternoon. Pick narrow, go deep, resist the urge to design the whole product.</p>
+        <p class="section-lede">A path you can follow in an afternoon. Pick narrow, go deep, resist the urge to design the whole platform.</p>
 
         <div class="steps-grid">
           <div class="step-card">
-            <div class="step-card-head"><span class="step-card-num">01</span><span class="step-card-label">Pick a product</span></div>
-            <h3>Choose one SaaS type.</h3>
-            <p>AI analytics for e-commerce, AI CRM, AI project management, AI support desk, AI recruitment. Analytics for e-commerce is a strong starting point if you have UX, SaaS and analytics background.</p>
+            <div class="step-card-head"><span class="step-card-num">01</span><span class="step-card-label">Pick a surface</span></div>
+            <h3>Choose one part of Omnicom SaaS.</h3>
+            <p>Campaign optimization, audience &amp; data activation, or media planning. Campaign optimization is the strongest starting point — the pacing scenario reads instantly to any planner.</p>
           </div>
           <div class="step-card">
             <div class="step-card-head"><span class="step-card-num">02</span><span class="step-card-label">Pick a situation</span></div>
             <h3>Take a single moment.</h3>
-            <p>Not the whole product — one situation: <em>“the user wants to understand why sales dropped.”</em></p>
+            <p>Not the whole product — one situation: <em>“the planner wants to know why CTV ROAS dropped.”</em></p>
           </div>
           <div class="step-card">
             <div class="step-card-head"><span class="step-card-num">03</span><span class="step-card-label">Decision logic</span></div>
             <h3>Write the AI's reasoning.</h3>
-            <p><strong>Input:</strong> sales, conversion, traffic source, device, page speed. <strong>Detects:</strong> mobile conversion dropped. <strong>Explains:</strong> slow product pages hit paid mobile traffic. <strong>Suggests:</strong> compress images, check mobile checkout. <strong>UI:</strong> insight card + explanation panel + task form.</p>
+            <p><strong>Input:</strong> spend, impressions, ROAS, frequency, viewability, channel, audience. <strong>Detects:</strong> CTV ROAS dropped. <strong>Explains:</strong> frequency too high, creative fatiguing. <strong>Suggests:</strong> cap frequency, shift to OLV. <strong>UI:</strong> insight card + explanation panel + reallocation.</p>
           </div>
           <div class="step-card">
             <div class="step-card-head"><span class="step-card-num">04</span><span class="step-card-label">Components</span></div>
             <h3>Design the minimum set.</h3>
-            <p>Insight Card, Explanation Panel, Generated Task Form, Outcome Toast, Activity Log Item. Five components carry the entire flow.</p>
+            <p>Insight Card, Explanation Panel, Generated Action Form, Outcome Toast, Decision Log Item. Five components carry all four scenarios.</p>
           </div>
           <div class="step-card">
             <div class="step-card-head"><span class="step-card-num">05</span><span class="step-card-label">Prototype</span></div>
-            <h3>Wire the flow.</h3>
-            <p>Dashboard → Insight → Explanation → Action → Confirmation. Show appearance and disappearance, not just static frames.</p>
+            <h3>Wire one flow.</h3>
+            <p>Overview → Insight → Explanation → Action → Confirmation. Show appearance and disappearance, not just static frames.</p>
           </div>
           <div class="step-card">
             <div class="step-card-head"><span class="step-card-num">06</span><span class="step-card-label">Rules</span></div>
             <h3>Write the rules last.</h3>
-            <p>When the AI may interrupt. When the UI should disappear. When the user must confirm. When a result should be saved. When the system should explain its confidence.</p>
+            <p>When the AI may interrupt. When the UI should disappear. When the planner must confirm. When a result is saved. When an action is destructive enough to need a warning.</p>
           </div>
         </div>
 
         <div class="callout">
           <div class="callout-label">First Figma board</div>
-          <p>Make your opening frame show the <strong>mechanism</strong>, not just the UI — context on the left, AI interpretation in the middle, the generated response on the right. It tells a client or team that you designed a logical AI system, not a random popup.</p>
+          <p>Make your opening frame show the <strong>mechanism</strong>, not just the UI — context on the left, AI interpretation in the middle, the generated response on the right. It tells the client this is a logical AI system, not a random popup.</p>
         </div>
 
         <div class="mock" data-label="First board · the mechanism">
           <div class="figma-board">
             <div class="fb-col">
-              <div class="fb-eyebrow">User context</div>
-              <p>User is viewing the weekly conversion dashboard.</p>
+              <div class="fb-eyebrow">Planner context</div>
+              <p>Reviewing the Q2 Always-On campaign overview.</p>
             </div>
             <div class="fb-arrow">→</div>
             <div class="fb-col ai">
               <div class="fb-eyebrow">AI interpretation</div>
-              <p><strong>Likely issue:</strong> slow product pages on mobile are dragging conversion down.</p>
+              <p><strong>Likely issue:</strong> CTV over-pacing will exhaust the budget early.</p>
             </div>
             <div class="fb-arrow">→</div>
             <div class="fb-col">
               <div class="fb-eyebrow">Ephemeral UI response</div>
-              <p>Show an insight card with explanation and a recommended action.</p>
+              <p>Show a pacing insight with evidence and a reallocation.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ===== 10 RULE =============================================== -->
+      <!-- ===== 09 RULE =============================================== -->
       <section class="section" id="rule">
-        <div class="section-num">10 — The principle</div>
+        <div class="section-num">09 — The principle</div>
         <h2 class="section-title">The one rule.</h2>
-        <p class="section-lede">In AI-driven SaaS, ephemeral UI should answer three questions. If a component can't, it's probably a decorative AI element, not good ephemeral UI.</p>
+        <p class="section-lede">In Omnicom SaaS, every ephemeral component should answer three questions. If it can't, it's a decorative AI element, not good ephemeral UI.</p>
 
         <div class="maxim">
           <div class="maxim-eyebrow">It must answer</div>
@@ -598,16 +702,16 @@
         </div>
 
         <p class="pull">
-          AI detects a problem → shows an insight → explains the cause → proposes an action → creates an outcome.
-          <span class="by">The cleanest case to start from</span>
+          AI detects a signal → shows an insight → explains the cause → proposes an action → creates an outcome.
+          <span class="by">The arc behind all four scenarios</span>
         </p>
 
-        <p>That single arc is the most legible example to build first — for a portfolio, a pitch, or a real product. Get it right once, and the rest of the AI layer is just more instances of the same idea.</p>
+        <p>Get that arc right once — the pacing flow is the clearest — and the rest of the AI layer is just more instances of the same idea, whether it ships as Omnicom SaaS, Interact, IPG Mediabrands, or Kinesso.</p>
       </section>
 
       <!-- ===== SOURCES =============================================== -->
       <section class="section" id="sources">
-        <div class="section-num">11 — References</div>
+        <div class="section-num">10 — References</div>
         <h2 class="section-title">Sources.</h2>
         <ol class="sources-list">
           <li id="src-1">
@@ -627,7 +731,7 @@
 
 <footer class="foot">
   <div class="foot-inner">
-    <div>Ephemeral UI · Pattern Study · jun 2026</div>
+    <div>Ephemeral UI · Omnicom SaaS · case study · jun 2026</div>
     <div>Set in Geist · <a href="../index.html" style="color:inherit;text-decoration:none;border-bottom:1px solid var(--border-strong)">back to index</a></div>
   </div>
 </footer>
