@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The starter kit — Design Systems for AI</title>
+<meta name="description" content="One npm package that turns AI prototyping tools into design-system-aware ones: components, tokens, a starter prompt and screen patterns — plus Design Check as the safety net, and how it gets smarter over time." />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#fafaf7" media="(prefers-color-scheme: light)" />
+<script>
+  // No-flash theme init — runs before any paint. Keep inline.
+  (function () {
+    try {
+      var saved = localStorage.getItem('theme');
+      var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+      var theme = saved || (prefersLight ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-theme', theme);
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css">
+<link rel="stylesheet" href="../assets/kit.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="../index.html">
+      <span class="brand-mark"></span>
+      <span class="brand-crumb"><span class="brand-home">index</span> / starter-kit</span>
+    </a>
+    <div class="topbar-right">
+      <div class="topbar-meta">
+        <span class="dot"></span>
+        <span>article 03 · 2026</span>
+      </div>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-label="Toggle colour scheme">
+        <svg class="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <svg class="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="container" id="top">
+  <div class="layout">
+
+    <!-- ============================ HERO =================================== -->
+    <section class="hero">
+      <div class="eyebrow">
+        <span class="badge">PROPOSAL</span>
+        <span>Giving non-designers a design-system-shaped starting point</span>
+      </div>
+      <h1 class="hero-title">One package, and every prototype <span class="accent">starts on-system</span>.</h1>
+      <p class="hero-deck">
+        Product managers now build working prototypes in AI tools. What comes
+        out looks like the tool, not like our product. The fix isn't more
+        review — it's changing what the tool starts from. This is a proposal
+        for a single npm package, owned by the design system team, that carries
+        our components, our tokens, our screen patterns and a starter prompt.
+        Plus the safety net that checks the result, and how that checker gets
+        smarter every week.
+      </p>
+      <div class="hero-meta-row">
+        <div class="hero-meta-item"><div class="k">Scope</div><div class="v">One package · one prompt · one check</div></div>
+        <div class="hero-meta-item"><div class="k">Read time</div><div class="v">~ 9 minutes</div></div>
+        <div class="hero-meta-item"><div class="k">For</div><div class="v">DS designers · PMs · eng leads</div></div>
+      </div>
+    </section>
+
+    <!-- ============================ TOC ==================================== -->
+    <aside class="toc">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#problem">The problem, plainly</a></li>
+        <li><a href="#idea">The idea in one picture</a></li>
+        <li><a href="#inside">What's inside the package</a></li>
+        <li><a href="#flow">How a PM actually uses it</a></li>
+        <li><a href="#ownership">Who owns what</a></li>
+        <li><a href="#control">Why this gives us control</a></li>
+        <li><a href="#check">The safety net: Design Check</a></li>
+        <li><a href="#learning">Making the checker smarter</a></li>
+        <li><a href="#start">Where to start</a></li>
+      </ol>
+    </aside>
+
+    <!-- ============================ CONTENT ================================ -->
+    <main class="content">
+
+      <!-- ===== 00 PROBLEM =============================================== -->
+      <section class="section" id="problem">
+        <div class="section-num">00 — The problem</div>
+        <h2 class="section-title">Everyone can build now. Nothing looks like us.</h2>
+        <p class="section-lede">
+          A product manager has an idea on Monday and a clickable prototype by
+          Tuesday. That's genuinely good. The problem is what the prototype is
+          made of.
+        </p>
+        <p>
+          AI prototyping tools — Lovable, v0, Bolt and the rest — generate from
+          their own defaults. Generic blue buttons, generic spacing, a sidebar
+          nobody in our product has ever used. The result is a demo that reads
+          as "some app", not as our platform. Then one of two things happens:
+          engineering rebuilds it from scratch, or the design system team spends
+          a week explaining why it's wrong.
+        </p>
+        <p>
+          Reviewing harder doesn't fix this. By the time anyone reviews, the
+          prototype has already been built on the wrong foundation. <strong>The
+          only leverage point is the very first prompt.</strong>
+        </p>
+
+        <div class="dg" data-label="Two paths from the same idea">
+          <div class="paths">
+            <div class="path bad">
+              <div class="path-tag">Today</div>
+              <div class="node"><span class="nk">PM</span><span class="nv">Idea for a new screen</span></div>
+              <div class="arr">→</div>
+              <div class="node"><span class="nk">AI tool</span><span class="nv">Generates from its own defaults</span></div>
+              <div class="arr">→</div>
+              <div class="node miss"><span class="nk">Result</span><span class="nv">Looks like a template, not our product</span></div>
+              <div class="arr">→</div>
+              <div class="node miss"><span class="nk">Cost</span><span class="nv">Rebuilt by engineering, or argued about for a week</span></div>
+            </div>
+            <div class="path good">
+              <div class="path-tag">Proposed</div>
+              <div class="node"><span class="nk">PM</span><span class="nv">Same idea, same tool</span></div>
+              <div class="arr">→</div>
+              <div class="node kit"><span class="nk">AI tool + kit</span><span class="nv">Starts from our components and our prompt</span></div>
+              <div class="arr">→</div>
+              <div class="node win"><span class="nk">Result</span><span class="nv">Recognisably our product on the first try</span></div>
+              <div class="arr">→</div>
+              <div class="node win"><span class="nk">Cost</span><span class="nv">Engineering picks it up instead of restarting</span></div>
+            </div>
+          </div>
+        </div>
+        <p class="dg-cap">
+          Same person, same idea, same tool. The only thing that changed is what
+          the tool had in its hands when it started.
+        </p>
+      </section>
+
+      <!-- ===== 01 IDEA ================================================== -->
+      <section class="section" id="idea">
+        <div class="section-num">01 — The idea</div>
+        <h2 class="section-title">Ship the starting point, not the rulebook.</h2>
+        <p class="section-lede">
+          Documentation asks people to read and remember. A package asks them to
+          type one line. So we ship the design system as something an AI tool
+          can install and immediately use.
+        </p>
+        <p>
+          <code>@splash/starter-kit</code> is one npm package with two halves.
+          The first half is <strong>code</strong>: real components, real tokens
+          — the same ones production uses. The second half is
+          <strong>context</strong>: a starter prompt, a description of how our
+          screens are normally built, and realistic sample data.
+        </p>
+        <p>
+          The second half is the part people underestimate. An AI tool with our
+          components but no context will still arrange them into a screen we'd
+          never ship. Telling it <em>how we build screens</em> matters as much as
+          giving it the parts.
+        </p>
+
+<pre class="code-block" data-lang="bash">npm i <span class="s">@splash/starter-kit</span></pre>
+
+<pre class="code-block" data-lang="tsx"><span class="k">import</span> { Button, Table, TopBar } <span class="k">from</span> <span class="s">'@splash/starter-kit'</span>
+<span class="k">import</span> <span class="s">'@splash/starter-kit/tokens.css'</span>   <span class="c">// colors, spacing, type</span>
+<span class="k">import</span> starterPrompt <span class="k">from</span> <span class="s">'@splash/starter-kit/prompt'</span>
+<span class="k">import</span> { campaigns } <span class="k">from</span> <span class="s">'@splash/starter-kit/mock-data'</span></pre>
+
+        <div class="callout">
+          <div class="callout-label">The one-line version</div>
+          <p>We stop hoping people follow the design system, and start handing them a project that already does.</p>
+        </div>
+      </section>
+
+      <!-- ===== 02 INSIDE ================================================ -->
+      <section class="section" id="inside">
+        <div class="section-num">02 — Anatomy</div>
+        <h2 class="section-title">What's actually in the box.</h2>
+        <p class="section-lede">
+          Five things. Each one removes a specific way prototypes go wrong.
+        </p>
+
+        <div class="dg" data-label="@splash/starter-kit · anatomy">
+          <div class="pkg">
+            <div class="pkg-head">
+              <span>@splash/starter-kit</span>
+              <span class="ver">v1.4.0 · maintained by design system</span>
+            </div>
+            <div class="pkg-row">
+              <div class="pkg-path">/components</div>
+              <div class="pkg-body">
+                <span class="t">The real components</span>
+                <span class="d">Buttons, tables, inputs, navigation — the production ones, not lookalikes. Nothing to restyle later.</span>
+              </div>
+            </div>
+            <div class="pkg-row">
+              <div class="pkg-path">/tokens.css</div>
+              <div class="pkg-body">
+                <span class="t">Colors, spacing, type</span>
+                <span class="d">Synced from Figma. If a brand color changes, it changes here — and everything built on the kit follows.</span>
+              </div>
+            </div>
+            <div class="pkg-row">
+              <div class="pkg-path">/prompt</div>
+              <div class="pkg-body">
+                <span class="t">The starter prompt</span>
+                <span class="d">The paragraph a PM pastes before their first request. Tells the tool which components exist, which patterns to follow, and what never to invent.</span>
+              </div>
+            </div>
+            <div class="pkg-row">
+              <div class="pkg-path">/screen-patterns</div>
+              <div class="pkg-body">
+                <span class="t">How our screens are built</span>
+                <span class="d">Global top bar, horizontal tabs, filter row, data table. Written down once, so the tool stops inventing a left sidebar.</span>
+              </div>
+            </div>
+            <div class="pkg-row">
+              <div class="pkg-path">/mock-data</div>
+              <div class="pkg-body">
+                <span class="t">Realistic sample data</span>
+                <span class="d">Campaigns, budgets, audiences with believable names and ranges. Prototypes stop being demoed with "Lorem ipsum · $123".</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p>Here's roughly what the starter prompt says. It is boring on purpose:</p>
+
+<pre class="code-block" data-lang="prompt"><span class="c"># Paste this before your first request.</span>
+
+Build with <span class="s">@splash/starter-kit</span> only. Import components from the
+package — never write a button, input or table by hand, and never
+add another UI library.
+
+Use tokens for every color, spacing and text style. No raw hex.
+
+Screen structure: global top bar, horizontal tabs below it, then
+page content. This product never uses left sidebar navigation.
+
+Use <span class="s">@splash/starter-kit/mock-data</span> for sample content.
+
+If something you need doesn't exist in the kit, say so instead of
+inventing it.</pre>
+
+        <div class="callout warning">
+          <div class="callout-label">The last line matters</div>
+          <p>"Say so instead of inventing it" turns silent drift into a visible gap. Those gaps are also the best backlog the design system team will ever get — they're real, unmet needs, reported for free.</p>
+        </div>
+      </section>
+
+      <!-- ===== 03 FLOW ================================================== -->
+      <section class="section" id="flow">
+        <div class="section-num">03 — In practice</div>
+        <h2 class="section-title">Four steps, about ten minutes.</h2>
+        <p class="section-lede">
+          Nothing here requires a designer in the room. That's the point.
+        </p>
+
+        <div class="dg" data-label="A PM's first session">
+          <div class="ladder">
+            <div class="rung">
+              <div class="rung-n">1</div>
+              <div class="rung-b">
+                <span class="t">Install the kit</span>
+                <span class="d">One command in the AI tool's project. Some tools accept a starter template instead — we publish one of those too.</span>
+                <span class="who">PM · 1 min</span>
+              </div>
+            </div>
+            <div class="rung">
+              <div class="rung-n">2</div>
+              <div class="rung-b">
+                <span class="t">Paste the starter prompt</span>
+                <span class="d">Copied from the package README. It's the same text for everyone, and it updates when the kit updates.</span>
+                <span class="who">PM · 1 min</span>
+              </div>
+            </div>
+            <div class="rung">
+              <div class="rung-n">3</div>
+              <div class="rung-b">
+                <span class="t">Describe the feature and iterate</span>
+                <span class="d">Normal prototyping. The difference is that every screen comes out of our components, with our spacing and our data.</span>
+                <span class="who">PM · the actual work</span>
+              </div>
+            </div>
+            <div class="rung">
+              <div class="rung-n">4</div>
+              <div class="rung-b">
+                <span class="t">Run Design Check on a screenshot</span>
+                <span class="d">Catches whatever slipped through. Returns a report and a ready-made fix prompt to paste back into the tool.</span>
+                <span class="who">PM · 2 min</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 04 OWNERSHIP ============================================= -->
+      <section class="section" id="ownership">
+        <div class="section-num">04 — Ownership</div>
+        <h2 class="section-title">The design system team owns this. Not engineering.</h2>
+        <p class="section-lede">
+          The most common objection is "who maintains it?" — usually asked by
+          people worried it lands on their sprint. It doesn't.
+        </p>
+        <p>
+          This package is design system work: it's a distribution of what the DS
+          team already maintains. Tokens come from Figma through the existing
+          sync. Components come from the existing library. The prompt and the
+          screen patterns are written by the person who knows them best — the
+          design system designer. Product engineers are consumers, never
+          maintainers.
+        </p>
+
+        <div class="dg" data-label="Who does what">
+          <div class="lanes">
+            <div class="lane owner">
+              <div class="lane-who">Owner</div>
+              <div class="lane-role">Design system designer</div>
+              <ul>
+                <li>Publishes and versions the package</li>
+                <li>Writes the starter prompt and screen patterns</li>
+                <li>Syncs tokens from Figma</li>
+                <li>Reads the gaps prototypes report back</li>
+              </ul>
+            </div>
+            <div class="lane">
+              <div class="lane-who">Consumer</div>
+              <div class="lane-role">PM / vibecoder</div>
+              <ul>
+                <li>Installs the kit, pastes the prompt</li>
+                <li>Builds and iterates freely</li>
+                <li>Runs Design Check before sharing</li>
+                <li class="no">Doesn't need to know the design system</li>
+              </ul>
+            </div>
+            <div class="lane">
+              <div class="lane-who">Downstream</div>
+              <div class="lane-role">Product engineers</div>
+              <ul>
+                <li>Receive prototypes already using real components</li>
+                <li>Reuse the same package if useful</li>
+                <li class="no">No maintenance duty</li>
+                <li class="no">No rebuild from zero</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <p class="pull">Whoever owns the starting point owns the outcome.<span class="by">The reason this sits with the design system team</span></p>
+      </section>
+
+      <!-- ===== 05 CONTROL =============================================== -->
+      <section class="section" id="control">
+        <div class="section-num">05 — Leverage</div>
+        <h2 class="section-title">What this buys us.</h2>
+        <p class="section-lede">
+          A package is not just a convenience. It's a control surface we don't
+          currently have.
+        </p>
+        <ul>
+          <li><strong>One place to change things.</strong> A token change, a new component, a corrected pattern — publish once, and every project on the kit picks it up on the next install.</li>
+          <li><strong>Versioning instead of arguing.</strong> "Which design system version is this prototype on?" becomes a number, not a conversation.</li>
+          <li><strong>Prototypes become a signal.</strong> What PMs build, and what they report missing, tells us what the design system actually needs next.</li>
+          <li><strong>The prompt is a product.</strong> When we learn that tools keep making the same mistake, we fix it in one paragraph — for everyone, retroactively.</li>
+        </ul>
+
+        <div class="verdict">
+          <div>
+            <div class="vk">Cost to a PM</div>
+            <div class="vv"><strong>Two minutes</strong> of setup, then their normal workflow.</div>
+          </div>
+          <div>
+            <div class="vk">Cost to engineering</div>
+            <div class="vv"><strong>Zero.</strong> They consume; they don't maintain.</div>
+          </div>
+          <div>
+            <div class="vk">Cost to the DS team</div>
+            <div class="vv">Real, but it's <strong>packaging work we already do</strong>, aimed at a new audience.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 06 DESIGN CHECK ========================================== -->
+      <section class="section" id="check">
+        <div class="section-num">06 — The safety net</div>
+        <h2 class="section-title">Design Check: the part that already exists.</h2>
+        <p class="section-lede">
+          The kit sets the starting point. Design Check verifies the finishing
+          point. It's a working prototype today, not a plan.
+        </p>
+        <p>
+          You upload a screenshot of your prototype. A vision model
+          (<code>claude-sonnet-5</code>) compares it against the Splash design
+          system rules — tokens synced straight from our Figma file, plus
+          component guidelines and the screen patterns distilled from real
+          product screenshots. It returns a conformance score, at most seven
+          plain-language findings, red numbered markers placed on the screenshot
+          itself, and a <code>fixPrompt</code>.
+        </p>
+        <p>
+          The <code>fixPrompt</code> is the trick. Findings are written for a
+          human — "the button is bright red instead of the brand blue". The fix
+          prompt is written for a machine, with exact variable names
+          <em>and</em> raw values, so it works whether or not the receiving tool
+          knows our tokens. The user doesn't read it. They paste it.
+        </p>
+
+        <div class="dg" data-label="Build → check → fix">
+          <div class="loop">
+            <div class="node"><span class="nk">01</span><span class="nv">Prototype built on the kit</span></div>
+            <div class="arr">→</div>
+            <div class="node"><span class="nk">02</span><span class="nv">Screenshot uploaded to Design Check</span></div>
+            <div class="arr">→</div>
+            <div class="node kit"><span class="nk">03</span><span class="nv">Score, findings on the image, fix prompt</span></div>
+            <div class="arr">→</div>
+            <div class="node win"><span class="nk">04</span><span class="nv">Fix prompt pasted back into the tool</span></div>
+            <div class="loop-return"><span>re-check until the score stops moving</span></div>
+          </div>
+        </div>
+        <p class="dg-cap">
+          The loop usually runs two or three times. Each pass is a couple of
+          minutes, and no designer is blocked on it.
+        </p>
+
+        <div class="callout success">
+          <div class="callout-label">Why the pair works</div>
+          <p>The kit prevents most drift. Design Check catches the rest and tells you how to fix it in the same tool you're already in. Neither one requires a review meeting.</p>
+        </div>
+      </section>
+
+      <!-- ===== 07 LEARNING ============================================== -->
+      <section class="section" id="learning">
+        <div class="section-num">07 — Compounding</div>
+        <h2 class="section-title">A checker that gets better every week.</h2>
+        <p class="section-lede">
+          Right now Design Check is as good as its prompt. It doesn't have to
+          stay that way. Two loops turn ordinary use into a slowly improving
+          reviewer — one fast, one slow.
+        </p>
+
+        <div class="dg" data-label="Two loops">
+          <div class="wheels">
+            <div class="wheel">
+              <div class="wheel-head">
+                <span class="wheel-tick">Fast · per report</span>
+              </div>
+              <div class="wheel-title">Humans grade the findings</div>
+              <p class="wheel-sub">
+                Every finding gets a thumbs up or down. A thumbs down asks for
+                one line: <em>why was this wrong?</em> Nothing else changes about
+                the workflow.
+              </p>
+              <div class="chain">
+                <div class="link"><span class="li">01</span><span>Designer or PM marks a finding true / false</span></div>
+                <div class="chain-arr">↓</div>
+                <div class="link"><span class="li">02</span><span>A false one collects a one-sentence reason</span></div>
+                <div class="chain-arr">↓</div>
+                <div class="link"><span class="li">03</span><span>Reasons cluster into repeat mistakes</span></div>
+                <div class="chain-arr">↓</div>
+                <div class="link out"><span class="li">04</span><span>Rules and prompt updated — false alarms stop recurring</span></div>
+              </div>
+            </div>
+
+            <div class="wheel">
+              <div class="wheel-head">
+                <span class="wheel-tick">Slow · weekly batch</span>
+              </div>
+              <div class="wheel-title">A stronger model grades the checker</div>
+              <p class="wheel-sub">
+                Every audit is stored as a pair: the screen, and what Sonnet said
+                about it. Once a week, a more capable model re-reviews the batch.
+              </p>
+              <div class="chain">
+                <div class="link"><span class="li">01</span><span>Store every screenshot + audit in a database</span></div>
+                <div class="chain-arr">↓</div>
+                <div class="link"><span class="li">02</span><span>Weekly, re-run the batch through Opus or Fable</span></div>
+                <div class="chain-arr">↓</div>
+                <div class="link"><span class="li">03</span><span>Compare: what did the fast model miss or overcall?</span></div>
+                <div class="chain-arr">↓</div>
+                <div class="link out"><span class="li">04</span><span>Distil the difference back into the everyday auditor</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p>
+          The two loops answer different questions. Thumbs up and down tell us
+          <strong>where the checker is annoying</strong> — the false positives
+          that make people stop trusting it. The weekly batch tells us
+          <strong>where the checker is blind</strong> — the real problems a
+          stronger model catches and ours walks past.
+        </p>
+        <p>
+          Both produce the same kind of output: examples. Enough graded examples
+          and you have a genuine evaluation set — the thing that lets you change
+          the prompt and know whether you made it better instead of guessing.
+          That set is also what you'd need later if we ever wanted to fine-tune a
+          smaller, cheaper model to do the routine passes.
+        </p>
+
+        <div class="callout">
+          <div class="callout-label">Order of operations</div>
+          <p>Do the cheap loop first. Thumbs up / down is a day of work and immediately tells us whether people trust the tool. The weekly batch only pays off once there's enough traffic to have a batch worth re-running.</p>
+        </div>
+
+        <div class="callout warning">
+          <div class="callout-label">One thing to decide early</div>
+          <p>Stored screenshots are product screens. Agree up front on where they live, who can read them, and how long they're kept — before the database exists, not after.</p>
+        </div>
+      </section>
+
+      <!-- ===== 08 START ================================================= -->
+      <section class="section" id="start">
+        <div class="section-num">08 — Where to start</div>
+        <h2 class="section-title">The smallest version worth shipping.</h2>
+        <p class="section-lede">
+          None of this needs to be complete to be useful. The first version can
+          be embarrassingly small.
+        </p>
+        <ul>
+          <li><strong>Week one:</strong> the starter prompt alone, published as a page. No package yet. See whether prototypes improve just from the paragraph.</li>
+          <li><strong>Week two to four:</strong> the package with tokens, the ten most-used components, and mock data.</li>
+          <li><strong>Then:</strong> screen patterns, and Design Check pointed at the same rules the kit ships.</li>
+          <li><strong>Then:</strong> thumbs up / down on findings, and only later the weekly batch re-review.</li>
+        </ul>
+        <p>
+          The order matters more than the scope. Every step in it is useful on
+          its own, and each one makes the next one cheaper.
+        </p>
+
+        <div class="maxim">
+          <div class="maxim-eyebrow">The whole proposal, compressed</div>
+          <div class="maxim-line">Give people a starting point that's already right.</div>
+          <div class="maxim-line">Check the result automatically, and hand back the fix.</div>
+          <div class="maxim-line">Let every check make the next one better.</div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <div>Design Systems for AI · Field Notes · 2026</div>
+    <div>Set in Geist · <a href="../index.html" style="color:inherit;text-decoration:none;border-bottom:1px solid var(--border-strong)">back to index</a></div>
+  </div>
+</footer>
+
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,418 @@
+/* =========================================================================
+   kit.css — diagrams for the "Starter kit" article.
+   Small, self-contained flow/anatomy diagrams built from the site's own
+   token system, so they follow the light/dark toggle. Loaded after styles.css.
+   ========================================================================= */
+
+:root {
+  --kit-1: #6cb8ff;
+  --kit-2: #c8a2ff;
+  --kit-grad: linear-gradient(135deg, #6cb8ff 0%, #c8a2ff 100%);
+  --kit-soft: rgba(108, 184, 255, 0.10);
+  --kit-border: rgba(108, 184, 255, 0.32);
+  --kit-warm: rgba(255, 92, 138, 0.10);
+  --kit-warm-border: rgba(255, 92, 138, 0.30);
+  --kit-good: rgba(80, 227, 194, 0.10);
+  --kit-good-border: rgba(80, 227, 194, 0.32);
+}
+:root[data-theme="light"] {
+  --kit-1: #0a66c2;
+  --kit-2: #6b21a8;
+  --kit-grad: linear-gradient(135deg, #0a66c2 0%, #6b21a8 100%);
+  --kit-soft: rgba(10, 102, 194, 0.07);
+  --kit-border: rgba(10, 102, 194, 0.26);
+  --kit-warm: rgba(194, 24, 91, 0.06);
+  --kit-warm-border: rgba(194, 24, 91, 0.24);
+  --kit-good: rgba(0, 132, 90, 0.07);
+  --kit-good-border: rgba(0, 132, 90, 0.28);
+}
+
+/* ====== Diagram stage ==================================================== */
+.dg {
+  position: relative;
+  margin: 30px 0;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 42px 26px 26px;
+  background-color: var(--bg-1);
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-size: 22px 22px;
+  overflow-x: auto;
+}
+.dg::after {
+  content: attr(data-label);
+  position: absolute;
+  top: 13px;
+  left: 18px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--fg-faint);
+}
+.dg-cap {
+  margin: -18px 0 30px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--fg-subtle);
+  max-width: 64ch;
+}
+
+/* ====== D1 · Two paths =================================================== */
+.paths { display: grid; gap: 14px; }
+.path {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+.path-tag {
+  flex: 0 0 84px;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+.path.bad .path-tag { color: var(--danger); }
+.path.good .path-tag { color: var(--success); }
+.node {
+  flex: 1 1 0;
+  min-width: 0;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 11px 13px;
+}
+.node .nk {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+  margin-bottom: 5px;
+}
+.node .nv {
+  display: block;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--fg);
+  font-weight: 500;
+}
+.node.kit { background: var(--kit-soft); border-color: var(--kit-border); }
+.node.kit .nk { color: var(--kit-1); }
+.node.miss { background: var(--kit-warm); border-color: var(--kit-warm-border); }
+.node.miss .nk { color: var(--danger); }
+.node.win { background: var(--kit-good); border-color: var(--kit-good-border); }
+.node.win .nk { color: var(--success); }
+.arr {
+  flex: 0 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-faint);
+  font-size: 13px;
+}
+
+/* ====== D2 · Package anatomy ============================================= */
+.pkg {
+  border: 1px solid var(--border-mid);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--bg-2);
+  max-width: 720px;
+}
+.pkg-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--bg-3);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--fg-bright);
+}
+.pkg-head .ver {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--fg-subtle);
+  letter-spacing: 0.08em;
+}
+.pkg-row {
+  display: flex;
+  gap: 16px;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border);
+  align-items: baseline;
+}
+.pkg-row:last-child { border-bottom: none; }
+.pkg-path {
+  flex: 0 0 152px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--kit-1);
+}
+.pkg-body { min-width: 0; }
+.pkg-body .t {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--fg-bright);
+  margin-bottom: 3px;
+}
+.pkg-body .d {
+  display: block;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--fg-muted);
+}
+
+/* ====== D3 · Numbered ladder ============================================= */
+.ladder { display: grid; gap: 10px; max-width: 720px; }
+.rung {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  position: relative;
+}
+.rung-n {
+  flex: 0 0 26px;
+  height: 26px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--kit-1);
+  background: var(--kit-soft);
+  border: 1px solid var(--kit-border);
+}
+.rung-b { min-width: 0; }
+.rung-b .t {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--fg-bright);
+  margin-bottom: 4px;
+}
+.rung-b .d {
+  display: block;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--fg-muted);
+}
+.rung-b .who {
+  display: inline-block;
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+}
+
+/* ====== D4 · Ownership lanes ============================================= */
+.lanes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.lane {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 16px;
+}
+.lane.owner { background: var(--kit-soft); border-color: var(--kit-border); }
+.lane-who {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+  margin-bottom: 8px;
+}
+.lane.owner .lane-who { color: var(--kit-1); }
+.lane-role {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--fg-bright);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+.lane ul { margin: 0; padding: 0; list-style: none; }
+.lane li {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--fg-muted);
+  padding: 6px 0 6px 15px;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+.lane li:last-child { border-bottom: none; }
+.lane li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 13px;
+  width: 8px;
+  height: 1px;
+  background: var(--fg-faint);
+}
+.lane li.no { color: var(--fg-subtle); }
+.lane li.no::before { background: var(--danger); }
+
+/* ====== D5 · Loop ======================================================== */
+.loop {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  position: relative;
+  padding-bottom: 40px;
+}
+.loop .node { flex: 1 1 0; }
+.loop-return {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: 6px;
+  height: 26px;
+  border: 1px solid var(--kit-border);
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+}
+.loop-return span {
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  transform: translateX(-50%);
+  background: var(--bg-1);
+  padding: 0 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--kit-1);
+  white-space: nowrap;
+}
+
+/* ====== D6 · Flywheels =================================================== */
+.wheels { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.wheel {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-2);
+  padding: 16px;
+}
+.wheel-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.wheel-tick {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--kit-1);
+  border: 1px solid var(--kit-border);
+  background: var(--kit-soft);
+  border-radius: 4px;
+  padding: 2px 7px;
+}
+.wheel-title {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--fg-bright);
+  letter-spacing: -0.01em;
+}
+.wheel-sub {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--fg-muted);
+  margin: 6px 0 14px;
+}
+.chain { display: grid; gap: 6px; }
+.link {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--fg);
+}
+.link .li {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--fg-faint);
+}
+.link.out { background: var(--kit-soft); border-color: var(--kit-border); }
+.chain-arr {
+  text-align: center;
+  color: var(--fg-faint);
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* ====== Verdict strip ==================================================== */
+.verdict {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 26px 0;
+  max-width: 720px;
+}
+.verdict div {
+  background: var(--bg-1);
+  padding: 16px;
+}
+.verdict .vk {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+  margin-bottom: 7px;
+}
+.verdict .vv {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--fg);
+}
+.verdict .vv strong { color: var(--fg-bright); }
+
+/* ====== Responsive ======================================================= */
+@media (max-width: 900px) {
+  .lanes, .wheels, .verdict { grid-template-columns: 1fr; }
+  .path, .loop { flex-wrap: wrap; }
+  .path-tag { flex: 0 0 100%; margin-bottom: 2px; }
+  .node { flex: 1 1 140px; }
+  .arr { flex: 0 0 12px; }
+  .loop { padding-bottom: 0; }
+  .loop-return { position: static; height: auto; border: none; margin-top: 10px; }
+  .loop-return span { position: static; transform: none; display: inline-block; padding: 0; }
+  .pkg-row { flex-direction: column; gap: 5px; }
+  .pkg-path { flex: none; }
+}
+@media (max-width: 640px) {
+  .dg { padding: 40px 16px 20px; }
+}

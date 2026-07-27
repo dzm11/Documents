@@ -136,6 +136,11 @@
   :root[data-theme="light"] .callout-label::before { box-shadow: 0 0 6px var(--glow-blue); }
   :root[data-theme="light"] .audit-row.head { background: rgba(0,0,0,0.025); }
   :root[data-theme="light"] .schema-preview-head { background: rgba(255,255,255,0.04); }
+  /* Code blocks keep their dark surface in light mode, so their text must stay light too */
+  :root[data-theme="light"] pre.code-block,
+  :root[data-theme="light"] .schema-preview pre { color: #e6e6e6; }
+  :root[data-theme="light"] pre.code-block .c,
+  :root[data-theme="light"] .schema-preview pre .c { color: #8f8f8f; }
 
   * { box-sizing: border-box; }
   html, body {
