@@ -140,13 +140,18 @@
               <div class="arr">→</div>
               <div class="node win"><span class="nk">Result</span><span class="nv">Recognisably our product on the first try</span></div>
               <div class="arr">→</div>
-              <div class="node win"><span class="nk">Cost</span><span class="nv">Engineering picks it up instead of restarting</span></div>
+              <div class="node win"><span class="nk">Handoff</span><span class="nv">Dev still rewrites it in their own components — but recognises it on sight</span></div>
             </div>
           </div>
         </div>
         <p class="dg-cap">
           Same person, same idea, same tool. The only thing that changed is what
-          the tool had in its hands when it started.
+          the tool had in its hands when it started. To be clear about the last
+          step: a prototype is not production code, and nobody should pretend
+          otherwise. The developer still reimplements it in their own codebase.
+          The difference is that they no longer have to work out what it was
+          <em>supposed</em> to look like — it already looks like the components
+          they're about to reach for.
         </p>
       </section>
 
@@ -204,7 +209,7 @@
               <div class="pkg-path">/components</div>
               <div class="pkg-body">
                 <span class="t">The real components</span>
-                <span class="d">Buttons, tables, inputs, navigation — the production ones, not lookalikes. Nothing to restyle later.</span>
+                <span class="d">Buttons, tables, inputs, navigation — built from the real library, not lookalikes. The prototype reads as our product from the first screen.</span>
               </div>
             </div>
             <div class="pkg-row">
@@ -351,10 +356,11 @@ inventing it.</pre>
               <div class="lane-who">Downstream</div>
               <div class="lane-role">Product engineers</div>
               <ul>
-                <li>Receive prototypes already using real components</li>
-                <li>Reuse the same package if useful</li>
+                <li>Reimplement in their own codebase, as always</li>
+                <li>Recognise the screen on sight — it's already our look</li>
+                <li>Reuse the same package if it fits their stack</li>
                 <li class="no">No maintenance duty</li>
-                <li class="no">No rebuild from zero</li>
+                <li class="no">No guessing what it should have looked like</li>
               </ul>
             </div>
           </div>
